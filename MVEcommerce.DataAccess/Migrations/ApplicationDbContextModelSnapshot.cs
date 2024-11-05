@@ -227,18 +227,216 @@ namespace MVEcommerce.DataAccess.Migrations
                         new
                         {
                             ProductId = 1,
-                            CategoryId = 1,
+                            CategoryId = 8,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Description of Product 1",
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
                             HasVariant = false,
-                            Name = "Product 1",
+                            Name = "Batman Death Metal DC Comics Batman Figure",
                             Price = 100m,
                             SKU = "SKU-1",
-                            Slug = "product-1",
+                            Slug = "batman-figure-metal",
                             Status = "active",
                             Stock = 100,
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VendorId = 1
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
+                            HasVariant = false,
+                            Name = "Minions Toy with Buildable Figures (876 Pieces)",
+                            Price = 200m,
+                            SKU = "SKU-2",
+                            Slug = "minions-toy-figures",
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VendorId = 1
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
+                            HasVariant = false,
+                            Name = "Masters of the Universe Origins Skeletor Action Figure",
+                            Price = 300m,
+                            SKU = "SKU-3",
+                            Slug = "skeletor-action-figure",
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VendorId = 1
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
+                            HasVariant = true,
+                            Name = "Apple – iPhone 11 64GB",
+                            Price = 400m,
+                            SKU = "SKU-4",
+                            Slug = "iphone-11-64gb",
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VendorId = 1
+                        });
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.ProductImage", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VariantOptionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("VariantOptionID");
+
+                    b.ToTable("ProductImages");
+
+                    b.HasData(
+                        new
+                        {
+                            ImageId = 1,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/4-1.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = true,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            ImageId = 2,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/2-2.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            ImageId = 3,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/1-2.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            ImageId = 4,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/3-2.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            ImageId = 5,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-73.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = true,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            ImageId = 6,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-54.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            ImageId = 7,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/4-37.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            ImageId = 8,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-71.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = true,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            ImageId = 9,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/2-61.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            ImageId = 10,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-52.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            ImageId = 11,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/1.jpeg?fit=1400%2C1400&ssl=1",
+                            IsMain = true,
+                            ProductId = 4,
+                            VariantOptionID = 1
+                        },
+                        new
+                        {
+                            ImageId = 12,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/2.jpeg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 1
+                        },
+                        new
+                        {
+                            ImageId = 13,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/3.jpeg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 1
+                        },
+                        new
+                        {
+                            ImageId = 14,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/1-1.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 2
+                        },
+                        new
+                        {
+                            ImageId = 15,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/2-1.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 2
+                        },
+                        new
+                        {
+                            ImageId = 16,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/3-1.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 2
                         });
                 });
 
@@ -272,6 +470,17 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductVariant");
+
+                    b.HasData(
+                        new
+                        {
+                            VariantId = 1,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Color",
+                            ProductId = 4,
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.ProductVariantOption", b =>
@@ -314,6 +523,32 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.HasIndex("VariantId");
 
                     b.ToTable("ProductVariantOption");
+
+                    b.HasData(
+                        new
+                        {
+                            OptionId = 1,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 400m,
+                            SKU = "SKU-4-Black",
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Value = "Black",
+                            VariantId = 1
+                        },
+                        new
+                        {
+                            OptionId = 2,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 450m,
+                            SKU = "SKU-4-White",
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Value = "Red",
+                            VariantId = 1
+                        });
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.Vendor", b =>
@@ -356,10 +591,10 @@ namespace MVEcommerce.DataAccess.Migrations
                         new
                         {
                             VendorId = 1,
-                            Address = "123 Street",
+                            Address = "1 New Buildings, Dunwear Bridgwater, United Kingdom (UK)",
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "Vendor1@gmail.com",
-                            Name = "Vendor 1",
+                            Name = "Truffles",
                             Phone = "0559814820",
                             Status = "active",
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -383,6 +618,23 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Vendor");
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.ProductImage", b =>
+                {
+                    b.HasOne("MVEcommerce.Models.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MVEcommerce.Models.ProductVariantOption", "ProductVariantOption")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("VariantOptionID");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductVariantOption");
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.ProductVariant", b =>
@@ -414,12 +666,19 @@ namespace MVEcommerce.DataAccess.Migrations
 
             modelBuilder.Entity("MVEcommerce.Models.Product", b =>
                 {
+                    b.Navigation("ProductImages");
+
                     b.Navigation("ProductVariants");
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.ProductVariant", b =>
                 {
                     b.Navigation("ProductVariantOptions");
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.ProductVariantOption", b =>
+                {
+                    b.Navigation("ProductImages");
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.Vendor", b =>
