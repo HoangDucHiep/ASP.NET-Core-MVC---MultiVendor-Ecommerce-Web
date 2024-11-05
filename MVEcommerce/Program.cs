@@ -6,7 +6,10 @@ using MVEcommerce.DataAccess.Repositoies.IRepositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
 
 // Register ApplicationDbContext with the dependency injection container
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

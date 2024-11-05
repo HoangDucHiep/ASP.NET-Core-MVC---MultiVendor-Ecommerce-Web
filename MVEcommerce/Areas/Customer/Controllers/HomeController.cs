@@ -43,6 +43,13 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return Json(new { data = objProductList });
         }
 
+        //call url: /customer/home/GetAllProduct
+        [HttpGet]
+        public IActionResult GetAllProduct()
+        {
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = objProductList });
+        }
         #endregion  
     }
 }

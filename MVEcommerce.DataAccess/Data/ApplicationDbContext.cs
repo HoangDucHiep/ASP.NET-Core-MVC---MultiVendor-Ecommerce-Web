@@ -10,6 +10,8 @@ namespace MVEcommerce.DataAccess.Data
 		}
 
 		public DbSet<Category> Categories { get; set; }
+		public DbSet<Product> Products { get; set; }
+		public DbSet<Vendor> Vendors { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -53,6 +55,14 @@ namespace MVEcommerce.DataAccess.Data
 
 				// Danh mục Parent: Tools & Home Improvement
 				new Category { CategoryId = 11, Name = "Tools & Home Improvement", Slug = "tools-home-improvement-11", BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
+			);
+
+			modelBuilder.Entity<Vendor>().HasData(
+				new Vendor() { VendorId = 1, Name = "Vendor 1", Email = "Vendor1@gmail.com", Phone = "0559814820", Address = "123 Street", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
+			);
+
+			modelBuilder.Entity<Product>().HasData(
+				new Product() { ProductId = 1, VendorId = 1, CategoryId = 1, Name = "Product 1", Slug = "product-1", Description = "Description of Product 1", Price = 100, Stock = 100, SKU = "SKU-1", HasVariant = false, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
 			);
 		}
 	}
