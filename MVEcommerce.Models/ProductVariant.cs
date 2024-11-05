@@ -12,10 +12,10 @@ namespace MVEcommerce.Models
         public int ProductId { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [Required]
-        public string Status { get; set; }
+        public required string Status { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -24,7 +24,7 @@ namespace MVEcommerce.Models
         public DateTime UpdatedAt { get; set; }
 
         // Navigation properties
-        public virtual Product Product { get; set; }
-        public virtual ICollection<ProductVariantOption> ProductVariantOptions { get; set; }
+        public virtual Product? Product { get; set; }
+        public virtual ICollection<ProductVariantOption>? ProductVariantOptions { get; set; }
     }
 }

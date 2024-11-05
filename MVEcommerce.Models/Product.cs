@@ -13,14 +13,14 @@ namespace MVEcommerce.Models
 	{
 		[Key]
 		public int ProductId { get; set; }
-		[ForeignKey("Vendor")]
+		[ForeignKey("VendorId")]
 		public int VendorId { get; set; }
-		[ForeignKey("Category")]
+		[ForeignKey("CategoryId")]
 		public int CategoryId { get; set; }
 		[Required]
-		public string Name { get; set; }
+		public required string Name { get; set; }
 		[Required]
-		public string Slug { get; set; }
+		public required string Slug { get; set; }
 		public string? Description { get; set; }
 		[Column(TypeName = "decimal(18,2)")]
 		public decimal? Price { get; set; }
@@ -29,15 +29,17 @@ namespace MVEcommerce.Models
 		[Required]
 		public bool HasVariant { get; set; }
 		[Required]
-		public string Status { get; set; }
+		public required string Status { get; set; }
 		[Required]
 		public DateTime CreatedAt { get; set; }
 		[Required]
 		public DateTime UpdatedAt { get; set; }
 		// Navigation properties
-		public virtual Vendor Vendor { get; set; }
-		public virtual Category Category { get; set; }
-		public virtual ICollection<ProductVariant> ProductVariants { get; set; }
+		public virtual Vendor? Vendor { get; set; }
+		[ForeignKey("CategoryId")]
+		public virtual Category? Category { get; set; }
+		public virtual ICollection<ProductVariant>? ProductVariants { get; set; }
+		public virtual ICollection<ProductImage>? ProductImages { get; set; }
 	}
 
 }
