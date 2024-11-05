@@ -2,18 +2,21 @@ using Microsoft.EntityFrameworkCore;
 using MVEcommerce.DataAccess.Data;
 using MVEcommerce.DataAccess.Repositoies;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
 
 // Register ApplicationDbContext with the dependency injection container
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    b => b.MigrationsAssembly("MVEcommerce.DataAccess")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -34,10 +37,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();

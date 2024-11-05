@@ -47,7 +47,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         [HttpGet]
         public IActionResult GetAllProduct()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImages").ToList();
             return Json(new { data = objProductList });
         }
         #endregion  
