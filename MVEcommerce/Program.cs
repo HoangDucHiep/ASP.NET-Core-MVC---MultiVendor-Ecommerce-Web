@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MVEcommerce.DataAccess.Data;
+using MVEcommerce.DataAccess.Repositoies;
+using MVEcommerce.DataAccess.Repositoies.IRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddControllersWithViews();
 // Register ApplicationDbContext with the dependency injection container
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
