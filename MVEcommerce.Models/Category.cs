@@ -13,8 +13,9 @@ namespace MVEcommerce.Models
         [Key]
         public int CategoryId { get; set; }
 
-        [ForeignKey("ParentCategoryNavigation")]
-        public int? ParentCategory { get; set; }
+        //Can't handle now - fix later
+        //[ForeignKey("ParentCategoryNavigation")]
+        //public int? ParentCategory { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -22,10 +23,11 @@ namespace MVEcommerce.Models
         [Required]
         public string Slug { get; set; }
 
-        public string? Description { get; set; }
+        //public string? Description { get; set; }
+        public string? BannerImage { get; set; }
 
         [Required]
-        public string Status { get; set; }
+        public string Status { get; set; }  // Active, InActive
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -34,8 +36,8 @@ namespace MVEcommerce.Models
         public DateTime UpdatedAt { get; set; }
 
         // Navigation properties
-        public virtual Category ParentCategoryNavigation { get; set; }
-        public virtual ICollection<Category> ChildCategories { get; set; }
+        //public virtual Category ParentCategoryNavigation { get; set; }
+        //public virtual ICollection<Category> ChildCategories { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }
 }
