@@ -12,7 +12,6 @@ namespace MVEcommerce.DataAccess.Repositoies
             _db = db;
         }
 
-
         public void Update(Product obj)
         {
             _db.Update(obj);

@@ -33,6 +33,12 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public IActionResult DatDongQuang()
+        {
+            var categories = _unitOfWork.Category.GetAll();
+            return View(categories);
+        }
+
         
         #region API CALLS
         //call url: /customer/home/getall
@@ -47,7 +53,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         [HttpGet]
         public IActionResult GetAllProduct()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImages,ProductVariants").ToList();
+            List<Product> objProductList = _unitOfWork.Product.GetAll("Category,Vendor").ToList();
             return Json(new { data = objProductList });
         }
         #endregion  

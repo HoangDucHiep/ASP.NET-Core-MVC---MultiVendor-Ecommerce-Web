@@ -12,6 +12,11 @@ namespace MVEcommerce.DataAccess.Repositoies
             _db = db;
         }
 
+        public Category GetByName(string name)
+        {
+            return _db.Categories.Where(c=>c.Name==name).FirstOrDefault();
+        }
+
         public void Update(Category obj)
         {
             _db.Update(obj);
