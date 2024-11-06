@@ -13,18 +13,18 @@ namespace MVEcommerce.Models
         public int VendorId { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         public string? Phone { get; set; }
 
         public string? Address { get; set; }
 
         [Required]
-        public string Status { get; set; }
+        public required string Status { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -33,6 +33,6 @@ namespace MVEcommerce.Models
         public DateTime UpdatedAt { get; set; }
 
         // Navigation property
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
     }
 }

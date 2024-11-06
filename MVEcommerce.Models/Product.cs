@@ -24,6 +24,9 @@ namespace MVEcommerce.Models
 		public string? Description { get; set; }
 		[Column(TypeName = "decimal(18,2)")]
 		public decimal? Price { get; set; }
+
+		[Column(TypeName = "decimal(18,2)")]
+		public decimal? Sale { get; set; }
 		public int? Stock { get; set; }
 		public string? SKU { get; set; }
 		[Required]

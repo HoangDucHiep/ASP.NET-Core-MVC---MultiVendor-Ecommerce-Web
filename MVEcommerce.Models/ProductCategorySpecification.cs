@@ -20,10 +20,10 @@ namespace MVEcommerce.Models
         public int CategorySpecificationId { get; set; }
 
         [Required]
-        public string Value { get; set; }
+        public required string Value { get; set; }
 
         // Navigation property
-        public virtual Product Product { get; set; }
-        public virtual CategorySpecification CategorySpecification { get; set; }
+        public virtual Product? Product { get; set; }
+        public virtual CategorySpecification? CategorySpecification { get; set; }
     }
 }

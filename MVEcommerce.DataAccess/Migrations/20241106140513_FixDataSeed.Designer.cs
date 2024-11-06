@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVEcommerce.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241105175740_FixProductVariantSeedData")]
-    partial class FixProductVariantSeedData
+    [Migration("20241106140513_FixDataSeed")]
+    partial class FixDataSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -201,6 +201,9 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.Property<string>("SKU")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("Sale")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -237,6 +240,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             Name = "Batman Death Metal DC Comics Batman Figure",
                             Price = 100m,
                             SKU = "SKU-1",
+                            Sale = 0m,
                             Slug = "batman-figure-metal",
                             Status = "active",
                             Stock = 100,
@@ -253,6 +257,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             Name = "Minions Toy with Buildable Figures (876 Pieces)",
                             Price = 200m,
                             SKU = "SKU-2",
+                            Sale = 0m,
                             Slug = "minions-toy-figures",
                             Status = "active",
                             Stock = 100,
@@ -269,6 +274,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             Name = "Masters of the Universe Origins Skeletor Action Figure",
                             Price = 300m,
                             SKU = "SKU-3",
+                            Sale = 26m,
                             Slug = "skeletor-action-figure",
                             Status = "active",
                             Stock = 100,
@@ -283,11 +289,8 @@ namespace MVEcommerce.DataAccess.Migrations
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
                             HasVariant = true,
                             Name = "Apple – iPhone 11 64GB",
-                            Price = 400m,
-                            SKU = "SKU-4",
                             Slug = "iphone-11-64gb",
                             Status = "active",
-                            Stock = 100,
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VendorId = 1
                         });
@@ -503,6 +506,9 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.Property<string>("SKU")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Sale")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
                         .IsRequired()

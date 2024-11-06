@@ -18,16 +18,16 @@ namespace MVEcommerce.Models
         //public int? ParentCategory { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [Required]
-        public string Slug { get; set; }
+        public required string Slug { get; set; }
 
         //public string? Description { get; set; }
         public string? BannerImage { get; set; }
 
         [Required]
-        public string Status { get; set; }  // Active, InActive
+        public required string Status { get; set; }  // Active, InActive
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -38,6 +38,6 @@ namespace MVEcommerce.Models
         // Navigation properties
         //public virtual Category ParentCategoryNavigation { get; set; }
         //public virtual ICollection<Category> ChildCategories { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
     }
 }
