@@ -11,5 +11,6 @@ namespace MVEcommerce.DataAccess.Repositoies.IRepositories
 	{
 		void Update(Category category);
 
+		IEnumerable<Category> GetAllCategory();
 	}
 }

@@ -273,9 +273,10 @@
 							</span><span class="header-category__name">Shop by Category</span>
 						</div>
 						<div class="header-category__content">
-							<nav class="header-category__menu">
+							@await Component.InvokeAsync("CategoryItem")
+							@*<nav class="header-category__menu">
 								<ul id="menu-category-menu" class="menu">
-									@* CategoryItem *@
+									@* CategoryItem 
 									<li id="menu-item-17136"
 										class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-17136 menu-item-mega menu-item-has-background menu-item-has-children menu-item-has-icon">
 										<ul class="sub-menu mega-menu mega-menu--grid"
@@ -1885,7 +1886,7 @@
 										</a>
 									</li>
 								</ul>
-							</nav>
+							</nav>*@
 						</div>
 					</div>
 
