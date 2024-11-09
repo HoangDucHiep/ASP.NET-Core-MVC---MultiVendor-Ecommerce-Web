@@ -12,9 +12,14 @@ namespace MVEcommerce.DataAccess.Repositoies
             _db = db;
         }
 
+        
         public void Update(Category obj)
         {
             _db.Update(obj);
+        }
+        public IEnumerable<Category> GetAllCategory()
+        {
+            return _db.Categories;
         }
     }
 }
