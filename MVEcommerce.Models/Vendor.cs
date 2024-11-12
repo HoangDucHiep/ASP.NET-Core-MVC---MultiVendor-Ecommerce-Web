@@ -16,14 +16,6 @@ namespace MVEcommerce.Models
         public required string Name { get; set; }
 
         [Required]
-        [EmailAddress]
-        public required string Email { get; set; }
-
-        public string? Phone { get; set; }
-
-        public string? Address { get; set; }
-
-        [Required]
         public required string Status { get; set; }
 
         [Required]
@@ -33,6 +25,8 @@ namespace MVEcommerce.Models
         public DateTime UpdatedAt { get; set; }
 
         // Navigation property
+        public string UserId { get; set; }
+        public virtual ApplicationUser? User { get; set; }
         public virtual ICollection<Product>? Products { get; set; }
     }
 }
