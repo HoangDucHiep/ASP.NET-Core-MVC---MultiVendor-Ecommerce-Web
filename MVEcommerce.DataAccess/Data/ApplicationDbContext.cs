@@ -16,6 +16,11 @@ namespace MVEcommerce.DataAccess.Data
 		public DbSet<Vendor> Vendors { get; set; }
 		public DbSet<ProductImage> ProductImages { get; set; }
 
+
+
+		// User Stuffs
+		public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
