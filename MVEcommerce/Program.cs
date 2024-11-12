@@ -3,6 +3,9 @@ using MVEcommerce.DataAccess.Data;
 using MVEcommerce.DataAccess.Repositoies;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using MVEcommerce.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +21,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
     b => b.MigrationsAssembly("MVEcommerce.DataAccess")));
 
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+//options => options.SignIn.RequireConfirmedAccount = true
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.AddRazorPages();
 
+// DI for services
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
@@ -36,11 +44,23 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+
+
+//seeding data
+// Seeding roles
+using (var scope = app.Services.CreateScope())
+{
+	// Get the UserManager from the service provider
+	var services = scope.ServiceProvider;
+	var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+	await ApplicationRole.SeedRoles(roleManager);
+}
 
 app.Run();

@@ -14,7 +14,7 @@ namespace MVEcommerce.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var categoryItem=_categoryRepository.GetAllCategory();
+            var categoryItem=_categoryRepository.GetAll();
             return View(categoryItem);
         }
     }

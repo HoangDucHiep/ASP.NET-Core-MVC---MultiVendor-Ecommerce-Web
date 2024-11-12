@@ -4,6 +4,7 @@ namespace MVEcommerce.DataAccess.Repositoies.IRepositories
     {
         ICategoryRepository Category { get; }
         IProductRepository Product { get; }
+        IVendorRepository Vendor { get; }
         void Save();
     }
 }

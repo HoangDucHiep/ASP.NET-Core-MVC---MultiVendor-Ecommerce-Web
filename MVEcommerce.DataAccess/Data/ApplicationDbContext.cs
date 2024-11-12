@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MVEcommerce.Models;
 
 namespace MVEcommerce.DataAccess.Data
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{
@@ -13,6 +15,11 @@ namespace MVEcommerce.DataAccess.Data
 		public DbSet<Product> Products { get; set; }
 		public DbSet<Vendor> Vendors { get; set; }
 		public DbSet<ProductImage> ProductImages { get; set; }
+
+
+
+		// User Stuffs
+		public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -61,7 +68,7 @@ namespace MVEcommerce.DataAccess.Data
 
 			// Seed Vendor
 			modelBuilder.Entity<Vendor>().HasData(
-				new Vendor() { VendorId = 1, Name = "Truffles", Email = "Vendor1@gmail.com", Phone = "0559814820", Address = "1 New Buildings, Dunwear Bridgwater, United Kingdom (UK)", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
+				new Vendor() { VendorId = 1, Name = "Truffles", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1), UserId = "43c87d11-b883-4c0e-bc91-e4936d67a7d4" }
 			);
 
 			// Seed Product
