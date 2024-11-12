@@ -10,7 +10,5 @@ namespace MVEcommerce.DataAccess.Repositoies.IRepositories
 	public interface ICategoryRepository : IRepository<Category>
 	{
 		void Update(Category category);
-
-		IEnumerable<Category> GetAllCategory();
 	}
 }

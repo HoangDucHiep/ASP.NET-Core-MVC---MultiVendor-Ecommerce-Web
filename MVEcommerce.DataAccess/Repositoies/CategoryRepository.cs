@@ -17,9 +17,5 @@ namespace MVEcommerce.DataAccess.Repositoies
         {
             _db.Update(obj);
         }
-        public IEnumerable<Category> GetAllCategory()
-        {
-            return _db.Categories;
-        }
     }
 }
