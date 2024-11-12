@@ -899,3 +899,4 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/MVEcommerce/appsettings.json
