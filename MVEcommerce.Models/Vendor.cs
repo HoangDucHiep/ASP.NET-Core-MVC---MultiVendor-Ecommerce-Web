@@ -13,10 +13,10 @@ namespace MVEcommerce.Models
         public int VendorId { get; set; }
 
         [Required]
-        public required string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required]
-        public required string Status { get; set; }
+        public string? Status { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
