@@ -15,13 +15,10 @@ namespace MVEcommerce.Models
         [Required]
         public string? Name { get; set; }
 
-        [Required]
         public string? Status { get; set; }
 
-        [Required]
         public DateTime CreatedAt { get; set; }
 
-        [Required]
         public DateTime UpdatedAt { get; set; }
 
         // Navigation property
