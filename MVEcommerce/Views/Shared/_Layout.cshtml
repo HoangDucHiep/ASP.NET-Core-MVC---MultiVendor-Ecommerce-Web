@@ -597,11 +597,12 @@
 						</svg></span></div>
 				<div class="account-panel__name">Account</div>
 			</div>
+			
 
+			@* Side bar account *@
 			<div class="panel__content">
 				<ul class="account-panel__links">
-					<li class="account-panel__link"><a class="motta-button  motta-button--text"
-							href="https://motta.uix.store/my-account/">
+					<li class="account-panel__link"><a asp-area="Identity" asp-page="/Account/Login" class="motta-button  motta-button--text">
 							<span class="motta-button__icon"><span class="motta-svg-icon motta-svg-icon--account"><svg
 										width="24" height="24" aria-hidden="true" role="img" focusable="false"
 										viewBox="0 0 32 32">
@@ -614,8 +615,7 @@
 									</svg></span></span>
 							<span class="motta-button__text">Sign In</span>
 						</a></li>
-					<li class="account-panel__link"><a class="motta-button  motta-button--text"
-							href="https://motta.uix.store/my-account/#register">
+					<li class="account-panel__link"><a asp-area="Identity" asp-page="/Account/Register" class="motta-button  motta-button--text">
 							<span class="motta-button__icon"><span class="motta-svg-icon motta-svg-icon--account"><svg
 										width="24" height="24" aria-hidden="true" role="img" focusable="false"
 										viewBox="0 0 32 32">
