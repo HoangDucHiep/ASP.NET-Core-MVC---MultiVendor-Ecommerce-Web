@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
+using MVEcommerce.Models.ViewModels.CategoryProduct;
 using System.Diagnostics;
 
 namespace MVEcommerce.Areas.Customer.Controllers
@@ -16,6 +17,31 @@ namespace MVEcommerce.Areas.Customer.Controllers
             _logger = logger;
             _unitOfWork = unitOfWork;
         }
+
+        [Route("category/{slug}")]
+        public IActionResult ProductsByCategory(string slug)
+        {
+            
+            var category = _unitOfWork.Category.GetBySlug(slug);
+            if (category == null)
+            {
+                return NotFound(); 
+            }
+            
+            var products = _unitOfWork.Product.GetAll(
+                p => p.CategoryId== category.CategoryId,
+                includeProperties: "Category,ProductImages"
+			);
+            
+            var categoryProduct = new CategoryProduct
+            {
+                Products = products
+            };
+
+            return View(categoryProduct);
+        }
+
+
 
         public IActionResult Index()
         {
