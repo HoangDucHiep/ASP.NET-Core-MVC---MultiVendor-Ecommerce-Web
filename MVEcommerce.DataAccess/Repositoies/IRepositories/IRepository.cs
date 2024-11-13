@@ -7,7 +7,7 @@ namespace MVEcommerce.DataAccess.Repositoies.IRepositories
         /// <summary>
         /// Get all records of T from the database
         /// </summary>
-        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
 
         /// <summary>
         /// Get a record of T from the database based on the filter

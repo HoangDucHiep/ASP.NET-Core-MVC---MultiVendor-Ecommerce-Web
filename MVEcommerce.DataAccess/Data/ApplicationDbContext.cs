@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
 
 namespace MVEcommerce.DataAccess.Data
@@ -14,9 +15,11 @@ namespace MVEcommerce.DataAccess.Data
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<Product> Products { get; set; }
 		public DbSet<ProductImage> ProductImages { get; set; }
+		public DbSet<ProductVariant> ProductVariants { get; set; }
+		public DbSet<ProductVariantOption> ProductVariantsOption { get; set; }
 
-		// User Stuffs
-		public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        // User Stuffs
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 		public DbSet<Vendor> Vendors { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -51,7 +51,7 @@ namespace MVEcommerce.DataAccess
         /// </summary>
         /// <param name="includeProperties">An comma-separated string. Ex: "category, customer"</param>
         /// <returns></returns>
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
 

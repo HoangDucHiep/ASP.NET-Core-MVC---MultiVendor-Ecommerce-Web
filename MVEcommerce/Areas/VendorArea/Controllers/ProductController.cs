@@ -19,7 +19,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         {      
             VendorProductIndexVM vm = new()
             {
-                Products = _unitOfWork.Product.GetAll(null, includeProperties: "Category,ProductImages,ProductVariants")
+                Products = _unitOfWork.Product.GetAll(null, includeProperties: "Category,ProductImages")
             };
 
             return View(vm);

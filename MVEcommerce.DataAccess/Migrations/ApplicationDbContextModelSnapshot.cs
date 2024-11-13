@@ -472,7 +472,7 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductVariant");
+                    b.ToTable("ProductVariants");
 
                     b.HasData(
                         new
@@ -528,7 +528,7 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     b.HasIndex("VariantId");
 
-                    b.ToTable("ProductVariantOption");
+                    b.ToTable("ProductVariantsOption");
 
                     b.HasData(
                         new
@@ -573,7 +573,6 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
