@@ -4,16 +4,16 @@ using MVEcommerce.Models;
 
 namespace MVEcommerce.DataAccess.Repositoies
 {
-    public class VendorRepository : Repository<Vendor>, IVendorRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         private readonly ApplicationDbContext _db;
-        public VendorRepository(ApplicationDbContext db) : base(db)
+        public ProductRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
 
-        public void Update(Vendor obj)
+        public void Update(Product obj)
         {
             _db.Update(obj);
         }
