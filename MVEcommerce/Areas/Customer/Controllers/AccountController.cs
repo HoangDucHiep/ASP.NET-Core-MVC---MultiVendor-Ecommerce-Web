@@ -28,7 +28,13 @@ namespace MVEcommerce.Areas.Customer.Controllers
         [HttpGet]
         [Authorize]
         public IActionResult BecomeVendor()
-        {
+        {  
+
+            // if current user is already a vendor, redirect to INdex()
+            if (User.IsInRole(ApplicationRole.VENDOR))
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -38,8 +44,6 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 Vendor = new Vendor()
                 { UserId = userId }
             };
-
-
             return View(vm);
         }
 
@@ -84,7 +88,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 }
             }
 
-            return View(vm);
+            return RedirectToAction();
         }
 
         public IActionResult Index()
