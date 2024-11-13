@@ -286,6 +286,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             Description = "Lorem ipsum dolor sit amet-4, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
                             HasVariant = true,
                             Name = "Apple – iPhone 11 64GB",
+                            SKU = "SKU-4",
                             Slug = "iphone-11-64gb",
                             Status = "active",
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -537,6 +538,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Price = 400m,
                             SKU = "SKU-4-Black",
+                            Sale = 20m,
                             Status = "active",
                             Stock = 100,
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -549,6 +551,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Price = 450m,
                             SKU = "SKU-4-White",
+                            Sale = 10m,
                             Status = "active",
                             Stock = 100,
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -569,7 +572,6 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
@@ -596,7 +598,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             Name = "Truffles",
                             Status = "active",
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "43c87d11-b883-4c0e-bc91-e4936d67a7d4"
+                            UserId = "61c08bd7-c3e2-4a64-9054-6b5f9a4fd13c"
                         });
                 });
 

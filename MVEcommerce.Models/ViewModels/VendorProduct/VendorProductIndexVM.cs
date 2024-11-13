@@ -9,5 +9,6 @@ namespace MVEcommerce.Models.ViewModels.Account
     public class VendorProductIndexVM
     {
         public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ProductVariantOption> Options { get; set; }
     }
 }

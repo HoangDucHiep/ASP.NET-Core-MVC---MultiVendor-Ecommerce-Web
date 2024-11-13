@@ -11,16 +11,16 @@ namespace MVEcommerce.Models
         [ForeignKey("Product")]
         public int ProductId { get; set; }
 
-        [Required]
-        public required string Name { get; set; }
 
-        [Required]
-        public required string Status { get; set; }
+        public string Name { get; set; }
 
-        [Required]
+
+        public string Status { get; set; }
+
+
         public DateTime CreatedAt { get; set; }
 
-        [Required]
+
         public DateTime UpdatedAt { get; set; }
 
         // Navigation properties

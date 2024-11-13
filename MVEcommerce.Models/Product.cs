@@ -17,10 +17,10 @@ namespace MVEcommerce.Models
 		public int VendorId { get; set; }
 		[ForeignKey("CategoryId")]
 		public int CategoryId { get; set; }
-		[Required]
-		public required string Name { get; set; }
-		[Required]
-		public required string Slug { get; set; }
+
+		public string Name { get; set; }
+
+		public string Slug { get; set; }
 		public string? Description { get; set; }
 		[Column(TypeName = "decimal(18,2)")]
 		public decimal? Price { get; set; }
@@ -29,13 +29,13 @@ namespace MVEcommerce.Models
 		public decimal? Sale { get; set; }
 		public int? Stock { get; set; }
 		public string? SKU { get; set; }
-		[Required]
+
 		public bool HasVariant { get; set; }
-		[Required]
-		public required string Status { get; set; }
-		[Required]
+
+		public string Status { get; set; }
+
 		public DateTime CreatedAt { get; set; }
-		[Required]
+
 		public DateTime UpdatedAt { get; set; }
 		// Navigation properties
 		public virtual Vendor? Vendor { get; set; }

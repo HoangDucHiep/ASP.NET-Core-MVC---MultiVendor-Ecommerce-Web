@@ -269,7 +269,6 @@
                         </th>
                         <th class="table-column-ps-0">Product</th>
                         <th>Category</th>
-                        <th>Stocks</th>
                         <th>SKU</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -309,7 +308,12 @@
                             <td>@product.SKU</td>
                             <td>@product.Price</td>
                             <td>@product.Stock</td>
-                            <td>2</td>
+                            <td>
+                                @{
+                                    var numberOfOptions = product.ProductVariants?.SelectMany(v => v.ProductVariantOptions!).Count() ?? 0;
+                                }
+                                @numberOfOptions
+                            </td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <a class="btn btn-white btn-sm" href="ecommerce-product-details.html">

@@ -12,7 +12,7 @@ namespace MVEcommerce.Models
         [Key]
         public int VendorId { get; set; }
 
-        [Required]
+
         public string? Name { get; set; }
 
         public string? Status { get; set; }

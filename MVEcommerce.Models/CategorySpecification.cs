@@ -18,8 +18,8 @@ namespace MVEcommerce.Models
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
 
-        [Required]
-        public required string Name { get; set; }
+
+        public string Name { get; set; }
 
         // Navigation property
         public virtual Category? Category { get; set; }
