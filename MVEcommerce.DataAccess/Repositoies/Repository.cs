@@ -51,9 +51,14 @@ namespace MVEcommerce.DataAccess
         /// </summary>
         /// <param name="includeProperties">An comma-separated string. Ex: "category, customer"</param>
         /// <returns></returns>
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
 
             // Include properties will be comma separated
             if (!string.IsNullOrEmpty(includeProperties))

@@ -29,15 +29,22 @@ namespace MVEcommerce.Areas.Customer.Controllers
         [Authorize]
         public IActionResult BecomeVendor()
         {  
-
             // if current user is already a vendor, redirect to INdex()
             if (User.IsInRole(ApplicationRole.VENDOR))
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToRoute(new { area = "VendorArea", controller = "Dashboard", action = "Index" });
             }
 
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (User.Identity is not ClaimsIdentity claimsIdentity)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            var userId = userIdClaim.Value;
 
             AccountBecomeVendorVM vm = new AccountBecomeVendorVM()
             {
@@ -53,7 +60,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Vendor vendor = vm.Vendor;
+                MVEcommerce.Models.Vendor vendor = vm.Vendor;
 
                 vendor.Status = VendorStatus.PENDING;
                 vendor.CreatedAt = DateTime.Now;

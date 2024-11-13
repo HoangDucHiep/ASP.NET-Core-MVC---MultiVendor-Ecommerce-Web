@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+/* Used, Implement later */
 namespace MVEcommerce.Models
 {
     public class ProductCategorySpecification
