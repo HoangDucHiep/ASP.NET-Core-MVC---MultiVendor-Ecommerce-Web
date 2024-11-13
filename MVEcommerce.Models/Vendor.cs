@@ -17,9 +17,9 @@ namespace MVEcommerce.Models
 
         public string? Status { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         // Navigation property
         public string UserId { get; set; }

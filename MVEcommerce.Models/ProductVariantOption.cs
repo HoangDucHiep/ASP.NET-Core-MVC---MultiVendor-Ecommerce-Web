@@ -14,29 +14,29 @@ namespace MVEcommerce.Models
         public int VariantId { get; set; }
 
 
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
 		public decimal? Sale { get; set; }
 
 
-        public int Stock { get; set; }
+        public int? Stock { get; set; }
 
 
-        public string SKU { get; set; }
+        public string? SKU { get; set; }
 
 
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         // Navigation properties
         public virtual ProductVariant? ProductVariant { get; set; }

@@ -1,1 +1,120 @@
-﻿
+﻿@using MVEcommerce.Models.ViewModels.VendorProduct
+@model VendorAddProductVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_VendorPageLayout";
+}
+
+<div class="content container-fluid">
+    <div class="row align-items-center">
+        <div class="col-sm mb-2 mb-sm-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-no-gutter">
+                    <li class="breadcrumb-item"><a class="breadcrumb-link" href="@Url.Action("Index", "Product")">Products</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+                </ol>
+            </nav>
+
+            <h1 class="page-header-title">Add Product</h1>
+
+            <div class="mt-2">
+                <a class="text-body me-3" href="javascript:;">
+                    <i class="bi-clipboard me-1"></i> Duplicate
+                </a>
+                <a class="text-body" href="javascript:;">
+                    <i class="bi-eye me-1"></i> Preview
+                </a>
+            </div>
+        </div>
+        <!-- End Col -->
+    </div>
+    <!-- End Row -->
+
+    <form asp-action="AddProduct" method="post">
+        <div class="row">
+            <div class="col-lg-8 mb-3 mb-lg-0">
+                <!-- Card -->
+                <div class="card mb-3 mb-lg-5">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <h4 class="card-header-title">Product information</h4>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" style="color: #e22525; role="alert"></div>
+                    <!-- End Header -->
+                    <!-- Body -->
+                    <div class="card-body">
+                        <!-- Form -->
+                        <div class="mb-4">
+                            <label asp-for="Product.Name" class="form-label">Name <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Products are the goods or services you sell."></i></label>
+                            <input type="text" class="form-control" asp-for="Product.Name" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc.">
+                        </div>
+                        <!-- End Form -->
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <!-- Form -->
+                                <div class="mb-4">
+                                    <label asp-for="Product.SKU" class="form-label">SKU</label>
+                                    <input type="text" class="form-control" asp-for="Product.SKU" placeholder="eg. 348121032" aria-label="eg. 348121032">
+                                </div>
+                                <!-- End Form -->
+                            </div>
+                            <!-- End Col -->
+
+                            <div class="col-sm-6">
+                                <!-- Form -->
+                                <div class="mb-4">
+                                    <label for="categoryLabel" class="form-label">Category</label>
+                                    <!-- Select -->
+                                    <div class="tom-select-custom">
+                                        <select asp-for="Product.CategoryId" asp-items="@Model.Categories" class="js-select form-select" id="categoryLabel" data-hs-tom-select-options='{
+                                        "searchInDropdown": false,
+                                        "hideSearch": true,
+                                        "placeholder": "Select category"
+                                      }'>
+                                        </select>
+                                    </div>
+                                    <!-- End Select -->
+                                </div>
+                                <!-- Form -->
+                            </div>
+                            <!-- End Col -->
+                        </div>
+                        <!-- End Row -->
+                    </div>
+                    <!-- Body -->
+                </div>
+                <!-- End Card -->
+            </div>
+            <!-- End Col -->
+
+            <div class="col-lg-4">
+                <!-- Card -->
+                <div class="card mb-3 mb-lg-5">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <h4 class="card-header-title">Pricing</h4>
+                    </div>
+                    <!-- End Header -->
+                    <!-- Body -->
+                    <div class="card-body">
+                        <!-- Form -->
+                        <div class="mb-4">
+                            <label asp-for="Product.Price" class="form-label">Price</label>
+                            <input type="text" class="form-control" asp-for="Product.Price" placeholder="0.00" aria-label="0.00">
+                        </div>
+                        <!-- End Form -->
+                    </div>
+                    <!-- Body -->
+                </div>
+                <!-- End Card -->
+            </div>
+            <!-- End Col -->
+
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+</div>

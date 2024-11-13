@@ -1,5 +1,6 @@
 @using MVEcommerce.Models.ViewModels.Account
 @model VendorProductIndexVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     Layout = "_VendorPageLayout";
@@ -28,7 +29,7 @@
             <!-- End Col -->
 
             <div class="col-sm-auto">
-                <a class="btn btn-primary" href="ecommerce-add-product.html">Add product</a>
+                <a class="btn btn-primary" asp-controller="Product" asp-action="AddProduct" >Add product</a>
             </div>
             <!-- End Col -->
         </div>

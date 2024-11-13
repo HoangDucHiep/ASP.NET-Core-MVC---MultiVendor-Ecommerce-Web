@@ -18,9 +18,9 @@ namespace MVEcommerce.Models
 		[ForeignKey("CategoryId")]
 		public int CategoryId { get; set; }
 
-		public string Name { get; set; }
+		public string? Name { get; set; }
 
-		public string Slug { get; set; }
+		public string? Slug { get; set; }
 		public string? Description { get; set; }
 		[Column(TypeName = "decimal(18,2)")]
 		public decimal? Price { get; set; }
@@ -32,13 +32,13 @@ namespace MVEcommerce.Models
 
 		public bool HasVariant { get; set; }
 
-		public string Status { get; set; }
+		public string? Status { get; set; }
 
-		public DateTime CreatedAt { get; set; }
+		public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-		public DateTime UpdatedAt { get; set; }
-		// Navigation properties
-		public virtual Vendor? Vendor { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        // Navigation properties
+        public virtual Vendor? Vendor { get; set; }
 		[ForeignKey("CategoryId")]
 		public virtual Category? Category { get; set; }
 		public virtual ICollection<ProductVariant>? ProductVariants { get; set; }

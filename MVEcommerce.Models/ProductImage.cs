@@ -15,9 +15,9 @@ namespace MVEcommerce.Models
         public int? VariantOptionID { get; set; }
 
 
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
-        public bool IsMain { get; set; }
+        public bool IsMain { get; set; } = false;
 
         // Navigation properties
         public virtual Product? Product { get; set; }
