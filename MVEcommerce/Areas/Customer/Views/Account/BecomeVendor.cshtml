@@ -2,31 +2,121 @@
 @model AccountBecomeVendorVM
 
 @{
-    ViewData["Title"] = "BecomeVendor";
+    ViewData["Title"] = "Become a Vendor";
 }
 
-<h1>BecomeVendor</h1>
+<style>
+    .vendor-container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
 
-<h4>Vendor</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    .vendor-form {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .vendor-title {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-submit:hover {
+        background: #0056b3;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #6c757d;
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        color: #343a40;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="vendor-container">
+    <div class="vendor-form">
+        <div class="vendor-title">
+            <h2>Become a Vendor</h2>
+            <p>Join our marketplace as a vendor</p>
+        </div>
+
         <form asp-action="BecomeVendor" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
-                <label asp-for="Vendor.Name" class="control-label"></label>
-                <input asp-for="Vendor.Name" class="form-control" />
+                <label asp-for="Vendor.Name">Vendor Name</label>
+                <input asp-for="Vendor.Name" class="form-control" placeholder="Enter your vendor name" />
                 <span asp-validation-for="Vendor.Name" class="text-danger"></span>
             </div>
-            <input asp-for="Vendor.UserId" hidden />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+
+            <input asp-for="Vendor.UserId" type="hidden" />
+            
+            <button type="submit" class="btn-submit">Create Vendor Account</button>
         </form>
+
+        <a asp-action="Index" class="back-link">← Back to Home</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
