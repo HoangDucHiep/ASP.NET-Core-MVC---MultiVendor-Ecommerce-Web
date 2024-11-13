@@ -2,82 +2,116 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Sign in";
+}
+@{
+    Layout = "_RegistFormLayout";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div id="site-content" class="site-content">
+    <div class="container clearfix ">
+        <article id="post-10" class="post-10 page type-page status-publish hentry">
+            <div class="woocommerce">
+                <div class="header-logo">
+                    <a href="../index.html">
+                        <img decoding="async" src="~/wp-content/themes/motta/images/logo-short.svg" class="logo-dark" alt="Motta">
+                    </a>
+                    <p class="site-title"><a href="../index.html" rel="home">Motta</a></p>	<p class="site-description">Just another WordPress site</p>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
-</div>
+                <div class="woocommerce-notices-wrapper"></div>
+                <div class="u-columns col2-set woocommerce-account__summary" id="customer_login">
 
+                    <div class="woocommerce-account__heading">
+                        <h2 class="active" data-tab="login">Sign in</h2>
+                        <h2 class="register " data-tab="register">Create Account</h2>
+                    </div>
+
+                    <div class="woocommerce-account__form">
+                        <form class="woocommerce-form woocommerce-form-login login active" method="post" asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl">
+                            <div asp-validation-summary="ModelOnly" style="color: #e22525; role="alert"></div>
+                            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                <label asp-for="Input.Email">Email</label>
+                                <input asp-for="Input.Email" class="woocommerce-Input woocommerce-Input--text input-text" autocomplete="username" />
+                                <span asp-validation-for="Input.Email" style="color: #e22525;"></span>
+                            </p>
+                            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                <label asp-for="Input.Password">Password</label>
+                                <input asp-for="Input.Password" type="password" class="woocommerce-Input woocommerce-Input--text input-text" autocomplete="current-password" />
+                                <span asp-validation-for="Input.Password" style="color: #e22525;"></span>
+                            </p>
+                            <p class="form-row form-row-remember">
+                                <label asp-for="Input.RememberMe" class="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
+                                    <input asp-for="Input.RememberMe" class="woocommerce-form__input woocommerce-form__input-checkbox form-check-input" /> 
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                                <a class="woocommerce-LostPassword lost_password" id="forgot-password" asp-page="./ForgotPassword">Forgot password?</a>
+                            </p>
+                            <p class="form-row">
+                                <button id="login-submit" type="submit" class="woocommerce-button button woocommerce-form-login__submit">Sign in</button>
+                            </p>
+                        </form>
+                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="woocommerce-form woocommerce-form-register register ">
+                            <div asp-validation-summary="ModelOnly" style="color: #e22525; role="alert"></div>
+                            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                <label asp-for="Input.Email">Email</label>
+                                <input asp-for="Input.Email" class="form-control woocommerce-Input woocommerce-Input--text input-text" id="reg_email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                <span asp-validation-for="Input.Email" style="color: #e22525;"></span>
+                            </p>
+
+                            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                <label asp-for="Input.Password">Password</label>
+                                <input asp-for="Input.Password" type="password" class="form-control woocommerce-Input woocommerce-Input--text input-text" id="reg_password" autocomplete="new-password" aria-required="true" placeholder="password" />
+                                <span asp-validation-for="Input.Password" class="text-danger" style="color: #e22525;"></span>
+                            </p>
+
+                            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                                <input asp-for="Input.ConfirmPassword" type="password" class="form-control woocommerce-Input woocommerce-Input--text input-text" id="repeat_password" autocomplete="new-password" aria-required="true" placeholder="confirm password" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="re-password" style="color: #e22525;"></span>
+                            </p>
+
+                            <div class="woocommerce-privacy-policy-text">
+                                <p>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <a href="../index3184.html?page_id=6659" class="woocommerce-privacy-policy-link" target="_blank">privacy policy</a>.</p>
+                            </div>
+                            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div><!-- #content -->
 @section Scripts {
+    <script>
+        // Get reference to register form
+        const registerForm = document.getElementById('registerForm');
+        
+        // Add submit event listener
+        registerForm.addEventListener('submit', function(event) {
+            // Prevent form submission immediately 
+            event.preventDefault();
+            
+            // Get password fields
+            const password = document.getElementById('reg_password').value;
+            const confirmPassword = document.getElementById('repeat_password').value;
+            const confirmPasswordSpan = document.querySelector('.re-password');
+            
+            // Log values for debugging
+            console.log('Password:', password);
+            console.log('Confirm Password:', confirmPassword);
+
+            // Compare passwords
+            if (password !== confirmPassword) {
+                confirmPasswordSpan.innerHTML = 'Password and confirm password do not match';
+                return false;
+            }
+            
+            // Clear error message if passwords match
+            confirmPasswordSpan.innerHTML = '';
+            // Submit form
+            this.submit();
+        });
+    </script>
     <partial name="_ValidationScriptsPartial" />
+    
 }
