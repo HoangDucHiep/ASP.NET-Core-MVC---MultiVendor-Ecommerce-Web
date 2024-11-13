@@ -61,11 +61,11 @@ namespace MVEcommerce.Areas.Customer.Controllers
             if (ModelState.IsValid)
             {
                 MVEcommerce.Models.Vendor vendor = vm.Vendor;
-
+        
                 vendor.Status = VendorStatus.PENDING;
                 vendor.CreatedAt = DateTime.Now;
                 vendor.UpdatedAt = DateTime.Now;
-
+        
                 using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     try
@@ -73,18 +73,21 @@ namespace MVEcommerce.Areas.Customer.Controllers
                         // add Vendor Role for the user
                         var user = await _userManager.FindByIdAsync(vendor.UserId);
                         var roleResult = await _userManager.AddToRoleAsync(user, ApplicationRole.VENDOR);
-
+        
                         if (!roleResult.Succeeded)
                         {
                             ModelState.AddModelError("", "Failed to add role to user.");
                             return View(vm);
                         }
-
+        
                         unitOfWork.Vendor.Add(vm.Vendor);
                         unitOfWork.Save();
-
+        
+                        // Sign in the user again to update ClaimsIdentity
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+        
                         transaction.Complete();
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToRoute(new { area = "VendorArea", controller = "Dashboard", action = "Index" });
                     }
                     catch (Exception ex)
                     {
@@ -94,7 +97,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                     }
                 }
             }
-
+        
             return RedirectToAction();
         }
 
