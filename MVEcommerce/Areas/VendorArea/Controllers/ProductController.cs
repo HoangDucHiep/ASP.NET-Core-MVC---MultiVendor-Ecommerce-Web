@@ -17,7 +17,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
         public IActionResult Index()
         {
-            var products = _unitOfWork.Product.GetAll(includeProperties: "ProductVariants.ProductVariantOptions");
+            var products = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
         
             foreach (var product in products)
             {
@@ -29,7 +29,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         
                     product.Price = lowestPriceOption?.Price ?? product.Price;
                     product.Stock = totalStock;
-                    product.SKU = lowestPriceOption?.SKU ?? product.SKU;
+                    product.Sale = lowestPriceOption.Sale;
                 }
             }
         
