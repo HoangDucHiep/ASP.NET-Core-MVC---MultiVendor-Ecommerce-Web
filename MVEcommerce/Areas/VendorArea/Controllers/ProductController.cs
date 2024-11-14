@@ -86,7 +86,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         if (vendor != null)
                         {
                             // Kiểm tra nếu người dùng thêm ProductVariant thì cập nhật HasVariant thành true
-                            if (vm.ProductVariant != null)
+                            if (!string.IsNullOrEmpty(vm.ProductVariant.Name))
                             {
                                 vm.Product.HasVariant = true;
                             }
