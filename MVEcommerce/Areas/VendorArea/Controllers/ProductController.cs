@@ -193,6 +193,170 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             }
         }
 
+        public IActionResult EditProduct(int id)
+        {
+            var product = _unitOfWork.Product.Get(p => p.ProductId == id, includeProperties: "ProductImages,ProductVariants.ProductVariantOptions.ProductImages");
+            if (product == null)
+            {
+                return NotFound();
+            }
+        
+            var productVariant = product.ProductVariants?.FirstOrDefault();
+            var productVariantOptions = productVariant?.ProductVariantOptions?.ToList() ?? new List<ProductVariantOption>();
+        
+            VendorAddProductVM vm = new VendorAddProductVM
+            {
+                Product = product,
+                Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.CategoryId.ToString()
+                }).ToList(),
+                ProductVariant = productVariant ?? new ProductVariant(),
+                ProductVariantOptions = productVariantOptions
+            };
+        
+            return View(vm);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProduct(VendorAddProductVM vm, IFormFile? mainImage, 
+            List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages, List<int>? imagesToDelete)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var transaction = _dbContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        additionalImages ??= new List<IFormFile>();
+                        optionImages ??= new List<List<IFormFile>>();
+                        imagesToDelete ??= new List<int>();
+        
+                        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var vendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
+        
+                        if (vendor != null)
+                        {
+                            vm.Product.VendorId = vendor.VendorId;
+                            vm.Product.HasVariant = !string.IsNullOrEmpty(vm.ProductVariant.Name);
+                            vm.Product.Slug = _slugHelper.GenerateSlug(vm.Product.Name ?? "");
+        
+                            // Update product
+                            _unitOfWork.Product.Update(vm.Product);
+                            _unitOfWork.Save();
+        
+                            // Handle main image
+                            if (mainImage != null)
+                            {
+                                string fileName = await SaveImage(mainImage);
+                                var existingMainImage = _unitOfWork.ProductImage.Get(pi => pi.ProductId == vm.Product.ProductId && pi.IsMain);
+                                if (existingMainImage != null)
+                                {
+                                    DeleteImage(existingMainImage.ImageUrl);
+                                    existingMainImage.ImageUrl = fileName;
+                                    _unitOfWork.ProductImage.Update(existingMainImage);
+                                }
+                                else
+                                {
+                                    _unitOfWork.ProductImage.Add(new ProductImage
+                                    {
+                                        ProductId = vm.Product.ProductId,
+                                        ImageUrl = fileName,
+                                        IsMain = true
+                                    });
+                                }
+                                _unitOfWork.Save();
+                            }
+        
+                            // Handle additional images
+                            foreach (var image in additionalImages)
+                            {
+                                string fileName = await SaveImage(image);
+                                _unitOfWork.ProductImage.Add(new ProductImage
+                                {
+                                    ProductId = vm.Product.ProductId,
+                                    ImageUrl = fileName,
+                                    IsMain = false
+                                });
+                            }
+                            _unitOfWork.Save();
+        
+                            // Handle images to delete
+                            foreach (var imageId in imagesToDelete)
+                            {
+                                var image = _unitOfWork.ProductImage.Get(pi => pi.ImageId == imageId);
+                                if (image != null)
+                                {
+                                    DeleteImage(image.ImageUrl);
+                                    _unitOfWork.ProductImage.Remove(image);
+                                }
+                            }
+                            _unitOfWork.Save();
+        
+                            // Handle variant and options if exists
+                            if (vm.Product.HasVariant)
+                            {
+                                vm.ProductVariant.ProductId = vm.Product.ProductId;
+                                _unitOfWork.ProductVariant.Update(vm.ProductVariant);
+                                _unitOfWork.Save();
+        
+                                // Handle options and their images
+                                for (int i = 0; i < vm.ProductVariantOptions.Count; i++)
+                                {
+                                    var option = vm.ProductVariantOptions[i];
+                                    option.VariantId = vm.ProductVariant.VariantId;
+                                    if (option.OptionId == 0)
+                                    {
+                                        _unitOfWork.ProductVariantOption.Add(option);
+                                    }
+                                    else
+                                    {
+                                        _unitOfWork.ProductVariantOption.Update(option);
+                                    }
+                                    _unitOfWork.Save();
+        
+                                    // Handle option images
+                                    if (optionImages.Count > i)
+                                    {
+                                        foreach (var image in optionImages[i])
+                                        {
+                                            string fileName = await SaveImage(image);
+                                            _unitOfWork.ProductImage.Add(new ProductImage
+                                            {
+                                                ProductId = vm.Product.ProductId,
+                                                VariantOptionID = option.OptionId,
+                                                ImageUrl = fileName
+                                            });
+                                        }
+                                        _unitOfWork.Save();
+                                    }
+                                }
+                            }
+        
+                            transaction.Commit();
+                            return RedirectToAction(nameof(Index));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        ModelState.AddModelError("", $"Error saving product: {ex.Message}");
+                    }
+                }
+            }
+        
+            // If we got this far, something failed, redisplay form
+            vm.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.CategoryId.ToString()
+            }).ToList();
+            return View(vm);
+        }
+
+        
         private async Task<string> SaveImage(IFormFile image)
         {
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
@@ -210,5 +374,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             
             return "/uploads/" + uniqueFileName;
         }
+
     }
 }

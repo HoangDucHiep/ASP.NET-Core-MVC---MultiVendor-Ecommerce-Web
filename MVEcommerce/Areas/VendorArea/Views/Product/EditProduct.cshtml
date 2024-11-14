@@ -12,26 +12,21 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-no-gutter">
                     <li class="breadcrumb-item"><a class="breadcrumb-link" href="@Url.Action("Index", "Product")">Products</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
                 </ol>
             </nav>
 
-            <h1 class="page-header-title">Add Product</h1>
-
-            <div class="mt-2">
-                <a class="text-body me-3" href="javascript:;">
-                    <i class="bi-clipboard me-1"></i> Duplicate
-                </a>
-                <a class="text-body" href="javascript:;">
-                    <i class="bi-eye me-1"></i> Preview
-                </a>
-            </div>
+            <h1 class="page-header-title">Edit Product</h1>
         </div>
         <!-- End Col -->
     </div>
     <!-- End Row -->
 
-    <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+    <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Product.ProductId" />
+        <input type="hidden" id="imagesToDelete" name="imagesToDelete" value="" />
+        <input type="hidden" id="optionsToDelete" name="optionsToDelete" value="" />
+        <input type="hidden" asp-for="Product.ProductId" />
         <div class="row">
             <div class="col-lg-8 mb-3 mb-lg-0">
                 <!-- Card -->
@@ -90,9 +85,10 @@
                         <!-- Add product variants and options here -->
                         <div id="variants">
                             <h4>Variants</h4>
-                            <button type="button" class="btn btn-secondary mb-3" onclick="showVariantInput()">Add Variant</button>
+                            <button type="button" class="btn btn-secondary mb-3" id="addVariantButton" onclick="showVariantInput()">Add Variant</button>
                             <div id="variant-list" style="display: none;">
                                 <div class="variant-item mb-4">
+                                    <input type="hidden" asp-for="ProductVariant.VariantId" />
                                     <div class="mb-4">
                                         <label class="form-label">Variant Name</label>
                                         <input type="text" class="form-control" asp-for="ProductVariant.Name" />
@@ -104,6 +100,7 @@
                                             {
                                                 var option = Model.ProductVariantOptions[j];
                                                 <div class="option-item row mb-3">
+                                                    <input type="hidden" asp-for="ProductVariantOptions[@j].OptionId" />
                                                     <input type="hidden" asp-for="ProductVariantOptions[@j].VariantId" value="@Model.ProductVariant.VariantId" />
                                                     <div class="col-md-2 mb-2 mb-md-0">
                                                         <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Value" placeholder="Option Value" />
@@ -123,23 +120,26 @@
                                                     <div class="col-md-2 text-end">
                                                         <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
                                                     </div>
-                                                </div>
-
-                                                <div class="row mb-3">
                                                     <div class="col-12">
                                                         <div class="mb-4">
                                                             <label class="form-label">Option Images</label>
                                                             <div id="optionImagesPreview_@j" class="d-flex flex-wrap gap-2 mb-2">
                                                                 <!-- Image previews will be added here -->
+                                                                @foreach (var image in option.ProductImages)
+                                                                {
+                                                                    <div style="position: relative; width: 100px; height: 100px;">
+                                                                        <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
+                                                                        <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="removeExistingImage('@image.ImageId', this)">×</button>
+                                                                    </div>
+                                                                }
                                                             </div>
                                                             <input type="file" 
-                                                                class="form-control" 
-                                                                multiple 
-                                                                accept="image/*"
-                                                                onchange="previewOptionImages(event, @j)" 
-                                                                name="optionImages[@j]" />
+                                                                   class="form-control" 
+                                                                   multiple 
+                                                                   accept="image/*"
+                                                                   onchange="previewOptionImages(event, @j)" 
+                                                                   name="optionImages[@j][]" />
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             }
@@ -193,8 +193,8 @@
                         <div class="mb-4">
                             <label class="form-label">Main Image</label>
                             <div class="main-image-preview" style="margin-bottom: 10px;">
-                                <div id="mainImageContainer" style="display: none; position: relative; width: 200px;">
-                                    <img id="mainImagePreview" src="#" alt="Main image preview" style="width: 100%; height: auto;"/>
+                                <div id="mainImageContainer" style="position: relative; width: 200px;">
+                                    <img id="mainImagePreview" src="@Model.Product.ProductImages.FirstOrDefault(i => i.IsMain)?.ImageUrl" alt="Main image preview" style="width: 100%; height: auto;"/>
                                     <button type="button" class="btn-close" style="position: absolute; top: 5px; right: 5px;" 
                                             onclick="removeMainImage()"></button>
                                 </div>
@@ -205,7 +205,15 @@
 
                         <div class="mb-4">
                             <label class="form-label">Additional Images</label>
-                            <div id="additionalImagesPreview" class="d-flex flex-wrap gap-2 mb-2"></div>
+                            <div id="additionalImagesPreview" class="d-flex flex-wrap gap-2 mb-2">
+                                @foreach (var image in Model.Product.ProductImages.Where(i => !i.IsMain))
+                                {
+                                    <div style="position: relative; width: 100px; height: 100px;">
+                                        <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
+                                        <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="removeExistingImage('@image.ImageId', this)">×</button>
+                                    </div>
+                                }
+                            </div>
                             <input type="file" id="additionalImages" name="additionalImages" multiple class="form-control" 
                                 accept="image/*" onchange="previewAdditionalImages(event)"/>
                         </div>
@@ -224,14 +232,24 @@
 
 @section Scripts {
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Show variant input if there are existing variants
+            if (@Model.ProductVariantOptions.Count > 0) {
+                document.getElementById('variant-list').style.display = 'block';
+                document.getElementById('addVariantButton').style.display = 'none';
+            }
+        });
+
         function showVariantInput() {
             document.getElementById('variant-list').style.display = 'block';
+            document.getElementById('addVariantButton').style.display = 'none';
         }
 
         function addOption() {
             var optionIndex = document.querySelectorAll('#option-list .option-item').length;
             var optionHtml = `
                 <div class="option-item row mb-3">
+                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].OptionId" />
                     <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
                     <div class="col-md-2 mb-2 mb-md-0">
                         <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
@@ -255,13 +273,14 @@
                         <div class="mb-4">
                             <label class="form-label">Option Images</label>
                             <div id="optionImagesPreview_${optionIndex}" class="d-flex flex-wrap gap-2 mb-2">
+                                <!-- Image previews will be added here -->
                             </div>
                             <input type="file" 
-                                class="form-control" 
-                                multiple 
-                                accept="image/*"
-                                onchange="previewOptionImages(event, ${optionIndex})" 
-                                name="optionImages[${optionIndex}]" />
+                                   class="form-control" 
+                                   multiple 
+                                   accept="image/*"
+                                   onchange="previewOptionImages(event, ${optionIndex})" 
+                                   name="optionImages[${optionIndex}][]" />
                         </div>
                     </div>
                 </div>`;
@@ -271,136 +290,7 @@
         function removeOption(button) {
             button.closest('.option-item').remove();
         }
-    </script>
-}
-    <script>
-        function showVariantInput() {
-            document.getElementById('variant-list').style.display = 'block';
-        }
 
-        function addOption() {
-            var optionIndex = document.querySelectorAll('#option-list .option-item').length;
-            var optionHtml = `
-                <div class="option-item row mb-3">
-                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Price" placeholder="Option Price" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Stock" placeholder="Option Stock" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].SKU" placeholder="Option SKU" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" />
-                    </div>
-                    <div class="col-md-2 text-end">
-                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
-                    </div>
-                </div>`;
-            document.getElementById('option-list').insertAdjacentHTML('beforeend', optionHtml);
-        }
-
-        function removeOption(button) {
-            button.closest('.option-item').remove();
-        }
-    </script>
-
-    <script>
-        tinymce.init({
-            selector: '#editor',
-
-            plugins: [
-                // Core editing features
-                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                // Your account includes a free trial of TinyMCE premium features
-                // Try the most popular premium features until Nov 28, 2024:
-                'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
-                // Early access to document converters
-                'importword', 'exportword', 'exportpdf'
-            ],
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
-            mergetags_list: [
-                { value: 'First.Name', title: 'First Name' },
-                { value: 'Email', title: 'Email' },
-            ],
-            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-            exportpdf_converter_options: { 'format': 'Letter', 'margin_top': '1in', 'margin_right': '1in', 'margin_bottom': '1in', 'margin_left': '1in' },
-            exportword_converter_options: { 'document': { 'size': 'Letter' } },
-            importword_converter_options: { 'formatting': { 'styles': 'inline', 'resets': 'inline', 'defaults': 'inline', } },
-
-            // enable title field in the Image dialog
-            image_title: true,
-            // enable automatic uploads of images represented by blob or data URIs
-            automatic_uploads: true,
-            // add custom filepicker only to Image dialog
-            file_picker_types: 'image',
-            file_picker_callback: function (cb, value, meta) {
-                var input = document.createElement('input');
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
-
-                input.onchange = function () {
-                    var file = this.files[0];
-                    var formData = new FormData();
-                    formData.append('file', file);
-
-                    // Thay đổi URL này thành URL của API upload file của bạn
-                    var uploadUrl = '/api/upload';
-
-                    fetch(uploadUrl, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Giả sử API trả về URL của file đã upload
-                        var fileUrl = data.url;
-                        cb(fileUrl, { title: file.name });
-                    })
-                    .catch(error => {
-                        console.error('Error uploading file:', error);
-                    });
-                };
-
-                input.click();
-            },
-
-            setup: function (editor) {
-                editor.on('remove', function (e) {
-                    var src = e.target.src;
-                    if (src) {
-                        // Thay đổi URL này thành URL của API xóa file của bạn
-                        var deleteUrl = '/api/delete';
-
-                        fetch(deleteUrl, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ url: src })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('File deleted:', data);
-                        })
-                        .catch(error => {
-                            console.error('Error deleting file:', error);
-                        });
-                    }
-                });
-            }
-        });
-    </script>
-
-    @* Image *@
-    <script>
         function previewMainImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -418,17 +308,15 @@
             document.getElementById('mainImageContainer').style.display = 'none';
         }
 
+        function previewAdditionalImages(event) {
+            const container = document.getElementById('additionalImagesPreview');
+            handleImagePreviews(event.target.files, container);
+        }
+
         function previewOptionImages(event, index) {
             const files = event.target.files;
             const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
             previewContainer.innerHTML = '';
-
-            // Create hidden input for tracking option index
-            const indexInput = document.createElement('input');
-            indexInput.type = 'hidden';
-            indexInput.name = `optionImageIndexes`;
-            indexInput.value = index;
-            previewContainer.appendChild(indexInput);
 
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
@@ -459,11 +347,6 @@
                 }
                 reader.readAsDataURL(file);
             });
-        }
-
-        function previewOptionImages(event, optionIndex) {
-            const container = document.querySelector(`.option-images-preview-${optionIndex}`);
-            handleImagePreviews(event.target.files, container);
         }
 
         function handleImagePreviews(files, container) {
@@ -495,40 +378,39 @@
             }
         }
 
-        function previewOptionImages(event, index) {
-            const files = event.target.files;
-            const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
-            previewContainer.innerHTML = '';
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const wrapper = document.createElement('div');
-                    wrapper.style.position = 'relative';
-                    wrapper.style.width = '100px';
-                    wrapper.style.height = '100px';
-
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'cover';
-                    img.style.borderRadius = '5px';
-
-                    const removeBtn = document.createElement('button');
-                    removeBtn.innerHTML = '×';
-                    removeBtn.className = 'btn btn-sm btn-danger position-absolute';
-                    removeBtn.style.top = '5px';
-                    removeBtn.style.right = '5px';
-                    removeBtn.style.padding = '0 6px';
-                    removeBtn.onclick = () => wrapper.remove();
-
-                    wrapper.appendChild(img);
-                    wrapper.appendChild(removeBtn);
-                    previewContainer.appendChild(wrapper);
+        function removeExistingImage(imageId, button) {
+            fetch(`/api/deleteImage/${imageId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    button.closest('div').remove();
+                } else {
+                    console.error('Error deleting image');
                 }
-                reader.readAsDataURL(file);
+            })
+            .catch(error => {
+                console.error('Error deleting image:', error);
             });
         }
+        let deletedImages = [];
+        let deletedOptions = [];
+
+        function removeExistingImage(imageId, button) {
+            deletedImages.push(imageId);
+            document.getElementById('imagesToDelete').value = deletedImages.join(',');
+            button.closest('div').remove();
+        }
+
+        function removeOption(button) {
+            const optionItem = button.closest('.option-item');
+            const optionId = optionItem.querySelector('input[name$=".OptionId"]').value;
+            if (optionId) {
+                deletedOptions.push(optionId);
+                document.getElementById('optionsToDelete').value = deletedOptions.join(',');
+            }
+            optionItem.remove();
+        }
     </script>
+
 }
