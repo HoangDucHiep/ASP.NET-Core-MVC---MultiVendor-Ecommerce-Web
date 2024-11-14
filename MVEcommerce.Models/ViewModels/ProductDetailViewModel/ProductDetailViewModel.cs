@@ -14,8 +14,8 @@ namespace MVEcommerce.Models.ViewModels.ProductDetailViewModel
 		public ProductVariantOption productVariantOption { get; set; }
 
 		public Category category { get; set; }
+		public List<ProductImage> ProductImages { get; set; }
 
-	
 
 	}
 }

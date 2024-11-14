@@ -56,7 +56,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
                     ProductImage = product.ProductImages?.FirstOrDefault(),
                     productVariant = product.ProductVariants?.FirstOrDefault(),
                     productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
-					category = product.Category
+					category = product.Category,
+					ProductImages = product.ProductImages?.ToList()
 				};
 
              
