@@ -296,7 +296,7 @@
                             <td class="table-column-ps-0">
                                 <a class="d-flex align-items-center" href="ecommerce-product-details.html">
                                     <div class="flex-shrink-0">
-                                        <img class="avatar avatar-lg" src="@product.ProductImages!.Where(x => x.IsMain).FirstOrDefault()!.ImageUrl" alt="Image Description">
+                                        <img class="avatar avatar-lg" src="@(product.ProductImages?.Where(x => x.IsMain).FirstOrDefault()?.ImageUrl ?? "")" alt="Image Description">
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h5 class="text-inherit mb-0">@product.Name</h5>

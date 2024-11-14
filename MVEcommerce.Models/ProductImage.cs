@@ -15,7 +15,7 @@ namespace MVEcommerce.Models
         public int? VariantOptionID { get; set; }
 
 
-        public string? ImageUrl { get; set; }
+        public string? ImageUrl { get; set; } = string.Empty;
 
         public bool IsMain { get; set; } = false;
 

@@ -15,11 +15,11 @@ namespace MVEcommerce.Models
 
         public string? Name { get; set; }
 
-        public string? Status { get; set; }
+        public string? Status { get; set; } = "Active";  // Active, InActive
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation property
         public string UserId { get; set; }

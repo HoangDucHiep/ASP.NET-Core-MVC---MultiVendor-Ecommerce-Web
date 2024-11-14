@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
-using MVEcommerce.Models.ViewModels.Account;
 using MVEcommerce.Models.ViewModels.VendorProduct;
 using Slugify;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using MVEcommerce.DataAccess.Data;
+using MVEcommerce.Models.ViewModels.Account;
 
 namespace MVEcommerce.Areas.VendorArea.Controllers
 {
@@ -85,25 +85,32 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
                         if (vendor != null)
                         {
+                            // Kiểm tra nếu người dùng thêm ProductVariant thì cập nhật HasVariant thành true
+                            if (vm.ProductVariant != null)
+                            {
+                                vm.Product.HasVariant = true;
+                            }
+
                             // Thêm Product và lưu để lấy ProductId
                             vm.Product.VendorId = vendor.VendorId;
-                            vm.Product.Slug = _slugHelper.GenerateSlug($"{vm.Product.Name}-{vm.Product.ProductId}");
                             _unitOfWork.Product.Add(vm.Product);
                             _unitOfWork.Save(); // Tại đây, ProductId sẽ được tự động tăng và gán giá trị mới
 
-                            // Thêm ProductVariant và lưu để lấy VariantId
-                            foreach (var variant in vm.variantOptions.Keys)
-                            {
-                                variant.ProductId = vm.Product.ProductId;
-                                _unitOfWork.ProductVariant.Add(variant);
-                                _unitOfWork.Save(); // Tại đây, VariantId sẽ được tự động tăng và gán giá trị mới
+                            // Tạo slug sau khi ProductId đã được gán giá trị mới
+                            vm.Product.Slug = _slugHelper.GenerateSlug($"{vm.Product.Name}-{vm.Product.ProductId}");
+                            _unitOfWork.Product.Update(vm.Product);
+                            _unitOfWork.Save();
 
-                                // Thêm ProductVariantOption với VariantId đã được cập nhật
-                                foreach (var option in vm.variantOptions[variant])
-                                {
-                                    option.VariantId = variant.VariantId;
-                                    _unitOfWork.ProductVariantOption.Add(option);
-                                }
+                            // Thêm ProductVariant và lưu để lấy VariantId
+                            vm.ProductVariant.ProductId = vm.Product.ProductId;
+                            _unitOfWork.ProductVariant.Add(vm.ProductVariant);
+                            _unitOfWork.Save(); // Tại đây, VariantId sẽ được tự động tăng và gán giá trị mới
+
+                            // Thêm ProductVariantOption với VariantId đã được cập nhật
+                            foreach (var option in vm.ProductVariantOptions)
+                            {
+                                option.VariantId = vm.ProductVariant.VariantId;
+                                _unitOfWork.ProductVariantOption.Add(option);
                             }
                             _unitOfWork.Save(); // Lưu tất cả các thay đổi
 

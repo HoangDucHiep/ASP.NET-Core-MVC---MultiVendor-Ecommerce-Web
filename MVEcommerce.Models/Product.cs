@@ -21,18 +21,18 @@ namespace MVEcommerce.Models
 		public string? Name { get; set; }
 
 		public string? Slug { get; set; }
-		public string? Description { get; set; }
+		public string? Description { get; set; } = string.Empty;
 		[Column(TypeName = "decimal(18,2)")]
 		public decimal? Price { get; set; }
 
 		[Column(TypeName = "decimal(18,2)")]
-		public decimal? Sale { get; set; }
+		public decimal? Sale { get; set; } = 0;
 		public int? Stock { get; set; }
 		public string? SKU { get; set; }
 
-		public bool HasVariant { get; set; }
+		public bool HasVariant { get; set; } = false;
 
-		public string? Status { get; set; }
+		public string? Status { get; set; } = "Active";  // Active, InActive
 
 		public DateTime CreatedAt { get; set; } = DateTime.Now;
 
