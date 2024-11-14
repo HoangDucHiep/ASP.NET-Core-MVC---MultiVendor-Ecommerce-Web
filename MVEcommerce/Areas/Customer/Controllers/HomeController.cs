@@ -3,7 +3,7 @@ using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
 using MVEcommerce.Models.ViewModels.CategoryProduct;
 using System.Diagnostics;
-
+using MVEcommerce.Models.ViewModels.ProductDetailViewModel;
 namespace MVEcommerce.Areas.Customer.Controllers
 {
     [Area("Customer")]
@@ -41,9 +41,29 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(categoryProduct);
         }
 
+		public IActionResult ProductDetail(string slug)
+		{
+           var product = _unitOfWork.Product.GetProductBySlug(slug); 
 
+                if (product == null)
+                {
+                    return NotFound();
+                }
 
-        public IActionResult Index()
+                var viewModel = new ProductDetailViewModel
+                {
+                    product = product,
+                    ProductImage = product.ProductImages?.FirstOrDefault(),
+                    productVariant = product.ProductVariants?.FirstOrDefault(),
+                    productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
+					category = product.Category
+				};
+
+             
+            return View(viewModel);
+		}
+
+		public IActionResult Index()
         {
             return View();
         }
