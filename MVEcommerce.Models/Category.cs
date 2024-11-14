@@ -17,23 +17,23 @@ namespace MVEcommerce.Models
         //[ForeignKey("ParentCategoryNavigation")]
         //public int? ParentCategory { get; set; }
 
-        [Required]
-        public required string Name { get; set; }
 
-        [Required]
-        public required string Slug { get; set; }
+        public string? Name { get; set; }
+
+
+        public string? Slug { get; set; }
 
         //public string? Description { get; set; }
-        public string? BannerImage { get; set; }
+        public string? BannerImage { get; set; } = string.Empty;
 
-        [Required]
-        public required string Status { get; set; }  // Active, InActive
 
-        [Required]
-        public DateTime CreatedAt { get; set; }
+        public string? Status { get; set; } = "Active";  // Active, InActive
 
-        [Required]
-        public DateTime UpdatedAt { get; set; }
+
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+
+
+        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         //public virtual Category ParentCategoryNavigation { get; set; }

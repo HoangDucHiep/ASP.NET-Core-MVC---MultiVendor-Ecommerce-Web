@@ -69,7 +69,7 @@ namespace MVEcommerce.DataAccess.Data
 
             // Seed Vendor
             modelBuilder.Entity<Vendor>().HasData(
-                new Vendor() { VendorId = 1, Name = "Truffles", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1), UserId = "1a67935c-ce71-439f-97c4-e58f366d35c0" }
+                new Vendor() { VendorId = 1, Name = "Truffles", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1), UserId = "61c08bd7-c3e2-4a64-9054-6b5f9a4fd13c" }
             );
 
             // Seed Product
@@ -77,7 +77,7 @@ namespace MVEcommerce.DataAccess.Data
                 new Product() { ProductId = 1, VendorId = 1, CategoryId = 8, Name = "Batman Death Metal DC Comics Batman Figure", Slug = "batman-figure-metal-1", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = 100, Stock = 100, Sale = 0, SKU = "SKU-1", HasVariant = false, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
                 new Product() { ProductId = 2, VendorId = 1, CategoryId = 8, Name = "Minions Toy with Buildable Figures (876 Pieces)", Slug = "minions-toy-figures-2", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = 200, Stock = 100, Sale = 0, SKU = "SKU-2", HasVariant = false, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
                 new Product() { ProductId = 3, VendorId = 1, CategoryId = 8, Name = "Masters of the Universe Origins Skeletor Action Figure", Slug = "skeletor-action-figure-3", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = 300, Sale = 26, Stock = 100, SKU = "SKU-3", HasVariant = false, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
-                new Product() { ProductId = 4, VendorId = 1, CategoryId = 8, Name = "Apple – iPhone 11 64GB", Slug = "iphone-11-64gb", Description = "Lorem ipsum dolor sit amet-4, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = null, Stock = null, SKU = null, HasVariant = true, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
+                new Product() { ProductId = 4, VendorId = 1, CategoryId = 8, Name = "Apple – iPhone 11 64GB", Slug = "iphone-11-64gb", Description = "Lorem ipsum dolor sit amet-4, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = null, Stock = null, SKU = "SKU-4", HasVariant = true, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
             );
 
             // Seed ProductVariant
@@ -87,8 +87,8 @@ namespace MVEcommerce.DataAccess.Data
 
             // Seed ProductVariantOption
             modelBuilder.Entity<ProductVariantOption>().HasData(
-                new ProductVariantOption() { OptionId = 1, VariantId = 1, Value = "Black", Price = 400, Stock = 100, SKU = "SKU-4-Black", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
-                new ProductVariantOption() { OptionId = 2, VariantId = 1, Value = "Red", Price = 450, Stock = 100, SKU = "SKU-4-White", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
+                new ProductVariantOption() { OptionId = 1, VariantId = 1, Value = "Black", Price = 400, Sale = 20, Stock = 100, SKU = "SKU-4-Black", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
+                new ProductVariantOption() { OptionId = 2, VariantId = 1, Value = "Red", Price = 450, Sale = 10, Stock = 100, SKU = "SKU-4-White", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
             );
 
             // Seed ProductImage

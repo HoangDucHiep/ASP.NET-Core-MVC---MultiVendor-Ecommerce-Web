@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVEcommerce.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241112162359_Add-Vendor")]
-    partial class AddVendor
+    [Migration("20241113184034_Seed")]
+    partial class Seed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -475,7 +475,7 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductVariant");
+                    b.ToTable("ProductVariants");
 
                     b.HasData(
                         new
@@ -531,7 +531,7 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     b.HasIndex("VariantId");
 
-                    b.ToTable("ProductVariantOption");
+                    b.ToTable("ProductVariantsOption");
 
                     b.HasData(
                         new
@@ -572,11 +572,9 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -600,7 +598,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             Name = "Truffles",
                             Status = "active",
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "43c87d11-b883-4c0e-bc91-e4936d67a7d4"
+                            UserId = "61c08bd7-c3e2-4a64-9054-6b5f9a4fd13c"
                         });
                 });
 

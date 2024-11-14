@@ -13,30 +13,30 @@ namespace MVEcommerce.Models
         [ForeignKey("ProductVariant")]
         public int VariantId { get; set; }
 
-        [Required]
-        public required string Value { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; }
+        public string? Value { get; set; }
+
 
         [Column(TypeName = "decimal(18,2)")]
-		public decimal? Sale { get; set; }
+        public decimal? Price { get; set; }
 
-        [Required]
-        public int Stock { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? Sale { get; set; } = 0;
 
-        [Required]
-        public required string SKU { get; set; }
 
-        [Required]
-        public required string Status { get; set; }
+        public int? Stock { get; set; }
 
-        [Required]
-        public DateTime CreatedAt { get; set; }
 
-        [Required]
-        public DateTime UpdatedAt { get; set; }
+        public string? SKU { get; set; }
+
+
+        public string? Status { get; set; } = "Active";  // Active, InActive
+
+
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+
+
+        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         public virtual ProductVariant? ProductVariant { get; set; }

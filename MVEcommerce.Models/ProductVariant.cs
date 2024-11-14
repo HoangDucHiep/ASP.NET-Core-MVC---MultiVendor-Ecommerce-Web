@@ -11,17 +11,17 @@ namespace MVEcommerce.Models
         [ForeignKey("Product")]
         public int ProductId { get; set; }
 
-        [Required]
-        public required string Name { get; set; }
 
-        [Required]
-        public required string Status { get; set; }
+        public string? Name { get; set; }
 
-        [Required]
-        public DateTime CreatedAt { get; set; }
 
-        [Required]
-        public DateTime UpdatedAt { get; set; }
+        public string? Status { get; set; } = "Active";  // Active, InActive
+
+
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+
+
+        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         public virtual Product? Product { get; set; }

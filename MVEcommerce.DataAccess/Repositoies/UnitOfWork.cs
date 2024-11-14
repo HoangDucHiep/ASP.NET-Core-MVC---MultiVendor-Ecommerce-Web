@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 using MVEcommerce.DataAccess.Data;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
 
@@ -13,6 +14,11 @@ namespace MVEcommerce.DataAccess.Repositoies
         public IProductImageRepository ProductImage { get; private set; }
         public IProductVariantRepository ProductVariant { get; private set; }
         public IProductVariantOptionRepository ProductVariantOption { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IOrderRepository Order { get; private set; }
+        public IOrderDetailRepository OrderDetail { get; private set; }
+        public ISubOrderRepository SubOrder { get; private set; }
+
 
         public UnitOfWork (ApplicationDbContext db)
         {
@@ -23,12 +29,26 @@ namespace MVEcommerce.DataAccess.Repositoies
             ProductImage = new ProductImageRepository(_db);
             ProductVariant = new ProductVariantRepository(_db);
             ProductVariantOption = new ProductVariantOptionRepository(_db);
+            ShoppingCart = new ShoppingCartRepository(_db);
+            Order = new OrderRepository(_db);
+            OrderDetail = new OrderDetailRepository(_db);
+            SubOrder = new SubOrderRepository(_db);
         }
         
 
         public void Save()
         {
             _db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _db.Dispose();
+        }
+
+        public IDbContextTransaction BeginTransaction()
+        {
+            return _db.Database.BeginTransaction();
         }
     }
 }

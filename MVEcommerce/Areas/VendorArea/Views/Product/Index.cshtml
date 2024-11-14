@@ -1,5 +1,6 @@
 @using MVEcommerce.Models.ViewModels.Account
 @model VendorProductIndexVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     Layout = "_VendorPageLayout";
@@ -28,7 +29,7 @@
             <!-- End Col -->
 
             <div class="col-sm-auto">
-                <a class="btn btn-primary" href="ecommerce-add-product.html">Add product</a>
+                <a class="btn btn-primary" asp-controller="Product" asp-action="AddProduct" >Add product</a>
             </div>
             <!-- End Col -->
         </div>
@@ -243,7 +244,7 @@
             class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
             data-hs-datatables-options='{
             "columnDefs": [{
-            "targets": [0, 4, 9],
+            "targets": [0, 10],
             "width": "5%",
             "orderable": false
             }],
@@ -253,7 +254,7 @@
             },
             "search": "#datatableSearch",
             "entries": "#datatableEntries",
-            "pageLength": 12,
+            "pageLength": 2,
             "isResponsive": false,
             "isShowPaging": false,
             "pagination": "datatablePagination"
@@ -267,12 +268,14 @@
                                 </label>
                             </div>
                         </th>
+                        <th>Slug</th>
                         <th class="table-column-ps-0">Product</th>
                         <th>Category</th>
-                        <th>Stocks</th>
                         <th>SKU</th>
                         <th>Price</th>
-                        <th>Quantity</th>
+                        <th>Sale</th>
+                        <th>Stocks</th>
+                        <th>Created At</th>
                         <th>Variants</th>
                         <th>Actions</th>
                     </tr>
@@ -289,10 +292,11 @@
                                     <label class="form-check-label" for="datatableCheckAll1"></label>
                                 </div>
                             </td>
+                            <td>@product.Slug</td>
                             <td class="table-column-ps-0">
                                 <a class="d-flex align-items-center" href="ecommerce-product-details.html">
                                     <div class="flex-shrink-0">
-                                        <img class="avatar avatar-lg" src="@product.ProductImages!.Where(x => x.IsMain).FirstOrDefault()!.ImageUrl" alt="Image Description">
+                                        <img class="avatar avatar-lg" src="@(product.ProductImages?.Where(x => x.IsMain).FirstOrDefault()?.ImageUrl ?? "")" alt="Image Description">
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h5 class="text-inherit mb-0">@product.Name</h5>
@@ -300,16 +304,17 @@
                                 </a>
                             </td>
                             <td>@product.Category!.Name</td>
-                            <td>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="stocksCheckbox1" checked>
-                                    <label class="form-check-label" for="stocksCheckbox1"></label>
-                                </div>
-                            </td>
                             <td>@product.SKU</td>
                             <td>@product.Price</td>
+                            <td>@product.Sale</td>
                             <td>@product.Stock</td>
-                            <td>2</td>
+                            <td>@product.CreatedAt.ToString("g")</td>
+                            <td>
+                                @{
+                                    var numberOfOptions = product.ProductVariants?.SelectMany(v => v.ProductVariantOptions!).Count() ?? 0;
+                                }
+                                @numberOfOptions
+                            </td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <a class="btn btn-white btn-sm" href="ecommerce-product-details.html">
