@@ -79,7 +79,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         [HttpGet]
         public IActionResult GetAllProduct()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImages,ProductVariants").ToList();
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "ProductImages,ProductVariants.ProductVariantOptions.ProductImages").ToList();
             return Json(new { data = objProductList });
         }
 
