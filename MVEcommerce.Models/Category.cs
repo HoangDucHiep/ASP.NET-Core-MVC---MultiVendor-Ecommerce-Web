@@ -24,16 +24,16 @@ namespace MVEcommerce.Models
         public string? Slug { get; set; }
 
         //public string? Description { get; set; }
-        public string? BannerImage { get; set; }
+        public string? BannerImage { get; set; } = string.Empty;
 
 
-        public string? Status { get; set; }  // Active, InActive
+        public string? Status { get; set; } = "Active";  // Active, InActive
 
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         //public virtual Category ParentCategoryNavigation { get; set; }

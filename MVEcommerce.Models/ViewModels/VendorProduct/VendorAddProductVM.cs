@@ -13,5 +13,6 @@ namespace MVEcommerce.Models.ViewModels.VendorProduct
         public Product Product { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> Categories { get; set; }
+        public Dictionary<ProductVariant, List<ProductVariantOption>> variantOptions { get; set; } = new Dictionary<ProductVariant, List<ProductVariantOption>>();
     }
 }

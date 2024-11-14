@@ -40,7 +40,7 @@
                     <div class="card-header">
                         <h4 class="card-header-title">Product information</h4>
                     </div>
-                    <div asp-validation-summary="ModelOnly" style="color: #e22525; role="alert"></div>
+                    <div asp-validation-summary="ModelOnly" style="color: #e22525;" role="alert"></div>
                     <!-- End Header -->
                     <!-- Body -->
                     <div class="card-body">
@@ -82,6 +82,51 @@
                             <!-- End Col -->
                         </div>
                         <!-- End Row -->
+
+                        <!-- Add product variants and options here -->
+                        <div id="variants">
+                            <h4>Variants</h4>
+                            <div id="variant-list">
+                                @for (int i = 0; i < Model.variantOptions.Count; i++)
+                                {
+                                    var variant = Model.variantOptions.ElementAt(i).Key;
+                                    var options = Model.variantOptions.ElementAt(i).Value;
+                                    <div class="variant-item mb-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Variant Name</label>
+                                            <input type="text" class="form-control" name="variantOptions[@i].Key.Name" value="@variant.Name" />
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Options</label>
+                                            <div id="option-list-@i">
+                                                @for (int j = 0; j < options.Count; j++)
+                                                {
+                                                    var option = options[j];
+                                                    <div class="option-item row mb-3">
+                                                        <input type="hidden" name="variantOptions[@i].Value[@j].VariantId" value="@variant.VariantId" />
+                                                        <div class="col-md-3 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" name="variantOptions[@i].Value[@j].Value" value="@option.Value" placeholder="Option Value" />
+                                                        </div>
+                                                        <div class="col-md-3 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" name="variantOptions[@i].Value[@j].Price" value="@option.Price" placeholder="Option Price" />
+                                                        </div>
+                                                        <div class="col-md-3 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" name="variantOptions[@i].Value[@j].Stock" value="@option.Stock" placeholder="Option Stock" />
+                                                        </div>
+                                                        <div class="col-md-3 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" name="variantOptions[@i].Value[@j].SKU" value="@option.SKU" placeholder="Option SKU" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <button type="button" class="btn btn-secondary" onclick="addOption(@i)">Add Option</button>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                }
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addVariant()">Add Variant</button>
+                        </div>
                     </div>
                     <!-- Body -->
                 </div>
@@ -101,8 +146,15 @@
                     <div class="card-body">
                         <!-- Form -->
                         <div class="mb-4">
-                            <label asp-for="Product.Price" class="form-label">Price</label>
-                            <input type="text" class="form-control" asp-for="Product.Price" placeholder="0.00" aria-label="0.00">
+                            <label asp-for="@Model.Product.Price" class="form-label">Price</label>
+                            <input type="text" class="form-control" asp-for="@Model.Product.Price" placeholder="0.00" aria-label="0.00">
+                        </div>
+                        <!-- End Form -->
+
+                        <!-- Form -->
+                        <div class="mb-4">
+                            <label asp-for="@Model.Product.Sale" class="form-label">Sale</label>
+                            <input type="text" class="form-control" asp-for="@Model.Product.Sale" placeholder="0.00" aria-label="0.00" value="0.0">
                         </div>
                         <!-- End Form -->
                     </div>
@@ -118,3 +170,46 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        function addVariant() {
+            var variantIndex = document.querySelectorAll('.variant-item').length;
+            var variantHtml = `
+                <div class="variant-item mb-4">
+                    <div class="mb-4">
+                        <label class="form-label">Variant Name</label>
+                        <input type="text" class="form-control" name="variantOptions[${variantIndex}].Key.Name" />
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Options</label>
+                        <div id="option-list-${variantIndex}"></div>
+                        <button type="button" class="btn btn-secondary" onclick="addOption(${variantIndex})">Add Option</button>
+                    </div>
+                    <hr />
+                </div>`;
+            document.getElementById('variant-list').insertAdjacentHTML('beforeend', variantHtml);
+        }
+
+        function addOption(variantIndex) {
+            var optionIndex = document.querySelectorAll(`#option-list-${variantIndex} .option-item`).length;
+            var optionHtml = `
+                <div class="option-item row mb-3">
+                    <input type="hidden" name="variantOptions[${variantIndex}].Value[${optionIndex}].VariantId" value="${variantIndex}" />
+                    <div class="col-md-3 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="variantOptions[${variantIndex}].Value[${optionIndex}].Value" placeholder="Option Value" />
+                    </div>
+                    <div class="col-md-3 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="variantOptions[${variantIndex}].Value[${optionIndex}].Price" placeholder="Option Price" />
+                    </div>
+                    <div class="col-md-3 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="variantOptions[${variantIndex}].Value[${optionIndex}].Stock" placeholder="Option Stock" />
+                    </div>
+                    <div class="col-md-3 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="variantOptions[${variantIndex}].Value[${optionIndex}].SKU" placeholder="Option SKU" />
+                    </div>
+                </div>`;
+            document.getElementById(`option-list-${variantIndex}`).insertAdjacentHTML('beforeend', optionHtml);
+        }
+    </script>
+}
