@@ -31,7 +31,7 @@
     </div>
     <!-- End Row -->
 
-    <form asp-action="AddProduct" method="post">
+    <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-lg-8 mb-3 mb-lg-0">
                 <!-- Card -->
@@ -124,6 +124,23 @@
                                                         <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
                                                     </div>
                                                 </div>
+
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <div class="mb-4">
+                                                            <label class="form-label">Option Images</label>
+                                                            <div id="optionImagesPreview_@j" class="d-flex flex-wrap gap-2 mb-2">
+                                                                <!-- Image previews will be added here -->
+                                                            </div>
+                                                            <input type="file" 
+                                                                class="form-control" 
+                                                                multiple 
+                                                                accept="image/*"
+                                                                onchange="previewOptionImages(event, @j)" 
+                                                                name="optionImages[@j][]" />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             }
                                         </div>
                                         <button type="button" class="btn btn-secondary" onclick="addOption()">Add Option</button>
@@ -165,6 +182,34 @@
                     </div>
                     <!-- Body -->
                 </div>
+
+                <!-- Product Images Section -->
+                <div class="card mb-3 mb-lg-5">
+                    <div class="card-header">
+                        <h4 class="card-header-title">Product Images</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label">Main Image</label>
+                            <div class="main-image-preview" style="margin-bottom: 10px;">
+                                <div id="mainImageContainer" style="display: none; position: relative; width: 200px;">
+                                    <img id="mainImagePreview" src="#" alt="Main image preview" style="width: 100%; height: auto;"/>
+                                    <button type="button" class="btn-close" style="position: absolute; top: 5px; right: 5px;" 
+                                            onclick="removeMainImage()"></button>
+                                </div>
+                            </div>
+                            <input type="file" id="mainImage" name="mainImage" class="form-control" accept="image/*" 
+                                onchange="previewMainImage(event)"/>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Additional Images</label>
+                            <div id="additionalImagesPreview" class="d-flex flex-wrap gap-2 mb-2"></div>
+                            <input type="file" id="additionalImages" name="additionalImages" multiple class="form-control" 
+                                accept="image/*" onchange="previewAdditionalImages(event)"/>
+                        </div>
+                    </div>
+                </div>
                 <!-- End Card -->
             </div>
             <!-- End Col -->
@@ -177,6 +222,144 @@
 </div>
 
 @section Scripts {
+    <script>
+        function showVariantInput() {
+            document.getElementById('variant-list').style.display = 'block';
+        }
+
+        function addOption() {
+            var optionIndex = document.querySelectorAll('#option-list .option-item').length;
+            var optionHtml = `
+                <div class="option-item row mb-3">
+                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
+                    <div class="col-md-2 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
+                    </div>
+                    <div class="col-md-2 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Price" placeholder="Option Price" />
+                    </div>
+                    <div class="col-md-2 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Stock" placeholder="Option Stock" />
+                    </div>
+                    <div class="col-md-2 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].SKU" placeholder="Option SKU" />
+                    </div>
+                    <div class="col-md-2 mb-2 mb-md-0">
+                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" />
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-4">
+                            <label class="form-label">Option Images</label>
+                            <div id="optionImagesPreview_${optionIndex}" class="d-flex flex-wrap gap-2 mb-2">
+                                <!-- Image previews will be added here -->
+                            </div>
+                            <input type="file" 
+                                   class="form-control" 
+                                   multiple 
+                                   accept="image/*"
+                                   onchange="previewOptionImages(event, ${optionIndex})" 
+                                   name="optionImages[${optionIndex}][]" />
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('option-list').insertAdjacentHTML('beforeend', optionHtml);
+        }
+
+        function removeOption(button) {
+            button.closest('.option-item').remove();
+        }
+
+        function previewMainImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('mainImageContainer').style.display = 'block';
+                    document.getElementById('mainImagePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeMainImage() {
+            document.getElementById('mainImage').value = '';
+            document.getElementById('mainImageContainer').style.display = 'none';
+        }
+
+        function previewAdditionalImages(event) {
+            const container = document.getElementById('additionalImagesPreview');
+            handleImagePreviews(event.target.files, container);
+        }
+
+        function previewOptionImages(event, index) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
+            previewContainer.innerHTML = '';
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'relative';
+                    wrapper.style.width = '100px';
+                    wrapper.style.height = '100px';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '5px';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '×';
+                    removeBtn.className = 'btn btn-sm btn-danger position-absolute';
+                    removeBtn.style.top = '5px';
+                    removeBtn.style.right = '5px';
+                    removeBtn.style.padding = '0 6px';
+                    removeBtn.onclick = () => wrapper.remove();
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    previewContainer.appendChild(wrapper);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function handleImagePreviews(files, container) {
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'relative';
+                    wrapper.style.width = '100px';
+                    wrapper.style.marginRight = '10px';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = 'auto';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'btn-close';
+                    removeBtn.style.position = 'absolute';
+                    removeBtn.style.top = '5px';
+                    removeBtn.style.right = '5px';
+                    removeBtn.onclick = () => wrapper.remove();
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    container.appendChild(wrapper);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}
     <script>
         function showVariantInput() {
             document.getElementById('variant-list').style.display = 'block';
@@ -301,5 +484,100 @@
                 });
             }
         });
+    </script>
+
+    @* Image *@
+    <script>
+        function previewMainImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('mainImageContainer').style.display = 'block';
+                    document.getElementById('mainImagePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeMainImage() {
+            document.getElementById('mainImage').value = '';
+            document.getElementById('mainImageContainer').style.display = 'none';
+        }
+
+        function previewAdditionalImages(event) {
+            const container = document.getElementById('additionalImagesPreview');
+            handleImagePreviews(event.target.files, container);
+        }
+
+        function previewOptionImages(event, optionIndex) {
+            const container = document.querySelector(`.option-images-preview-${optionIndex}`);
+            handleImagePreviews(event.target.files, container);
+        }
+
+        function handleImagePreviews(files, container) {
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'relative';
+                    wrapper.style.width = '100px';
+                    wrapper.style.marginRight = '10px';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = 'auto';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'btn-close';
+                    removeBtn.style.position = 'absolute';
+                    removeBtn.style.top = '5px';
+                    removeBtn.style.right = '5px';
+                    removeBtn.onclick = () => wrapper.remove();
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    container.appendChild(wrapper);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewOptionImages(event, index) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
+            previewContainer.innerHTML = '';
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'relative';
+                    wrapper.style.width = '100px';
+                    wrapper.style.height = '100px';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '5px';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '×';
+                    removeBtn.className = 'btn btn-sm btn-danger position-absolute';
+                    removeBtn.style.top = '5px';
+                    removeBtn.style.right = '5px';
+                    removeBtn.style.padding = '0 6px';
+                    removeBtn.onclick = () => wrapper.remove();
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    previewContainer.appendChild(wrapper);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
     </script>
 }
