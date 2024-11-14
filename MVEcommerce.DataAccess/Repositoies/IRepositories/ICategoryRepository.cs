@@ -10,5 +10,8 @@ namespace MVEcommerce.DataAccess.Repositoies.IRepositories
 	public interface ICategoryRepository : IRepository<Category>
 	{
 		void Update(Category category);
+
+		public Category GetBySlug(string slug);
+		
 	}
 }
