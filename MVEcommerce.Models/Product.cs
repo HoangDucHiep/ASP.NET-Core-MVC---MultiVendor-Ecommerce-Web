@@ -32,7 +32,7 @@ namespace MVEcommerce.Models
 
 		public bool HasVariant { get; set; } = false;
 
-		public string? Status { get; set; } = "Active";  // Active, InActive
+		public string? Status { get; set; } = "active";  // Active, InActive
 
 		public DateTime CreatedAt { get; set; } = DateTime.Now;
 
