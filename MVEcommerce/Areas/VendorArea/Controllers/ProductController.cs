@@ -58,17 +58,35 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             return View(vm);
         }
 
-        public IActionResult AddProduct()
-        {
-            VendorAddProductVM vm = new VendorAddProductVM
+        public IActionResult AddProduct(VendorAddProductVM? vm, IFormFile? mainImage, 
+            List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages)
+        {   
+            if (vm == null)
             {
-                Product = new Product(),
-                Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+                vm = new VendorAddProductVM()
+                {
+                    Product = new Product(),
+                    Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.CategoryId.ToString()
+                    })
+                };
+            }
+            else
+            {
+                vm.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
                 {
                     Text = c.Name,
                     Value = c.CategoryId.ToString()
-                })
-            };
+                });
+            }
+            vm.Product = new Product();
+            vm.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.CategoryId.ToString()
+            });
             return View(vm);
         }
 

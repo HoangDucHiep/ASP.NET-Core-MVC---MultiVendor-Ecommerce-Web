@@ -11,5 +11,7 @@ namespace MVEcommerce.Models.ViewModels.VendorProduct
         public IEnumerable<SelectListItem> Categories { get; set; }
         public ProductVariant ProductVariant { get; set; } = new ProductVariant();
         public List<ProductVariantOption> ProductVariantOptions { get; set; } = new List<ProductVariantOption>();
+
+        
     }
 }

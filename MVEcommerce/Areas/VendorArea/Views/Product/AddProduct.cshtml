@@ -258,6 +258,9 @@
 
         function addOption() {
             var optionIndex = document.querySelectorAll('#option-list .option-item').length;
+
+            console.log("Option Index: " + optionIndex);
+
             var optionHtml = `
                 <div class="option-item row mb-3">
                     <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
@@ -284,12 +287,7 @@
                             <label class="form-label">Option Images</label>
                             <div id="optionImagesPreview_${optionIndex}" class="d-flex flex-wrap gap-2 mb-2">
                             </div>
-                            <input type="file" 
-                                class="form-control" 
-                                multiple 
-                                accept="image/*"
-                                onchange="previewOptionImages(event, ${optionIndex})" 
-                                name="optionImages[${optionIndex}]" />
+                            <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, ${optionIndex})" name="optionImages[${optionIndex}]" id="optionImages_${optionIndex}" />
                         </div>
                     </div>
                 </div>`;
@@ -502,6 +500,9 @@
 
         function updateHiddenInput(inputId, files) {
             const input = document.getElementById(inputId);
+
+            console.log("------------\n" + input)
+
             const dataTransfer = new DataTransfer();
             files.forEach(file => dataTransfer.items.add(file));
             input.files = dataTransfer.files;
