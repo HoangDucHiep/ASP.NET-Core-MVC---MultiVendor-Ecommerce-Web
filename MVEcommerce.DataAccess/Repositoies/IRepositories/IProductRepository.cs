@@ -6,7 +6,7 @@ namespace MVEcommerce.DataAccess.Repositoies.IRepositories
 	{
 
 		public Product GetBySlug(string slug);
-		
+		public Product GetProductBySlug(string slug);
 		void Update(Product product);
 	}
 }

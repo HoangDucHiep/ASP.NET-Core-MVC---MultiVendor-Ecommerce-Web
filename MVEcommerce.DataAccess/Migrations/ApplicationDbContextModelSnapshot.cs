@@ -281,6 +281,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             HasVariant = true,
                             Name = "Apple – iPhone 11 64GB",
                             SKU = "SKU-4",
+                            Sale = 0m,
                             Slug = "iphone-11-64gb",
                             Status = "active",
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -586,7 +587,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             Name = "Truffles",
                             Status = "active",
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "61c08bd7-c3e2-4a64-9054-6b5f9a4fd13c"
+                            UserId = "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a"
                         });
                 });
 

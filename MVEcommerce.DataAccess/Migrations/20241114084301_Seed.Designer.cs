@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVEcommerce.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241113183618_INIT")]
-    partial class INIT
+    [Migration("20241114084301_Seed")]
+    partial class Seed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,27 +36,136 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.Property<string>("BannerImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            BannerImage = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/10/shop-head-bg-2.jpg?fit=1140%2C260&ssl=1",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Home & Garden",
+                            Slug = "home-garden-1",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Electronics",
+                            Slug = "electronics-2",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            BannerImage = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/10/shop-head-bg-3.jpg?fit=1140%2C260&ssl=1",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Fashion",
+                            Slug = "fashion-3",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Jewelry & Accessories",
+                            Slug = "jewelry-accessories-4",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Sports & Entertainment",
+                            Slug = "sports-entertainment-5",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mother & Kids",
+                            Slug = "mother-kids-6",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 7,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Beauty & Health",
+                            Slug = "beauty-health-7",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 8,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Toys & Games",
+                            Slug = "toys-games-8",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 9,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Automobiles & Motorcycles",
+                            Slug = "automobiles-motorcycles-9",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 10,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Collectibles & Art",
+                            Slug = "collectibles-art-10",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            CategoryId = 11,
+                            BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Tools & Home Improvement",
+                            Slug = "tools-home-improvement-11",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.Product", b =>
@@ -80,7 +189,6 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Price")
@@ -93,11 +201,9 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Stock")
@@ -116,6 +222,74 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.HasIndex("VendorId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
+                            HasVariant = false,
+                            Name = "Batman Death Metal DC Comics Batman Figure",
+                            Price = 100m,
+                            SKU = "SKU-1",
+                            Sale = 0m,
+                            Slug = "batman-figure-metal-1",
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VendorId = 1
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
+                            HasVariant = false,
+                            Name = "Minions Toy with Buildable Figures (876 Pieces)",
+                            Price = 200m,
+                            SKU = "SKU-2",
+                            Sale = 0m,
+                            Slug = "minions-toy-figures-2",
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VendorId = 1
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
+                            HasVariant = false,
+                            Name = "Masters of the Universe Origins Skeletor Action Figure",
+                            Price = 300m,
+                            SKU = "SKU-3",
+                            Sale = 26m,
+                            Slug = "skeletor-action-figure-3",
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VendorId = 1
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Lorem ipsum dolor sit amet-4, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
+                            HasVariant = true,
+                            Name = "Apple – iPhone 11 64GB",
+                            SKU = "SKU-4",
+                            Sale = 0m,
+                            Slug = "iphone-11-64gb",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VendorId = 1
+                        });
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.ProductImage", b =>
@@ -127,7 +301,6 @@ namespace MVEcommerce.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsMain")
@@ -146,6 +319,126 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.HasIndex("VariantOptionID");
 
                     b.ToTable("ProductImages");
+
+                    b.HasData(
+                        new
+                        {
+                            ImageId = 1,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/4-1.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = true,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            ImageId = 2,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/2-2.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            ImageId = 3,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/1-2.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            ImageId = 4,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/3-2.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            ImageId = 5,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-73.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = true,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            ImageId = 6,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-54.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            ImageId = 7,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/4-37.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            ImageId = 8,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-71.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = true,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            ImageId = 9,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/2-61.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            ImageId = 10,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-52.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            ImageId = 11,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/1.jpeg?fit=1400%2C1400&ssl=1",
+                            IsMain = true,
+                            ProductId = 4,
+                            VariantOptionID = 1
+                        },
+                        new
+                        {
+                            ImageId = 12,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/2.jpeg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 1
+                        },
+                        new
+                        {
+                            ImageId = 13,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/3.jpeg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 1
+                        },
+                        new
+                        {
+                            ImageId = 14,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/1-1.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 2
+                        },
+                        new
+                        {
+                            ImageId = 15,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/2-1.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 2
+                        },
+                        new
+                        {
+                            ImageId = 16,
+                            ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/3-1.jpg?fit=1400%2C1400&ssl=1",
+                            IsMain = false,
+                            ProductId = 4,
+                            VariantOptionID = 2
+                        });
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.ProductVariant", b =>
@@ -156,21 +449,19 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VariantId"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("VariantId");
@@ -178,6 +469,17 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductVariants");
+
+                    b.HasData(
+                        new
+                        {
+                            VariantId = 1,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Color",
+                            ProductId = 4,
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.ProductVariantOption", b =>
@@ -188,31 +490,28 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OptionId"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SKU")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Sale")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Stock")
+                    b.Property<int?>("Stock")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Value")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VariantId")
@@ -223,6 +522,34 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.HasIndex("VariantId");
 
                     b.ToTable("ProductVariantsOption");
+
+                    b.HasData(
+                        new
+                        {
+                            OptionId = 1,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 400m,
+                            SKU = "SKU-4-Black",
+                            Sale = 20m,
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Value = "Black",
+                            VariantId = 1
+                        },
+                        new
+                        {
+                            OptionId = 2,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 450m,
+                            SKU = "SKU-4-White",
+                            Sale = 10m,
+                            Status = "active",
+                            Stock = 100,
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Value = "Red",
+                            VariantId = 1
+                        });
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.Vendor", b =>
@@ -233,7 +560,7 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VendorId"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -242,7 +569,7 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -254,6 +581,17 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Vendors");
+
+                    b.HasData(
+                        new
+                        {
+                            VendorId = 1,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Truffles",
+                            Status = "active",
+                            UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
