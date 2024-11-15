@@ -3,6 +3,20 @@
     ViewData["Title"] = "ProductDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+	
+	.onsale.woocommerce-badge {
+		display: none;
+	}
+
+	.woocommerce-Price-currencySymbol {
+		display: none;
+	}
+
+	.Symbol{
+		display: none;
+	}
+</style>
 <div class="container clearfix ">
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
@@ -123,10 +137,10 @@
 
 
 					<div class="summary entry-summary" >
-						@if(Model.product.Sale>0)
+					@*	@if (Model.product.Sale > 0 || Model.product.Price == null)
 						{
-							<span class="woocommerce-badges variations-attribute-change"><span class="onsale woocommerce-badge">-@Model.product.Sale%</span></span>
-						}
+							<span class="onsale woocommerce-badge">-@Model.product.Sale%</span>
+						} *@
 						<h1 class="product_title entry-title">@Model.product.Name</h1>
 						<div class="product-meta-wrapper">
 							<div class="meta meta-cat">in <a href="#">@Model.category?.Name</a></div>
@@ -137,18 +151,18 @@
 
 						</div>
 						<div class="motta-price-stock variations-attribute-change">
-							@{
-								var discountedPrice = Model.product.Price * (1 - Model.product.Sale / 100);
-							}
 
-							@if (Model.product.Sale > 0)
+							
+							@if (Model.product.Sale > 0 )
 							{
+								var discountedPrice = Model.product.Price * (1 - Model.product.Sale / 100);
+									<span style="background-color: red ; color: white" >-@Model.product.Sale%</span>
 								<p class="price">
 									<span class="woocs_price_code" data-currency="" data-redraw-id="6735f51189978" data-product-id="14603">
 										<ins>
 											<span class="woocommerce-Price-amount amount">
 												<bdi>
-													<span class="woocommerce-Price-currencySymbol">$</span>@discountedPrice
+													<span >$</span>@discountedPrice
 												</bdi>
 											</span>
 										</ins>
@@ -157,19 +171,66 @@
 										<del aria-hidden="true">
 											<span class="woocommerce-Price-amount amount">
 												<bdi>
-													<span class="woocommerce-Price-currencySymbol">$</span>@Model.product.Price
+													<span >$</span>@Model.product.Price
 												</bdi>
 											</span>
 										</del>
 									</span>
 								</p>
 							}
+							else if (Model.product.Price == null)
+							{   
+								var newPrice = Model.productVariantOption.Price * (1 - Model.productVariantOption.Sale / 100);
+								<span class="onsale woocommerce-badge">-@Model.productVariantOption.Sale%</span>
+							@**	<p class="price">
+									<span class="woocs_price_code" data-currency="" data-redraw-id="6735f51189978" data-product-id="14603">
+										<ins>
+											<span class="woocommerce-Price-amount amount">
+												<bdi>
+													<span class="woocommerce-Price-currencySymbol">$</span>@newPrice
+												</bdi>
+											</span>
+										</ins>
+										<br />
+
+										<del aria-hidden="true">
+											<span class="woocommerce-Price-amount amount">
+												<bdi>
+													<span class="woocommerce-Price-currencySymbol">$</span>@Model.productVariantOption.Price
+												</bdi>
+											</span>
+										</del>
+									</span>
+								</p> *@
+
+								<p class="price">
+									<span class="woocs_price_code" data-currency="" data-redraw-id="6735f51189978" data-product-id="14603">
+										<ins>
+											<span class="woocommerce-Price-amount amount">
+												<bdi>
+													<span class="woocommerce-Price-currencySymbol">$</span><span class="new-price">@Model.product.Price</span>
+												</bdi>
+											</span>
+										</ins>
+										<br />
+										<del aria-hidden="true">
+											<span class="woocommerce-Price-amount amount">
+												<bdi>
+													<span class="Symbol">$</span><span class="original-price">@Model.product.Price</span>
+												</bdi>
+											</span>
+										</del>
+									</span>
+								</p>
+
+							}
 							else
 							{
+								
 								<p class="price">
 									<span class="woocs_price_code" data-currency="" data-redraw-id="67219833afb8b" data-product-id="18">
 										<span class="woocommerce-Price-amount amount">
-											<bdi><span class="woocommerce-Price-currencySymbol">$</span>@Model.product.Price</bdi>
+											<bdi><span >$</span>@Model.product.Price</bdi>
 										</span>
 									</span>
 								</p>
@@ -191,12 +252,21 @@
 												<div class="wcboost-variation-swatches wcboost-variation-swatches--image wcboost-variation-swatches--rounded wcboost-variation-swatches--has-tooltip">
 													<select id="pa_color" class="" name="attribute_pa_color" data-attribute_name="attribute_pa_color" data-show_option_none="yes"><option value="">Choose an option</option><option value="black" class="attached enabled">Black</option><option value="green" class="attached enabled">Green</option><option value="red" class="attached enabled">Red</option><option value="white" class="attached enabled">White</option><option value="yellow" class="attached enabled">Yellow</option></select>
 													<ul class="wcboost-variation-swatches__wrapper" data-attribute_name="attribute_pa_color">
-										
+
 														@foreach (var image in Model.ProductImages)
 														{
-															<li class="wcboost-variation-swatches__item" style="--wcboost-swatches-item-width: 60px; --wcboost-swatches-item-height: 60px;" aria-label="Image" data-value="@image.ImageUrl" tabindex="0" role="button">
-																<img src="@image.ImageUrl" alt="Product Image" class="thumbnail-img" data-large="@image.ImageUrl">
-																<span class="wcboost-variation-swatches__name">Image</span>
+															<li class="wcboost-variation-swatches__item"
+																style="--wcboost-swatches-item-width: 60px; --wcboost-swatches-item-height: 60px;"
+																aria-label="@image.ProductVariantOption.Value"
+																data-value="@image.ImageUrl"
+																data-sale="@image.ProductVariantOption.Sale"
+																data-price="@image.ProductVariantOption.Price"
+																tabindex="0"
+																role="button"
+																onclick="updateProductInfo('@image.ImageUrl', @image.ProductVariantOption.Sale, @image.ProductVariantOption.Price)">
+
+																<img src="@image.ImageUrl" alt="Product Image" data-large="@image.ImageUrl">
+																<span class="wcboost-variation-swatches__name"></span>
 															</li>
 														}
 													@*	<li class="wcboost-variation-swatches__item wcboost-variation-swatches__item-black" style="--wcboost-swatches-item-width: 60px; --wcboost-swatches-item-height: 60px;" aria-label="Black" data-value="black" tabindex="0" role="button">
@@ -239,10 +309,10 @@
 										<input class="motta_product_id" type="hidden" data-title="@Model.product.Name" value="18">
 										<div class="quantity ">
 											<span class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path></svg></span>	<label class="screen-reader-text" for="quantity_67219833bb0e5">Apple - iPhone 11 64GB quantity</label>
-											<input type="number" id="quantity_67219833bb0e5" class="input-text qty text" name="quantity" value="1" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off " style="text-align: center;">
+											<input type="number" id="quantity_67219833bb0e5" class="input-text qty text" width="15" height="10" name="quantity" value="1" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off " style="text-align: center;">
 											<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
 										</div>
-
+										<br />
 										<button type="submit" class="single_add_to_cart_button button alt disabled wc-variation-selection-needed">
 											<span class="motta-svg-icon motta-svg-icon--cart-trolley single_add_to_cart_button--icon"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M25.248 22.4l3.552-14.4h-18.528l-0.96-4.8h-6.112v3.2h3.488l3.2 16h15.36zM24.704 11.2l-1.968 8h-10.24l-1.6-8h13.808z"></path><path d="M25.6 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path><path d="M14.4 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path></svg></span>		<span class="single_add_to_cart_button--text">Add to cart</span>
 										</button>
@@ -266,10 +336,10 @@
 										<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 											<path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path></svg></span>	
 											<label class="screen-reader-text" for="quantity_67219a9b99fce">@Model.product.Name</label>
-									<input type="number" id="quantity_67219a9b99fce" class="input-text qty text" name="quantity" value="1" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off" style="text-align: center;">
+									<input type="number" id="quantity_67219a9b99fce" class="input-text qty text" name="quantity" value="1" width="15" height="10" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off" style="text-align: center;">
 									<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
 								</div>
-
+								<br />
 								<button type="submit" name="add-to-cart" value="14603" class="single_add_to_cart_button button alt">
 									<span class="motta-svg-icon motta-svg-icon--cart-trolley single_add_to_cart_button--icon"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M25.248 22.4l3.552-14.4h-18.528l-0.96-4.8h-6.112v3.2h3.488l3.2 16h15.36zM24.704 11.2l-1.968 8h-10.24l-1.6-8h13.808z"></path><path d="M25.6 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path><path d="M14.4 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path></svg></span>			<span class="single_add_to_cart_button--text">Add to cart</span>
 								</button>
@@ -278,7 +348,7 @@
 							</form>
 						}
 
-						<div class="product-featured-icons">
+					@*	<div class="product-featured-icons">
 							<a href="#" data-product_id="18" data-product_title="@Model.product.Name" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="" role="button">
 								<span class="wcboost-products-compare-button__icon"><span class="motta-svg-icon motta-svg-icon--compare"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M13.136 14.864l-3.68-3.664h16.144v-3.2h-16.144l3.68-3.664-2.272-2.272-7.52 7.536 7.52 7.536z"></path><path d="M21.136 14.864l-2.272 2.272 3.68 3.664h-16.144v3.2h16.144l-3.68 3.664 2.272 2.272 7.52-7.536z"></path></svg></span></span>
 								<span class="wcboost-products-compare-button__text" data-add="Add To Compare" data-remove="Remove Compare" data-view="Browse Compare">Compare</span>
@@ -286,7 +356,7 @@
 								<span class="motta-button__icon add-to-wishlist-button__icon wcboost-wishlist-button__icon"><span class="motta-svg-icon motta-svg-icon--wishlist"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M22.736 6.4v0c1.792 0 3.44 1.12 4.128 2.768 0.8 1.92 0.112 4.144-1.856 6.112l-9.024 8.992-9.024-8.976c-1.984-1.984-2.64-4.144-1.824-6.080 0.688-1.68 2.352-2.8 4.144-2.8 1.504 0 3.040 0.752 4.448 2.16l2.256 2.256 2.256-2.256c1.44-1.424 2.992-2.176 4.496-2.176zM22.736 3.2c-2.176 0-4.544 0.912-6.752 3.104-2.192-2.176-4.544-3.088-6.704-3.088-6.368 0-11.040 7.904-4.576 14.336l11.28 11.248 11.28-11.248c6.496-6.448 1.856-14.352-4.528-14.352v0z"></path></svg></span></span>
 								<span class="motta-button__text add-to-wishlist-button__text wcboost-wishlist-button__text" data-add="Add To Wishlist" data-remove="Remove Wishlist" data-view="View Wishlist">Wishlist</span>
 							</a>
-						</div>
+						</div> *@
 						@*<div class="product_meta">
 							<div class="dokan-vendor-info-wrap">
 								<div class="dokan-vendor-image">
@@ -338,6 +408,47 @@
 
 				</div>
 	
+				<div class="woocommerce-tabs wc-tabs-wrapper " >
+
+					<div >
+						<a href="#" style="   color: white;">
+						<h3>Description</h3>
+							</a>
+				</div>
+					<div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab" id="tab-description" role="tabpanel" aria-labelledby="tab-title-description"  style="">
+						<div class="motta-dropdown__content" >
+							<div data-elementor-type="wp-post" data-elementor-id="15087" class="elementor elementor-15087" >
+								<section class="elementor-section elementor-top-section elementor-element elementor-element-0f277df elementor-section-boxed elementor-section-height-default elementor-section-height-default motta-responsive-column motta-tablet-column--default motta-responsive-column motta-mobile-column--default" data-id="0f277df" data-element_type="section">
+									<div class="elementor-container elementor-column-gap-default" >
+										<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-e62cd21" data-id="e62cd21" data-element_type="column" >
+											<div class="elementor-widget-wrap elementor-element-populated" >
+												<div class="elementor-element elementor-element-86c74cd elementor-widget elementor-widget-text-editor" data-id="86c74cd" data-element_type="widget" data-widget_type="text-editor.default" >
+													<div class="elementor-widget-container"  >
+														@Html.Raw(Model.product.Description)
+													</div>
+												</div>
+											</div>
+										</div>
+									@*	<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-6ebf421" data-id="6ebf421" data-element_type="column" >
+											<div class="elementor-widget-wrap elementor-element-populated" >
+												<div class="elementor-element elementor-element-aa55d08 elementor-widget elementor-widget-text-editor" data-id="aa55d08" data-element_type="widget" data-widget_type="text-editor.default" >
+													<div class="elementor-widget-container" >
+														The iPad Pro is a magical piece of glass. It has pro cameras that can transform reality. You can use it with touch, pencil, keyboard and now trackpad. With the A12Z Bionic chip, iPad Pro outpaces most PC laptops today. Liquid Retina display features ProMotion, True Tone, and industry‑leading colour accuracy.
+													</div>
+												</div>
+											</div>
+										</div>*@
+									</div>
+								</section>
+								
+							</div>
+						</div>
+					</div>
+				
+
+				</div>
+
+
 			</div>
 
 
@@ -380,4 +491,39 @@
 			});
 		});
 	});
+
+	function updateProductInfo(imageUrl, salePercent, originalPrice) {
+		
+		var newPrice = originalPrice * (1 - salePercent / 100);
+
+		
+		var newPriceElement = document.querySelector('.new-price');
+		var originalPriceElement = document.querySelector('.original-price');
+		var saleBadgeElement = document.querySelector('.onsale.woocommerce-badge');
+		var currencySymbolElement = document.querySelector('.woocommerce-Price-currencySymbol');
+	    var Sym = document.querySelector('.Symbol');
+		if (newPriceElement) {
+			newPriceElement.innerHTML = newPrice.toFixed(2);
+		}
+
+
+		if (originalPriceElement) {
+		
+			originalPriceElement.innerHTML = originalPrice.toFixed(2);
+		}
+
+		
+		if (saleBadgeElement) {
+			saleBadgeElement.style.display = 'inline';
+			saleBadgeElement.innerHTML = `-${salePercent}%`;
+		}
+		if (currencySymbolElement) {
+			currencySymbolElement.style.display = 'inline'; 
+		}
+	    if (Sym) {
+			Sym.style.display = 'inline';
+			}
+	}
+
+
 </script>

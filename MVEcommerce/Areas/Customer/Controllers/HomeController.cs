@@ -37,7 +37,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
             var products = _unitOfWork.Product.GetAll(
                 p => p.CategoryId == category.CategoryId,
                 includeProperties: "Category,ProductImages"
-            );
+			);
             
             var categoryProduct = new CategoryProduct
             {
@@ -46,8 +46,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             return View(categoryProduct);
         }
-
-        public IActionResult ProductDetail(string slug)
+		[Route("ProductDetail/{slug}")]
+		public IActionResult ProductDetail(string slug)
         {
                var product = _unitOfWork.Product.GetProductBySlug(slug); 
 
@@ -63,8 +63,12 @@ namespace MVEcommerce.Areas.Customer.Controllers
                         productVariant = product.ProductVariants?.FirstOrDefault(),
                         productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
               category = product.Category,
-              ProductImages = product.ProductImages?.ToList()
-            };
+						ProductImages = product.ProductImages?.Select(img => new ProductImage
+						{
+							ImageUrl = img.ImageUrl,
+							ProductVariantOption = img.ProductVariantOption 
+						}).ToList()
+					};
 
 
                 return View(viewModel);
