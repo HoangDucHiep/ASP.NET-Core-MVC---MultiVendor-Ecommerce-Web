@@ -100,7 +100,7 @@
                                     <div class="mb-4">
                                         <label class="form-label">Options</label>
                                         <div id="option-list">
-                                            @for (int j = 0; j < Model.ProductVariantOptions.Count; j++)
+                                            @for (int j = 0; j < Model?.ProductVariantOptions.Count; j++)
                                             {
                                                 var option = Model.ProductVariantOptions[j];
                                                 <div class="option-item row mb-3">
