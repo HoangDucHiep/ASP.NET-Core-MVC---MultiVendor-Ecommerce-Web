@@ -5,7 +5,6 @@ using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
 using MVEcommerce.Models.ViewModels.VendorProduct;
 using Slugify;
-using System.Linq;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using MVEcommerce.DataAccess.Data;
@@ -20,13 +19,16 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SlugHelper _slugHelper;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext dbContext)
+        public ProductController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, 
+            ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _slugHelper = new SlugHelper();
             _dbContext = dbContext;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -43,7 +45,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         
                     product.Price = lowestPriceOption?.Price ?? product.Price;
                     product.Stock = totalStock;
-                    product.Sale = lowestPriceOption.Sale;
+                    product.Sale = lowestPriceOption?.Sale ?? 0;
                 }
             }
         
@@ -72,7 +74,154 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddProduct(VendorAddProductVM vm)
+        public async Task<IActionResult> AddProduct(VendorAddProductVM vm, IFormFile? mainImage, 
+            List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var transaction = _dbContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        additionalImages ??= new List<IFormFile>();
+                        optionImages ??= new List<List<IFormFile>>();
+
+                        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var vendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
+
+                        if (vendor != null)
+                        {
+                            vm.Product.VendorId = vendor.VendorId;
+                            vm.Product.HasVariant = !string.IsNullOrEmpty(vm.ProductVariant.Name);
+                            vm.Product.Slug = _slugHelper.GenerateSlug(vm.Product.Name ?? "");
+
+                            // Save product first to get ID
+                            _unitOfWork.Product.Add(vm.Product);
+                            _unitOfWork.Save();
+
+                            // Handle main image
+                            if (mainImage != null)
+                            {
+                                string fileName = await SaveImage(mainImage);
+                                _unitOfWork.ProductImage.Add(new ProductImage
+                                {
+                                    ProductId = vm.Product.ProductId,
+                                    ImageUrl = fileName,
+                                    IsMain = true
+                                });
+                                _unitOfWork.Save();
+                            }
+
+                            // Handle additional images
+                            foreach (var image in additionalImages)
+                            {
+                                string fileName = await SaveImage(image);
+                                _unitOfWork.ProductImage.Add(new ProductImage
+                                {
+                                    ProductId = vm.Product.ProductId,
+                                    ImageUrl = fileName,
+                                    IsMain = false
+                                });
+                            }
+                            _unitOfWork.Save();
+
+                            // Handle variant and options if exists
+                            if (vm.Product.HasVariant)
+                            {
+                                vm.ProductVariant.ProductId = vm.Product.ProductId;
+                                _unitOfWork.ProductVariant.Add(vm.ProductVariant);
+                                _unitOfWork.Save();
+
+                                // Handle options and their images
+                                for (int i = 0; i < vm.ProductVariantOptions.Count; i++)
+                                {
+                                    var option = vm.ProductVariantOptions[i];
+                                    option.VariantId = vm.ProductVariant.VariantId;
+                                    _unitOfWork.ProductVariantOption.Add(option);
+                                    _unitOfWork.Save();
+
+                                    // Handle option images
+                                    if (optionImages.Count > i)
+                                    {
+                                        foreach (var image in optionImages[i])
+                                        {
+                                            string fileName = await SaveImage(image);
+                                            _unitOfWork.ProductImage.Add(new ProductImage
+                                            {
+                                                ProductId = vm.Product.ProductId,
+                                                VariantOptionID = option.OptionId,
+                                                ImageUrl = fileName
+                                            });
+                                        }
+                                        _unitOfWork.Save();
+                                    }
+                                }
+                            }
+
+                            transaction.Commit();
+                            return RedirectToAction(nameof(Index));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        ModelState.AddModelError("", $"Error saving product: {ex.Message}");
+                    }
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            vm.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.CategoryId.ToString()
+            });
+            return View(vm);
+        }
+
+        
+        
+        private void DeleteImage(string imageUrl)
+        {
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                string filePath = Path.Combine(_webHostEnvironment.WebRootPath, imageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+        }
+
+        public IActionResult EditProduct(int id)
+        {
+            var product = _unitOfWork.Product.Get(p => p.ProductId == id, includeProperties: "ProductImages,ProductVariants.ProductVariantOptions.ProductImages");
+            if (product == null)
+            {
+                return NotFound();
+            }
+        
+            var productVariant = product.ProductVariants?.FirstOrDefault();
+            var productVariantOptions = productVariant?.ProductVariantOptions?.ToList() ?? new List<ProductVariantOption>();
+        
+            VendorAddProductVM vm = new VendorAddProductVM
+            {
+                Product = product,
+                Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.CategoryId.ToString()
+                }).ToList(),
+                ProductVariant = productVariant ?? new ProductVariant(),
+                ProductVariantOptions = productVariantOptions
+            };
+        
+            return View(vm);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProduct(VendorAddProductVM vm, IFormFile? mainImage)
         {
             if (ModelState.IsValid)
             {
@@ -82,62 +231,105 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                     {
                         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                         var vendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
-
+        
                         if (vendor != null)
                         {
-                            // Kiểm tra nếu người dùng thêm ProductVariant thì cập nhật HasVariant thành true
-                            if (!string.IsNullOrEmpty(vm.ProductVariant.Name))
-                            {
-                                vm.Product.HasVariant = true;
-                            }
-
-                            // Thêm Product và lưu để lấy ProductId
                             vm.Product.VendorId = vendor.VendorId;
-                            _unitOfWork.Product.Add(vm.Product);
-                            _unitOfWork.Save(); // Tại đây, ProductId sẽ được tự động tăng và gán giá trị mới
-
-                            // Tạo slug sau khi ProductId đã được gán giá trị mới
-                            vm.Product.Slug = _slugHelper.GenerateSlug($"{vm.Product.Name}-{vm.Product.ProductId}");
+                            vm.Product.HasVariant = !string.IsNullOrEmpty(vm.ProductVariant.Name);
+                            vm.Product.Slug = _slugHelper.GenerateSlug(vm.Product.Name ?? "");
+        
+                            // Update product
                             _unitOfWork.Product.Update(vm.Product);
                             _unitOfWork.Save();
-
-                            // Thêm ProductVariant và lưu để lấy VariantId
-                            vm.ProductVariant.ProductId = vm.Product.ProductId;
-                            _unitOfWork.ProductVariant.Add(vm.ProductVariant);
-                            _unitOfWork.Save(); // Tại đây, VariantId sẽ được tự động tăng và gán giá trị mới
-
-                            // Thêm ProductVariantOption với VariantId đã được cập nhật
-                            foreach (var option in vm.ProductVariantOptions)
+        
+                            // Handle main image
+                            if (mainImage != null)
                             {
-                                option.VariantId = vm.ProductVariant.VariantId;
-                                _unitOfWork.ProductVariantOption.Add(option);
+                                string fileName = await SaveImage(mainImage);
+                                var existingMainImage = _unitOfWork.ProductImage.Get(pi => pi.ProductId == vm.Product.ProductId && pi.IsMain);
+                                if (existingMainImage != null)
+                                {
+                                    DeleteImage(existingMainImage.ImageUrl);
+                                    existingMainImage.ImageUrl = fileName;
+                                    _unitOfWork.ProductImage.Update(existingMainImage);
+                                }
+                                else
+                                {
+                                    _unitOfWork.ProductImage.Add(new ProductImage
+                                    {
+                                        ProductId = vm.Product.ProductId,
+                                        ImageUrl = fileName,
+                                        IsMain = true
+                                    });
+                                }
+                                _unitOfWork.Save();
                             }
-                            _unitOfWork.Save(); // Lưu tất cả các thay đổi
-
-                            transaction.Commit(); // Commit transaction nếu tất cả các thao tác thành công
-
+        
+        
+                            // Handle variant and options if exists
+                            if (vm.Product.HasVariant)
+                            {
+                                vm.ProductVariant.ProductId = vm.Product.ProductId;
+                                _unitOfWork.ProductVariant.Update(vm.ProductVariant);
+                                _unitOfWork.Save();
+        
+                                // Handle options and their images
+                                for (int i = 0; i < vm.ProductVariantOptions.Count; i++)
+                                {
+                                    var option = vm.ProductVariantOptions[i];
+                                    option.VariantId = vm.ProductVariant.VariantId;
+                                    if (option.OptionId == 0)
+                                    {
+                                        _unitOfWork.ProductVariantOption.Add(option);
+                                    }
+                                    else
+                                    {
+                                        _unitOfWork.ProductVariantOption.Update(option);
+                                    }
+                                    _unitOfWork.Save();
+        
+                                }
+                            }
+        
+                            transaction.Commit();
                             return RedirectToAction(nameof(Index));
                         }
-                        else
-                        {
-                            ModelState.AddModelError("", "Vendor not found for the current user.");
-                        }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        transaction.Rollback(); // Rollback transaction nếu có lỗi xảy ra
-                        ModelState.AddModelError("", "An error occurred while saving the product. Please try again.");
+                        transaction.Rollback();
+                        ModelState.AddModelError("", $"Error saving product: {ex.Message}");
                     }
                 }
             }
-
+        
+            // If we got this far, something failed, redisplay form
             vm.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.CategoryId.ToString()
-            });
-
+            }).ToList();
             return View(vm);
         }
+
+        
+        private async Task<string> SaveImage(IFormFile image)
+        {
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+            
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+                
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+            
+            return "/uploads/" + uniqueFileName;
+        }
+
     }
 }
