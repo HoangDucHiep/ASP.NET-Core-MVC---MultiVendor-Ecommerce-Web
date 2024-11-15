@@ -272,43 +272,6 @@
             button.closest('.option-item').remove();
         }
     </script>
-}
-    <script>
-        function showVariantInput() {
-            document.getElementById('variant-list').style.display = 'block';
-        }
-
-        function addOption() {
-            var optionIndex = document.querySelectorAll('#option-list .option-item').length;
-            var optionHtml = `
-                <div class="option-item row mb-3">
-                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Price" placeholder="Option Price" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Stock" placeholder="Option Stock" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].SKU" placeholder="Option SKU" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" />
-                    </div>
-                    <div class="col-md-2 text-end">
-                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
-                    </div>
-                </div>`;
-            document.getElementById('option-list').insertAdjacentHTML('beforeend', optionHtml);
-        }
-
-        function removeOption(button) {
-            button.closest('.option-item').remove();
-        }
-    </script>
 
     <script>
         tinymce.init({
@@ -401,6 +364,7 @@
 
     @* Image *@
     <script>
+        
         function previewMainImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -418,17 +382,15 @@
             document.getElementById('mainImageContainer').style.display = 'none';
         }
 
+        function previewAdditionalImages(event) {
+            const container = document.getElementById('additionalImagesPreview');
+            handleImagePreviews(event.target.files, container);
+        }
+
         function previewOptionImages(event, index) {
             const files = event.target.files;
             const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
             previewContainer.innerHTML = '';
-
-            // Create hidden input for tracking option index
-            const indexInput = document.createElement('input');
-            indexInput.type = 'hidden';
-            indexInput.name = `optionImageIndexes`;
-            indexInput.value = index;
-            previewContainer.appendChild(indexInput);
 
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
@@ -459,11 +421,6 @@
                 }
                 reader.readAsDataURL(file);
             });
-        }
-
-        function previewOptionImages(event, optionIndex) {
-            const container = document.querySelector(`.option-images-preview-${optionIndex}`);
-            handleImagePreviews(event.target.files, container);
         }
 
         function handleImagePreviews(files, container) {
@@ -495,40 +452,5 @@
             }
         }
 
-        function previewOptionImages(event, index) {
-            const files = event.target.files;
-            const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
-            previewContainer.innerHTML = '';
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const wrapper = document.createElement('div');
-                    wrapper.style.position = 'relative';
-                    wrapper.style.width = '100px';
-                    wrapper.style.height = '100px';
-
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'cover';
-                    img.style.borderRadius = '5px';
-
-                    const removeBtn = document.createElement('button');
-                    removeBtn.innerHTML = '×';
-                    removeBtn.className = 'btn btn-sm btn-danger position-absolute';
-                    removeBtn.style.top = '5px';
-                    removeBtn.style.right = '5px';
-                    removeBtn.style.padding = '0 6px';
-                    removeBtn.onclick = () => wrapper.remove();
-
-                    wrapper.appendChild(img);
-                    wrapper.appendChild(removeBtn);
-                    previewContainer.appendChild(wrapper);
-                }
-                reader.readAsDataURL(file);
-            });
-        }
     </script>
 }

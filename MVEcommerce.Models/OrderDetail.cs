@@ -10,10 +10,6 @@ namespace MVEcommerce.Models
         [Key]
         public int OrderDetailId { get; set; }
 
-        [ForeignKey("SubOrder")]
-        public int SubOrderId { get; set; }
-        public virtual SubOrder SubOrder { get; set; }
-
         [ForeignKey("Product")]
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }

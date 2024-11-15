@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MVEcommerce.DataAccess.Migrations
 {
     /// <inheritdoc />
@@ -179,6 +181,34 @@ namespace MVEcommerce.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParentOrderId = table.Column<int>(type: "int", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Order_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Order_Order_ParentOrderId",
+                        column: x => x.ParentOrderId,
+                        principalTable: "Order",
+                        principalColumn: "OrderId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Vendors",
                 columns: table => new
                 {
@@ -239,6 +269,26 @@ namespace MVEcommerce.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    OrderDetailId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.OrderDetailId);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductVariants",
                 columns: table => new
                 {
@@ -259,6 +309,32 @@ namespace MVEcommerce.DataAccess.Migrations
                         principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    CartId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.CartId);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId");
                 });
 
             migrationBuilder.CreateTable(
@@ -315,6 +391,89 @@ namespace MVEcommerce.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Avatar", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a", 0, null, "", "ApplicationUser", "truffles@example.com", true, "Truffles Vendor", null, false, null, "TRUFFLES@EXAMPLE.COM", "TRUFFLES_VENDOR", "AQAAAAIAAYagAAAAEHwbHCh5b7rTyyD9/JX4F8T6hqpC8iF9wq7yG7kApm3MbAXiyrPb/r/zUuNZyCd4KQ==", null, false, "", false, "truffles_vendor" });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "BannerImage", "CreatedAt", "Name", "Slug", "Status", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/10/shop-head-bg-2.jpg?fit=1140%2C260&ssl=1", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Home & Garden", "home-garden-1", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Electronics", "electronics-2", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/10/shop-head-bg-3.jpg?fit=1140%2C260&ssl=1", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Fashion", "fashion-3", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jewelry & Accessories", "jewelry-accessories-4", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Sports & Entertainment", "sports-entertainment-5", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mother & Kids", "mother-kids-6", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Beauty & Health", "beauty-health-7", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 8, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Toys & Games", "toys-games-8", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 9, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Automobiles & Motorcycles", "automobiles-motorcycles-9", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 10, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Collectibles & Art", "collectibles-art-10", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 11, "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tools & Home Improvement", "tools-home-improvement-11", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Vendors",
+                columns: new[] { "VendorId", "CreatedAt", "Name", "Status", "UpdatedAt", "UserId" },
+                values: new object[] { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Truffles", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a" });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "CategoryId", "CreatedAt", "Description", "HasVariant", "Name", "Price", "SKU", "Sale", "Slug", "Status", "Stock", "UpdatedAt", "VendorId" },
+                values: new object[,]
+                {
+                    { 1, 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", false, "Batman Death Metal DC Comics Batman Figure", 100m, "SKU-1", 0m, "batman-figure-metal-1", "active", 100, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 2, 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", false, "Minions Toy with Buildable Figures (876 Pieces)", 200m, "SKU-2", 0m, "minions-toy-figures-2", "active", 100, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 3, 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", false, "Masters of the Universe Origins Skeletor Action Figure", 300m, "SKU-3", 26m, "skeletor-action-figure-3", "active", 100, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 4, 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lorem ipsum dolor sit amet-4, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", true, "Apple – iPhone 11 64GB", null, "SKU-4", 0m, "iphone-11-64gb", "active", null, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductImages",
+                columns: new[] { "ImageId", "ImageUrl", "IsMain", "ProductId", "VariantOptionID" },
+                values: new object[,]
+                {
+                    { 1, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/4-1.jpg?fit=1400%2C1400&ssl=1", true, 1, null },
+                    { 2, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/2-2.jpg?fit=1400%2C1400&ssl=1", false, 1, null },
+                    { 3, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/1-2.jpg?fit=1400%2C1400&ssl=1", false, 1, null },
+                    { 4, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/3-2.jpg?fit=1400%2C1400&ssl=1", false, 1, null },
+                    { 5, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-73.jpg?fit=1400%2C1400&ssl=1", true, 2, null },
+                    { 6, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-54.jpg?fit=1400%2C1400&ssl=1", false, 2, null },
+                    { 7, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/4-37.jpg?fit=1400%2C1400&ssl=1", false, 2, null },
+                    { 8, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-71.jpg?fit=1400%2C1400&ssl=1", true, 3, null },
+                    { 9, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/2-61.jpg?fit=1400%2C1400&ssl=1", false, 3, null },
+                    { 10, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-52.jpg?fit=1400%2C1400&ssl=1", false, 3, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductVariants",
+                columns: new[] { "VariantId", "CreatedAt", "Name", "ProductId", "Status", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Color", 4, "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+
+            migrationBuilder.InsertData(
+                table: "ProductVariantsOption",
+                columns: new[] { "OptionId", "CreatedAt", "Price", "SKU", "Sale", "Status", "Stock", "UpdatedAt", "Value", "VariantId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 400m, "SKU-4-Black", 20m, "active", 100, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Black", 1 },
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 450m, "SKU-4-White", 10m, "active", 100, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Red", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductImages",
+                columns: new[] { "ImageId", "ImageUrl", "IsMain", "ProductId", "VariantOptionID" },
+                values: new object[,]
+                {
+                    { 11, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/1.jpeg?fit=1400%2C1400&ssl=1", true, 4, 1 },
+                    { 12, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/2.jpeg?fit=1400%2C1400&ssl=1", false, 4, 1 },
+                    { 13, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/3.jpeg?fit=1400%2C1400&ssl=1", false, 4, 1 },
+                    { 14, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/1-1.jpg?fit=1400%2C1400&ssl=1", false, 4, 2 },
+                    { 15, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/2-1.jpg?fit=1400%2C1400&ssl=1", false, 4, 2 },
+                    { 16, "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/3-1.jpg?fit=1400%2C1400&ssl=1", false, 4, 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -355,6 +514,21 @@ namespace MVEcommerce.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_ParentOrderId",
+                table: "Order",
+                column: "ParentOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_UserId",
+                table: "Order",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_ProductId",
+                table: "OrderDetails",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductImages_ProductId",
                 table: "ProductImages",
                 column: "ProductId");
@@ -385,6 +559,16 @@ namespace MVEcommerce.DataAccess.Migrations
                 column: "VariantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_ProductId",
+                table: "ShoppingCarts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_UserId",
+                table: "ShoppingCarts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Vendors_UserId",
                 table: "Vendors",
                 column: "UserId");
@@ -409,7 +593,16 @@ namespace MVEcommerce.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "OrderDetails");
+
+            migrationBuilder.DropTable(
                 name: "ProductImages");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

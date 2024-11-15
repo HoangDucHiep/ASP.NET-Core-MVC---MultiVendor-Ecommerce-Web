@@ -1,3 +1,4 @@
+// Order.cs
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,8 +19,13 @@ namespace MVEcommerce.Models
 
         public string Status { get; set; } = "Pending"; // Pending, Completed, Cancelled
 
-        public virtual ICollection<SubOrder> SubOrders { get; set; }
-    }
+        [ForeignKey("ParentOrder")]
+        public int? ParentOrderId { get; set; }
+        public virtual Order ParentOrder { get; set; }
 
-    
+        public virtual ICollection<Order> SubOrders { get; set; } = new HashSet<Order>();
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal TotalAmount { get; set; }
+    }
 }

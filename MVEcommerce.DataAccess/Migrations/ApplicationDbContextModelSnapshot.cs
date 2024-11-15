@@ -165,6 +165,64 @@ namespace MVEcommerce.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MVEcommerce.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ParentOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("ParentOrderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"));
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
             modelBuilder.Entity("MVEcommerce.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -549,6 +607,33 @@ namespace MVEcommerce.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MVEcommerce.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ShoppingCarts");
+                });
+
             modelBuilder.Entity("MVEcommerce.Models.Vendor", b =>
                 {
                     b.Property<int>("VendorId")
@@ -812,6 +897,54 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "",
+                            Email = "truffles@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
+                            NormalizedUserName = "TRUFFLES_VENDOR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHwbHCh5b7rTyyD9/JX4F8T6hqpC8iF9wq7yG7kApm3MbAXiyrPb/r/zUuNZyCd4KQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "truffles_vendor",
+                            FullName = "Truffles Vendor"
+                        });
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.Order", b =>
+                {
+                    b.HasOne("MVEcommerce.Models.Order", "ParentOrder")
+                        .WithMany("SubOrders")
+                        .HasForeignKey("ParentOrderId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("MVEcommerce.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentOrder");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.OrderDetail", b =>
+                {
+                    b.HasOne("MVEcommerce.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.Product", b =>
@@ -870,6 +1003,25 @@ namespace MVEcommerce.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("ProductVariant");
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("MVEcommerce.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MVEcommerce.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.Vendor", b =>
@@ -937,6 +1089,11 @@ namespace MVEcommerce.DataAccess.Migrations
             modelBuilder.Entity("MVEcommerce.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.Order", b =>
+                {
+                    b.Navigation("SubOrders");
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.Product", b =>
