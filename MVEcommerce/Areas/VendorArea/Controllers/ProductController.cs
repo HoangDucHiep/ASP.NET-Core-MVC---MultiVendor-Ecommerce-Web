@@ -221,8 +221,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProduct(VendorAddProductVM vm, IFormFile? mainImage, 
-            List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages, List<int>? imagesToDelete)
+        public async Task<IActionResult> EditProduct(VendorAddProductVM vm, IFormFile? mainImage)
         {
             if (ModelState.IsValid)
             {
@@ -230,10 +229,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                 {
                     try
                     {
-                        additionalImages ??= new List<IFormFile>();
-                        optionImages ??= new List<List<IFormFile>>();
-                        imagesToDelete ??= new List<int>();
-        
                         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                         var vendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
         
@@ -270,30 +265,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 _unitOfWork.Save();
                             }
         
-                            // Handle additional images
-                            foreach (var image in additionalImages)
-                            {
-                                string fileName = await SaveImage(image);
-                                _unitOfWork.ProductImage.Add(new ProductImage
-                                {
-                                    ProductId = vm.Product.ProductId,
-                                    ImageUrl = fileName,
-                                    IsMain = false
-                                });
-                            }
-                            _unitOfWork.Save();
-        
-                            // Handle images to delete
-                            foreach (var imageId in imagesToDelete)
-                            {
-                                var image = _unitOfWork.ProductImage.Get(pi => pi.ImageId == imageId);
-                                if (image != null)
-                                {
-                                    DeleteImage(image.ImageUrl);
-                                    _unitOfWork.ProductImage.Remove(image);
-                                }
-                            }
-                            _unitOfWork.Save();
         
                             // Handle variant and options if exists
                             if (vm.Product.HasVariant)
@@ -317,21 +288,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                     }
                                     _unitOfWork.Save();
         
-                                    // Handle option images
-                                    if (optionImages.Count > i)
-                                    {
-                                        foreach (var image in optionImages[i])
-                                        {
-                                            string fileName = await SaveImage(image);
-                                            _unitOfWork.ProductImage.Add(new ProductImage
-                                            {
-                                                ProductId = vm.Product.ProductId,
-                                                VariantOptionID = option.OptionId,
-                                                ImageUrl = fileName
-                                            });
-                                        }
-                                        _unitOfWork.Save();
-                                    }
                                 }
                             }
         

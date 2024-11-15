@@ -125,12 +125,16 @@
                                                             <label class="form-label">Option Images</label>
                                                             <div id="optionImagesPreview_@j" class="d-flex flex-wrap gap-2 mb-2">
                                                                 <!-- Image previews will be added here -->
-                                                                @foreach (var image in option.ProductImages)
+                                                                @* if dont have product Images *@
+                                                                @if (option != null && option.ProductImages != null && option.ProductImages.Count != 0)
                                                                 {
-                                                                    <div style="position: relative; width: 100px; height: 100px;">
-                                                                        <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
-                                                                        <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="removeExistingImage('@image.ImageId', this)">×</button>
-                                                                    </div>
+                                                                    @foreach (var image in option.ProductImages)
+                                                                    {
+                                                                        <div style="position: relative; width: 100px; height: 100px;">
+                                                                            <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
+                                                                            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="removeExistingImage('@image.ImageId', this)">×</button>
+                                                                        </div>
+                                                                    }
                                                                 }
                                                             </div>
                                                             <input type="file" 
@@ -206,7 +210,7 @@
                         <div class="mb-4">
                             <label class="form-label">Additional Images</label>
                             <div id="additionalImagesPreview" class="d-flex flex-wrap gap-2 mb-2">
-                                @foreach (var image in Model.Product.ProductImages.Where(i => !i.IsMain))
+                                @foreach (var image in Model.Product.ProductImages.Where(i => !i.IsMain && i.VariantOptionID == null))
                                 {
                                     <div style="position: relative; width: 100px; height: 100px;">
                                         <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
