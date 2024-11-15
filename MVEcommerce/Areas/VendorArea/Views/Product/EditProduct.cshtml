@@ -100,7 +100,6 @@
                                             {
                                                 var option = Model.ProductVariantOptions[j];
                                                 <div class="option-item row mb-3">
-                                                    <input type="hidden" asp-for="ProductVariantOptions[@j].OptionId" />
                                                     <input type="hidden" asp-for="ProductVariantOptions[@j].VariantId" value="@Model.ProductVariant.VariantId" />
                                                     <div class="col-md-2 mb-2 mb-md-0">
                                                         <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Value" placeholder="Option Value" />
