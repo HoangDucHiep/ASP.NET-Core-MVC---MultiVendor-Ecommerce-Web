@@ -76,6 +76,10 @@
 		.footer-main:not(.show-on-mobile) {
 		display: none;
 		}
+
+		#opp{
+				transform: translateX(0);
+		}
 		}
 
 		.campaign-bar {
@@ -2920,7 +2924,7 @@ class="home page-template-default page page-id-4398 wp-embed-responsive theme-mo
 
 	<div id="motta-popup-add-to-cart" class="motta-popup-add-to-cart-modal modal woocommerce">
 		<div class="modal__backdrop"></div>
-		<div class="modal__notices woocommerce">
+		<div id="opp"  class="modal__notices woocommerce">
 			<div class="modal__button-close"><span class="motta-svg-icon motta-svg-icon--close"><svg width="24"
 						height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 						<path
@@ -2931,7 +2935,7 @@ class="home page-template-default page page-id-4398 wp-embed-responsive theme-mo
 			<div class="modal__content product-modal-content">
 				<div class="motta-product-popup-atc__notice">
 					Successfully added to your cart </div>
-				<div class="widget_shopping_cart_content"></div>
+				<div id="show" class="widget_shopping_cart_content"></div>
 				<div class="motta-product-popup-atc__recommendation loaded">
 					<div class="recommendation-heading">
 						<h2 class="product-heading"> You may also like </h2>

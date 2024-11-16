@@ -1,0 +1,65 @@
+﻿@model MVEcommerce.Models.Product
+
+@{
+    ViewData["Title"] = "ShowProductModal";
+    var finalPrice = Model.Price - Model.Sale;
+}
+
+
+<ul class="woocommerce-mini-cart cart_list product_list_widget show-vendor">
+    <li class="woocommerce-mini-cart-item mini-cart-item-15025 mini_cart_item active">
+        <div class="woocommerce-mini-cart-item__thumbnail">
+            @*detail*@
+            <a>
+                <img width="100" height="100" src="@Model.ProductImages!.Where(x => x. IsMain).FirstOrDefault()!.ImageUrl;ssl=1" class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail" alt="">
+            </a>
+        </div>
+        <div class="woocommerce-mini-cart-item__summary">
+            <div class="woocommerce-mini-cart-item__box">
+                <span class="woocommerce-mini-cart-item__data">
+                    <span class="woocommerce-mini-cart-item__name">
+                        @*detail*@
+                        <a>
+                            @Model.Name
+                        </a>
+                    </span>
+                    <dl class="variation">
+                        <dt class="variation-Vendor">Vendor:</dt>
+                        <dd class="variation-Vendor">
+                            <p>@Model.Vendor?.Name</p>
+                        </dd>
+                    </dl>
+                    <span class="woocommerce-Price-amount amount">
+                        <bdi><span class="woocs_special_price_code"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>@finalPrice</bdi></span></span></bdi>
+                    </span>
+                    <span class="woocommerce-mini-cart-item__qty--text hidden">
+                        QTY:									7
+                    </span>
+                </span>
+
+            </div>
+
+        </div>
+
+    </li>
+</ul>
+
+<div class="widget_shopping_cart_footer">
+    <p class="woocommerce-mini-cart__total total">
+        <span class="widget_shopping_cart_subtotal">Subtotal (COUNT items) </span>
+        <span class="woocs_special_price_code">
+            <span class="woocommerce-Price-amount amount">
+                <bdi><span class="woocommerce-Price-currencySymbol">$</span>Count cart</bdi>
+            </span>
+        </span>
+    </p>
+    <p class="woocommerce-mini-cart__buttons buttons">
+        @*aaaaaaa*@
+        <a href="https://motta.uix.store/checkout/" class="motta-button checkout wc-forward motta-button--large">Checkout</a>
+        <a href="https://motta.uix.store/cart/" class="motta-button view-cart wc-forward motta-button--subtle">View cart</a>
+    </p>
+
+</div>
+
+
+
