@@ -7,9 +7,9 @@ using MVEcommerce.Models.ViewModels.ProductDetailViewModel;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
+using MVEcommerce.Models.ViewModels.Account;
 using MVEcommerce.Models.ViewModels.AddToCart;
 using System.Security.Claims;
-
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -33,14 +33,14 @@ namespace MVEcommerce.Areas.Customer.Controllers
             var category = _unitOfWork.Category.Get(c=>c.Slug == slug);
             if (category == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
-            
+
             var products = _unitOfWork.Product.GetAll(
                 p => p.CategoryId == category.CategoryId,
                 includeProperties: "Category,ProductImages"
             );
-            
+
             var categoryProduct = new CategoryProduct
             {
                 Products = products
@@ -132,15 +132,76 @@ namespace MVEcommerce.Areas.Customer.Controllers
             };
 
 
-                return View(viewModel);
+            return View(viewModel);
         }
-        
+
         public IActionResult Index()
         {
+
+            var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;
+
+            foreach (var product in products)
+            {
+                if (product.HasVariant)
+                {
+                    var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+                    var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+                    var totalStock = variantOptions.Sum(vo => vo.Stock);
+
+                    product.Price = lowestPriceOption?.Price ?? product.Price;
+                    product.Stock = totalStock;
+                    product.Sale = lowestPriceOption?.Sale ?? 0;
+                }
+            }
+
+            var lstSaleProducts = new List<Product>();
+            foreach (var product in products)
+            {
+                if (product.Sale > 0)
+                {
+                    lstSaleProducts.Add(product);
+
+                }
+            }
+
+
+
+            return View(lstSaleProducts);
+
+
+
+        }
+       
+        public IActionResult MyAccount()
+        {   
+
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult VendorPage(int vendorId)
+        {
+            ViewBag.VendorName = _unitOfWork.Vendor.Get(p => p.VendorId == vendorId).Name;
+            var lstProduct= _unitOfWork.Product.GetAll(p=>p.Vendor.VendorId==vendorId,includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor,ProductImages").ToList();
+			foreach (var product in lstProduct)
+			{
+				if (product.HasVariant)
+				{
+					var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+					var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+					var totalStock = variantOptions.Sum(vo => vo.Stock);
+
+					product.Price = lowestPriceOption?.Price ?? product.Price;
+					product.Stock = totalStock;
+					product.Sale = lowestPriceOption?.Sale ?? 0;
+				}
+			}
+
+			
+			return View(lstProduct);
+        }
+
+
+		public IActionResult Privacy()
         {
             return View();
         }
