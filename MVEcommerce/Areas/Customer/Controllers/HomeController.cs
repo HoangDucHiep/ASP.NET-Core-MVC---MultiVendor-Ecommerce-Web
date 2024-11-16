@@ -111,9 +111,33 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng!" });
         }
 
+	[Route("ProductDetail/{slug}")]
+		public IActionResult ProductDetail(string slug)
+		{
+			var product = _unitOfWork.Product.GetProductBySlug(slug);
+
+			if (product == null)
+			{
+				return NotFound();
+			}
+
+			var viewModel = new ProductDetailViewModel
+			{
+				product = product,
+				ProductImage = product.ProductImages?.FirstOrDefault(),
+				productVariant = product.ProductVariants?.FirstOrDefault(),
+				productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
+				category = product.Category,
+				ProductImages = product.ProductImages?.ToList(),
+			};
 
 
-        public IActionResult Index()
+			return View(viewModel);
+		}
+
+
+
+		public IActionResult Index()
         {
 
             var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;

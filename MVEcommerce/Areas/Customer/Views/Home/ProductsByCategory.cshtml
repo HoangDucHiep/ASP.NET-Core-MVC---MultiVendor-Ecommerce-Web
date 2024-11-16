@@ -1,7 +1,7 @@
 ﻿@model MVEcommerce.Models.ViewModels.CategoryProduct.CategoryProduct
 @{
 	ViewData["Title"] = "ProductsByCategory";
-	//Layout = "~/Views/Shared/_Layout.cshtml";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 
@@ -213,7 +213,7 @@
 								</div>
 
 								<h2 class="woocommerce-loop-product__title">
-									<a href="../../product/11-inch-tablet-pro-2020-space-gray/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@product.Name</a>
+									<a asp-contronller="Home" asp-action="ProductDetail" asp-route-slug="@product.Slug" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@product.Name</a>
 								</h2>
 
 								<div class="motta-rating">
