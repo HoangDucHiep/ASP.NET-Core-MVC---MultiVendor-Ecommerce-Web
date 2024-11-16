@@ -982,7 +982,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
                             NormalizedUserName = "TRUFFLES_VENDOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEChZdTrBA+QUamEx4Z/58pVvOBt31VF/Q9yjUYzz7TuELXSC2QaihgGdnQZGQIQ6Hw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPgpbj0PRk1WMZGraMQ104UYOkn2n2MUBB5FQA1i8Ah1CxWjD0cmwKDZ1ak2YwR88A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
