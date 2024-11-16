@@ -22,15 +22,15 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            var orders = _unitOfWork.Order.GetAll(
-                o => o.UserId == claim.Value,
-                includeProperties: "OrderDetails,OrderDetails.Product"
-            );
+            //var orders = _unitOfWork.Order.GetAll(
+            //    o => o.UserId == claim.Value,
+            //    includeProperties: "OrderDetails,OrderDetails.Product"
+            //);
 
-            return View(orders);
+            return View();
         }
 
         public IActionResult OrderConfirmation()

@@ -112,28 +112,6 @@ namespace MVEcommerce.Areas.Customer.Controllers
         }
 
 
-		public IActionResult ProductDetail(string slug)
-        {
-               var product = _unitOfWork.Product.Get(c=>c.Slug == slug); 
-
-                    if (product == null)
-                    {
-                        return NotFound();
-                    }
-
-                    var viewModel = new ProductDetailViewModel
-                    {
-                        product = product,
-                        ProductImage = product.ProductImages?.FirstOrDefault(),
-                        productVariant = product.ProductVariants?.FirstOrDefault(),
-                        productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
-                        category = product.Category,
-                        ProductImages = product.ProductImages?.ToList(),
-            };
-
-
-            return View(viewModel);
-        }
 
         public IActionResult Index()
         {
@@ -163,19 +141,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
                 }
             }
-
-
-
             return View(lstSaleProducts);
-
-
-
-        }
-       
-        public IActionResult MyAccount()
-        {   
-
-            return View();
         }
 
         public IActionResult VendorPage(int vendorId)
