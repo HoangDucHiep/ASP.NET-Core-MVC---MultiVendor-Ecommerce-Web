@@ -20,7 +20,7 @@
 
 					<div class="header-search header-search--form header-search--large motta-skin--raised header-search--outside"
 						 data-width=655 style=&quot;max-width:655px&quot;>
-						<form class="header-search__form " method="get" action="https://motta.uix.store/">
+						<form class="header-search__form " method="get" action="@Url.Action("SearchProduct", "Home")">
 							<div class="header-search__container  motta-type--input-text">
 
 								<input type="text" name="s" class="header-search__field" value=""
@@ -171,7 +171,9 @@
 										</path>
 									</svg>
 								</span>
-								<div class="header-search__results search-results woocommerce"></div>
+								<div class="header-search__results search-results woocommerce">
+									<div id="add_search1"> </div>
+								</div>
 							</div>
 
 
@@ -211,7 +213,7 @@
 							</span>
 						</a>
 					</div>
-					<div class="header-cart">
+					<div class="header-cart" onclick="cart()">
 						<a href="https://motta.uix.store/cart/" data-toggle="off-canvas"
 						   data-target="cart-panel" class="motta-button  motta-button--text">
 							<span class="motta-button__icon">
@@ -273,7 +275,12 @@
 							</span><span class="header-category__name">Shop by Category</span>
 						</div>
 						<div class="header-category__content">
-							@await Component.InvokeAsync("CategoryItem")		
+							<nav class="header-category__menu">
+								<ul id="menu-category-menu" class="menu">
+									@await Component.InvokeAsync("CategoryItem")
+								</ul>
+							</nav>
+
 						</div>
 					</div>
 
@@ -1353,7 +1360,7 @@
 
 					<div class="header-search header-search--form header-search--large motta-skin--raised header-search--outside"
 						 data-width=655 style=&quot;max-width:655px&quot;>
-						<form class="header-search__form " method="get" action="https://motta.uix.store/">
+						<form class="header-search__form " method="get" action="@Url.Action("SearchProduct", "Home")">
 							<div class="header-search__container  motta-type--input-text">
 
 								<input type="text" name="s" class="header-search__field" value=""
@@ -1504,7 +1511,9 @@
 										</path>
 									</svg>
 								</span>
-								<div class="header-search__results search-results woocommerce"></div>
+								<div class="header-search__results search-results woocommerce">
+									<div id="add_search1"></div>
+								</div>
 							</div>
 
 
@@ -1649,7 +1658,7 @@
 				<div class="header-left-items header-items ">
 
 					<div class="header-search header-search--form motta-skin--raised header-search--outside header-search--simple">
-						<form class="header-search__form " method="get" action="https://motta.uix.store/">
+						<form class="header-search__form " method="get" action="@Url.Action("SearchProduct", "Home")">
 							<div class="header-search__container  motta-type--input-text">
 
 								<input type="text" name="s" class="header-search__field" value=""
@@ -1699,7 +1708,9 @@
 										</path>
 									</svg>
 								</span>
-								<div class="header-search__results search-results woocommerce"></div>
+								<div class="header-search__results search-results woocommerce">
+									<div id="add_search2"> </div>
+								</div>
 							</div>
 
 
@@ -1716,6 +1727,7 @@
 									</span>
 								</span>
 							</button>
+
 							<input type="hidden" name="post_type" class="header-search__post-type"
 								   value="product">
 						</form>
@@ -1811,3 +1823,44 @@
 		</div>
 	</div>
 </header>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	let debounceTimeout;
+
+	$(document).on('input', '.header-search__field', function () {
+		var query = $(this).val().trim();
+
+		clearTimeout(debounceTimeout);
+
+		debounceTimeout = setTimeout(function () {
+			if (query.length >= 3) {
+
+				$.ajax({
+					url: '@Url.Action("Search", "Home")',
+					type: 'GET',
+					data: { query: query },
+					success: function (result) {
+						if (window.innerWidth >=1025) {
+							$('#add_search1').html(result);
+							$('#add_search1').removeClass('hidden');
+						} else {
+							$('#add_search2').html(result);
+							$('#add_search2').removeClass('hidden');
+						}
+
+					},
+					error: function () {
+						$('#add_search1').html('<p>Không tìm thấy sản phẩm.</p>');
+						$('#add_search2').html('<p>Không tìm thấy sản phẩm.</p>');
+					}
+				});
+			} else {
+				$('#add_search1').empty();
+				$('#add_search2').empty();
+			}
+		}, 300);
+	});
+</script>
+
+
