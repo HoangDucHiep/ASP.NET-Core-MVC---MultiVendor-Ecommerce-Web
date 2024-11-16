@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVEcommerce.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241115140134_INIT")]
+    [Migration("20241115183714_INIT")]
     partial class INIT
     {
         /// <inheritdoc />
@@ -912,7 +912,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
                             NormalizedUserName = "TRUFFLES_VENDOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHwbHCh5b7rTyyD9/JX4F8T6hqpC8iF9wq7yG7kApm3MbAXiyrPb/r/zUuNZyCd4KQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECzkOb2Yy3yHN95PoyU/PvzUoHZQEDX38/oTvlqkk8rwvD3Su+MvLPb+MttJTPyfXA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

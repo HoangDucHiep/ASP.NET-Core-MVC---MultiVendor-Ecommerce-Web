@@ -394,7 +394,7 @@ namespace MVEcommerce.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Avatar", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a", 0, null, "", "ApplicationUser", "truffles@example.com", true, "Truffles Vendor", null, false, null, "TRUFFLES@EXAMPLE.COM", "TRUFFLES_VENDOR", "AQAAAAIAAYagAAAAEHwbHCh5b7rTyyD9/JX4F8T6hqpC8iF9wq7yG7kApm3MbAXiyrPb/r/zUuNZyCd4KQ==", null, false, "", false, "truffles_vendor" });
+                values: new object[] { "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a", 0, null, "", "ApplicationUser", "truffles@example.com", true, "Truffles Vendor", null, false, null, "TRUFFLES@EXAMPLE.COM", "TRUFFLES_VENDOR", "AQAAAAIAAYagAAAAECzkOb2Yy3yHN95PoyU/PvzUoHZQEDX38/oTvlqkk8rwvD3Su+MvLPb+MttJTPyfXA==", null, false, "", false, "truffles_vendor" });
 
             migrationBuilder.InsertData(
                 table: "Categories",

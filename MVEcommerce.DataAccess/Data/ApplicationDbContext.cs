@@ -127,40 +127,40 @@ namespace MVEcommerce.DataAccess.Data
 				new Product() { ProductId = 4, VendorId = 1, CategoryId = 8, Name = "Apple – iPhone 11 64GB", Slug = "iphone-11-64gb", Description = "Lorem ipsum dolor sit amet-4, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = null, Stock = null, SKU = "SKU-4", HasVariant = true, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
 			);
 
-            // Seed ProductVariant
-            modelBuilder.Entity<ProductVariant>().HasData(
-                new ProductVariant() { VariantId = 1, ProductId = 4, Name = "Color", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
-            );
+			// Seed ProductVariant
+			modelBuilder.Entity<ProductVariant>().HasData(
+				new ProductVariant() { VariantId = 1, ProductId = 4, Name = "Color", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
+			);
 
-            // Seed ProductVariantOption
-            modelBuilder.Entity<ProductVariantOption>().HasData(
-                new ProductVariantOption() { OptionId = 1, VariantId = 1, Value = "Black", Price = 400, Sale = 20, Stock = 100, SKU = "SKU-4-Black", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
-                new ProductVariantOption() { OptionId = 2, VariantId = 1, Value = "Red", Price = 450, Sale = 10, Stock = 100, SKU = "SKU-4-White", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
-            );
+			// Seed ProductVariantOption
+			modelBuilder.Entity<ProductVariantOption>().HasData(
+				new ProductVariantOption() { OptionId = 1, VariantId = 1, Value = "Black", Price = 400, Sale = 20, Stock = 100, SKU = "SKU-4-Black", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
+				new ProductVariantOption() { OptionId = 2, VariantId = 1, Value = "Red", Price = 450, Sale = 10, Stock = 100, SKU = "SKU-4-White", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
+			);
 
-            // Seed ProductImage
-            modelBuilder.Entity<ProductImage>().HasData(
-                // product 1 images
-                new ProductImage() { ImageId = 1, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/4-1.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
-                new ProductImage() { ImageId = 2, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/2-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                new ProductImage() { ImageId = 3, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/1-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                new ProductImage() { ImageId = 4, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/3-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                //product 2 images
-                new ProductImage() { ImageId = 5, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-73.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
-                new ProductImage() { ImageId = 6, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-54.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                new ProductImage() { ImageId = 7, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/4-37.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                //product 3 images
-                new ProductImage() { ImageId = 8, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-71.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
-                new ProductImage() { ImageId = 9, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/2-61.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                new ProductImage() { ImageId = 10, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-52.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                //product 4 and its variant images
-                new ProductImage() { ImageId = 11, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/1.jpeg?fit=1400%2C1400&ssl=1", IsMain = true },
-                new ProductImage() { ImageId = 12, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/2.jpeg?fit=1400%2C1400&ssl=1", IsMain = false },
-                new ProductImage() { ImageId = 13, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/3.jpeg?fit=1400%2C1400&ssl=1", IsMain = false },
-                new ProductImage() { ImageId = 14, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/1-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                new ProductImage() { ImageId = 15, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/2-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-                new ProductImage() { ImageId = 16, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/3-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false }
-            );
-        }
+			// Seed ProductImage
+			modelBuilder.Entity<ProductImage>().HasData(
+				// product 1 images
+				new ProductImage() { ImageId = 1, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/4-1.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
+				new ProductImage() { ImageId = 2, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/2-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				new ProductImage() { ImageId = 3, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/1-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				new ProductImage() { ImageId = 4, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/3-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				//product 2 images
+				new ProductImage() { ImageId = 5, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-73.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
+				new ProductImage() { ImageId = 6, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-54.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				new ProductImage() { ImageId = 7, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/4-37.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				//product 3 images
+				new ProductImage() { ImageId = 8, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-71.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
+				new ProductImage() { ImageId = 9, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/2-61.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				new ProductImage() { ImageId = 10, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-52.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				//product 4 and its variant images
+				new ProductImage() { ImageId = 11, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/1.jpeg?fit=1400%2C1400&ssl=1", IsMain = true },
+				new ProductImage() { ImageId = 12, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/2.jpeg?fit=1400%2C1400&ssl=1", IsMain = false },
+				new ProductImage() { ImageId = 13, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/3.jpeg?fit=1400%2C1400&ssl=1", IsMain = false },
+				new ProductImage() { ImageId = 14, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/1-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				new ProductImage() { ImageId = 15, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/2-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
+				new ProductImage() { ImageId = 16, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/3-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false }
+			);
+		}
 	}
 }
