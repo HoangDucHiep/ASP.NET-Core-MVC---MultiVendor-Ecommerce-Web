@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MVEcommerce.Models.ViewModels.ProductDetailViewModel
-{
+{	
 	public class ProductDetailViewModel
 	{
 		public Product product { get; set; }
