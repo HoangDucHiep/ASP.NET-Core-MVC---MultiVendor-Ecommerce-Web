@@ -33,7 +33,8 @@
 
     <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Product.ProductId" />
-        <input type="hidden" asp-for="Product.ProductId" />
+        <input type="hidden" asp-for="Product.VendorId" />
+
         <div class="row">
             <div class="col-lg-8 mb-3 mb-lg-0">
                 <!-- Card -->
@@ -137,7 +138,7 @@
                                                             <div class="mb-4">
                                                                 <label class="form-label">Option Images</label>
 
-                                                                <div id="existOptionImages_@j" class="d-flex flex-wrap gap-2 mb-2">
+                                                                <div id="optionImagesPreview_@j" class="d-flex flex-wrap gap-2 mb-2">
 
                                                                     <!-- Image previews will be added here -->
                                                                     @if (option != null && option.ProductImages != null && option.ProductImages.Count != 0)
@@ -152,12 +153,8 @@
                                                                     }
                                                                 </div>
 
-                                                                <input type="file" 
-                                                                class="form-control" 
-                                                                multiple 
-                                                                accept="image/*"
-                                                                onchange="previewOptionImages(event, @j)" 
-                                                                name="optionImages[@j]" />
+                                                                <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, @j)" name="optionImages[@j]" id="optionImages_@j"/>
+
                                                             </div>
 
                                                         </div>
@@ -439,6 +436,7 @@
 
             var optionHtml = `
                 <div class="option-item row mb-3">
+                    <input type="hidden" asp-for="ProductVariantOptions[${optionIndex}].OptionId" />
                     <input type="hidden" asp-for="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
                     <div class="col-md-2 mb-2 mb-md-0">
                         <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
@@ -582,10 +580,6 @@
             }
         }
 
-        function removeMainImage() {
-            document.getElementById('mainImage').value = '';
-            document.getElementById('mainImageContainer').style.display = 'none';
-        }
 
         function previewAdditionalImages(event) {
             const container = document.getElementById('additionalImagesPreview');
