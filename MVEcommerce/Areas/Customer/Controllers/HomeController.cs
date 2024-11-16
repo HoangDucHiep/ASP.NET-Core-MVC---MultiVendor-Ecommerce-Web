@@ -49,9 +49,10 @@ namespace MVEcommerce.Areas.Customer.Controllers
 		[Route("ProductDetail/{slug}")]
 		public IActionResult ProductDetail(string slug)
         {
-               var product = _unitOfWork.Product.GetProductBySlug(slug); 
+			var product = _unitOfWork.Product.Get(c => c.Slug == slug, includeProperties:"ProductImages,ProductVariants,ProductVariantOptions") ;
+			//var product = _unitOfWork.Product.GetProductBySlug(slug); 
 
-                    if (product == null)
+			if (product == null)
                     {
                         return NotFound();
                     }
