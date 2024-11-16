@@ -11,16 +11,9 @@ namespace MVEcommerce.Models
         [ForeignKey("Product")]
         public int ProductId { get; set; }
 
-
         public string? Name { get; set; }
-
-
         public string? Status { get; set; } = "active";  // Active, InActive
-
-
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
-
-
         public DateTime? UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
