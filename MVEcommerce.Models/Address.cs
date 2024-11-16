@@ -6,11 +6,16 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace MVEcommerce.Models
 {
     public class Address
     {
+
+        public Address()
+        {
+        }
         public Address(string email, string phoneNumber)
         {
             Email = email;
@@ -21,25 +26,23 @@ namespace MVEcommerce.Models
         public int AddressId { get; set; }
 
         [ForeignKey("ApplicationUser")]
+        [ValidateNever]
         public string UserId { get; set; }
 
         [ForeignKey("Vendor")]
+        [ValidateNever]
         public int? VendorId { get; set; }
 
         [Required]
-        public string Country { get; set; }
+        public string Country { get; set; } = string.Empty;
         [Required]
-        public string City { get; set; }
+        public string City { get; set; } = string.Empty;
         [Required]
-        public string Street { get; set; }
+        public string Street { get; set; } = string.Empty;
         [Required]
-        public string Apartment { get; set; }
-        public string ZipCode { get; set; }
-        [Required]
-        public string Email { get; set; }
-        [Required]
-        public string PostalCode { get; set; }
-        [Required]
-        public string PhoneNumber { get; set; }
+        public string Apartment { get; set; } = string.Empty;
+        public string ZipCode { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
     }
 }

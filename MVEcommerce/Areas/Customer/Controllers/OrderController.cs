@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,9 +26,9 @@ namespace MVEcommerce.Areas.Customer.Controllers
             _db = db;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-            
             if (User.Identity is not ClaimsIdentity claimsIdentity)
             {
                 return RedirectToAction("Error", "Home");
@@ -38,23 +39,27 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 return RedirectToAction("Error", "Home");
             }
             var userId = userIdClaim.Value;
-
+        
             ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Id == userId)!;
-
-            var orders = _unitOfWork.Order.GetAll(o => o.UserId == userId, includeProperties: "OrderDetails,OrderDetails.Product.Vendor").OrderByDescending(o => o.OrderDate).ToList();
-
-            Address userAddress = _unitOfWork.Address.Get(a=>a.UserId == userId);
-
+        
+            var carts = _unitOfWork.ShoppingCart.GetAll(c => c.UserId == userId, includeProperties: "Product.ProductImages,Product.Vendor,ProductVariantOption").ToList();
+        
+            Address userAddress = _unitOfWork.Address.Get(a => a.UserId == userId);
+        
+            if (userAddress == null)
+            {
+                userAddress = new Address(user.Email, user.PhoneNumber);
+            }
+        
             var vm = new OrderIndexViewModel
             {
                 User = user,
-                Orders = orders,
-                address = userAddress
+                Carts = carts,
+                Address = userAddress
             };
-
+        
             return View(vm);
         }
-
 
 
         public IActionResult OrderConfirmation()
@@ -64,14 +69,19 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PlaceOrder()
+        public async Task<IActionResult> PlaceOrder(Address address)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             var userId = claim.Value;
 
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
             // Get the shopping cart items for the user
-            var cartItems = _unitOfWork.ShoppingCart.GetAll(c => c.UserId == userId, includeProperties: "Product").ToList();
+            var cartItems = _unitOfWork.ShoppingCart.GetAll(c => c.UserId == userId, includeProperties: "Product.ProductImages,Product.Vendor,ProductVariantOption").ToList();
 
             if (cartItems.Count == 0)
             {
@@ -82,6 +92,31 @@ namespace MVEcommerce.Areas.Customer.Controllers
             {
                 try
                 {
+                    // Update user address
+                    var userAddress = _unitOfWork.Address.Get(a => a.UserId == userId && a.AddressId == address.AddressId);
+
+                    if (userAddress == null)
+                    {
+                        address.UserId = userId;
+                        _unitOfWork.Address.Add(address);
+                    }
+                    else
+                    {
+                        userAddress.Country = address.Country;
+                        userAddress.City = address.City;
+                        userAddress.Street = address.Street;
+                        userAddress.Apartment = address.Apartment;
+                        userAddress.ZipCode = address.ZipCode;
+                        userAddress.Email = address.Email;
+                        userAddress.PhoneNumber = address.PhoneNumber;
+
+                        _unitOfWork.Address.Update(userAddress);
+                    }
+
+                    _unitOfWork.Save();
+
+                    string shippingAddress = address.Country + ", " + address.City + ", " + address.Street + ", " + address.Apartment;
+
                     // Group cart items by vendor
                     var vendorGroups = cartItems.GroupBy(c => c.Product.VendorId).ToList();
 
@@ -89,7 +124,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                     if (vendorGroups.Count == 1)
                     {
                         // Create the main order
-                        var mainOrder = CreateOrder(userId, null);
+                        var mainOrder = CreateOrder(userId, null, shippingAddress);
                         _unitOfWork.Order.Add(mainOrder);
                         _unitOfWork.Save();
 
@@ -100,7 +135,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                             _unitOfWork.OrderDetail.Add(orderDetail);
 
                             // Update main order total amount
-                            mainOrder.TotalAmount += orderDetail.Price * orderDetail.Quantity;
+                            mainOrder.TotalAmount += (orderDetail.Price * (1 - (orderDetail.Sale ?? 0) / 100)) * orderDetail.Quantity;
                         }
 
                         // Save all changes
@@ -109,14 +144,14 @@ namespace MVEcommerce.Areas.Customer.Controllers
                     else
                     {
                         // Create the main order
-                        var mainOrder = CreateOrder(userId, null);
+                        var mainOrder = CreateOrder(userId, null, shippingAddress);
                         _unitOfWork.Order.Add(mainOrder);
                         _unitOfWork.Save();
 
                         // Create suborders for each vendor group
                         foreach (var vendorGroup in vendorGroups)
                         {
-                            var subOrder = CreateOrder(userId, mainOrder.OrderId);
+                            var subOrder = CreateOrder(userId, mainOrder.OrderId, shippingAddress);
                             _unitOfWork.Order.Add(subOrder);
                             _unitOfWork.Save();
 
@@ -126,7 +161,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                                 _unitOfWork.OrderDetail.Add(orderDetail);
 
                                 // Update suborder total amount
-                                subOrder.TotalAmount += orderDetail.Price * orderDetail.Quantity;
+                                subOrder.TotalAmount += (orderDetail.Price * (1 - (orderDetail.Sale ?? 0) / 100)) * orderDetail.Quantity;
                             }
 
                             mainOrder.TotalAmount += subOrder.TotalAmount;
@@ -165,7 +200,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(cartItems);
         }
 
-        private Order CreateOrder(string userId, Guid? parentOrderId)
+        private Order CreateOrder(string userId, Guid? parentOrderId, string shippingAddress)
         {
             return new Order
             {
@@ -173,7 +208,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 OrderDate = DateTime.Now,
                 Status = "Pending",
                 ParentOrderId = parentOrderId,
-                TotalAmount = 0 // Will be updated later
+                TotalAmount = 0, // Will be updated later
+                ShippingAddress = shippingAddress
             };
         }
 
@@ -184,7 +220,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 OrderId = orderId,
                 ProductId = cartItem.ProductId,
                 Quantity = cartItem.Quantity,
-                Price = cartItem.Product.Price.Value
+                Price  = (decimal)(cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Price : cartItem.Product.Price)!,
+                Sale = cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Sale : cartItem.Product.Sale!
             };
         }
     }

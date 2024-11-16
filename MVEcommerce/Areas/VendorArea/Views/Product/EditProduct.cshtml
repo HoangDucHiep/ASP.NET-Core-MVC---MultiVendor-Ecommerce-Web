@@ -436,8 +436,7 @@
 
             var optionHtml = `
                 <div class="option-item row mb-3">
-                    <input type="hidden" asp-for="ProductVariantOptions[${optionIndex}].OptionId" />
-                    <input type="hidden" asp-for="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
+                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
                     <div class="col-md-2 mb-2 mb-md-0">
                         <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
                     </div>

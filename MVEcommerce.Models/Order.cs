@@ -35,8 +35,6 @@ namespace MVEcommerce.Models
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
-        [ForeignKey("Address")]
-        public int AddressId { get; set; }
-        public virtual Address Address { get; set; }
+        public string ShippingAddress { get; set; }
     }
 }
