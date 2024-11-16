@@ -17,5 +17,5 @@ namespace MVEcommerce.DataAccess.Repositoies
         {
             _db.Update(obj);
         }
-    }
+	}
 }
