@@ -26,6 +26,41 @@ namespace MVEcommerce.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
         }
+		[HttpGet]
+		public IActionResult Search(string query)
+		{
+			if (string.IsNullOrWhiteSpace(query))
+			{
+				return View();
+			}
+			var products = _unitOfWork.Product.GetAll(
+				p => p.Name.Contains(query) || p.Description.Contains(query),
+				includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
+			var categoryProduct = new CategoryProduct
+			{
+				Products = products
+			};
+			
+			return PartialView("Search", categoryProduct);
+		}
+
+        [HttpGet]
+        public IActionResult SearchProduct(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                return View();
+            }
+            var products = _unitOfWork.Product.GetAll(
+                p => p.Name.Contains(s) || p.Description.Contains(s),
+                includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
+            var categoryProduct = new CategoryProduct
+            {
+                Products = products
+            };
+            ViewBag.Products = s;
+            return View(categoryProduct);
+        }
 
         [Route("category/{slug}")]
         public IActionResult ProductsByCategory(string slug)
