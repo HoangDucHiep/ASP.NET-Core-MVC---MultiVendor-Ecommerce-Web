@@ -242,7 +242,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         product.Description = vm.Product.Description;
                         product.CategoryId = vm.Product.CategoryId;
 
-                        // Update variant
                         
         
                         // Update main image
@@ -288,33 +287,73 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 DeleteImage(image.ImageUrl);
                             }
                         }
-        
-                        // Remove variants and options
-                        if (deletedProductVariant != null)
+                        
+                        // Update or add variant
+                        if (vm.ProductVariant != null && !string.IsNullOrEmpty(vm.ProductVariant.Name))
                         {
-                            var variantEntity = _unitOfWork.ProductVariant.Get(v => v.VariantId == deletedProductVariant.VariantId, includeProperties: "ProductVariantOptions.ProductImages");
-                            if (variantEntity != null)
+                            var existingVariant = product.ProductVariants.FirstOrDefault();
+                            if (existingVariant != null)
                             {
-                                foreach (var option in variantEntity.ProductVariantOptions)
+                                existingVariant.Name = vm.ProductVariant.Name;
+                                _unitOfWork.ProductVariant.Update(existingVariant);
+                            }
+                            else
+                            {
+                                vm.ProductVariant.ProductId = product.ProductId;
+                                _unitOfWork.ProductVariant.Add(vm.ProductVariant);
+                                _unitOfWork.Save();
+                            }
+
+                            // Update or add options
+                            for (int i = 0; i < vm.ProductVariantOptions.Count; i++)
+                            {
+                                var option = vm.ProductVariantOptions[i];
+                                if (option.OptionId > 0)
                                 {
-                                    foreach (var image in option.ProductImages)
+                                    var existingOption = _unitOfWork.ProductVariantOption.Get(o => o.OptionId == option.OptionId);
+                                    if (existingOption != null)
                                     {
-                                        DeleteImage(image.ImageUrl);
-                                        _unitOfWork.ProductImage.Remove(image);
+                                        existingOption.Value = option.Value;
+                                        existingOption.Price = option.Price;
+                                        existingOption.Stock = option.Stock;
+                                        existingOption.SKU = option.SKU;
+                                        existingOption.Sale = option.Sale;
+                                        _unitOfWork.ProductVariantOption.Update(existingOption);
                                     }
                                 }
-                                variantEntity.Status = "Deleted";
-                                _unitOfWork.ProductVariant.Update(variantEntity);
+                                else
+                                {
+                                    option.VariantId = vm.ProductVariant.VariantId;
+                                    _unitOfWork.ProductVariantOption.Add(option);
+                                }
+
+                                // Handle option images
+                                if (optionImages != null && optionImages.Count > i)
+                                {
+                                    foreach (var image in optionImages[i])
+                                    {
+                                        string fileName = await SaveImage(image);
+                                        _unitOfWork.ProductImage.Add(new ProductImage
+                                        {
+                                            ProductId = product.ProductId,
+                                            VariantOptionID = option.OptionId,
+                                            ImageUrl = fileName
+                                        });
+                                    }
+                                }
                             }
-                        }
 
-
-                        foreach (var option in deletedProductVariantOptions)
-                        {
-                            var optionEntity = product.ProductVariants.SelectMany(v => v.ProductVariantOptions).FirstOrDefault(o => o.OptionId == option.OptionId);
-                            if (optionEntity != null)
+                            // Remove deleted options
+                            if (deletedProductVariantOptions != null)
                             {
-                                _unitOfWork.ProductVariantOption.Remove(optionEntity);
+                                foreach (var option in deletedProductVariantOptions)
+                                {
+                                    var deletedOption = _unitOfWork.ProductVariantOption.Get(o => o.OptionId == option.OptionId);
+                                    if (deletedOption != null)
+                                    {
+                                        _unitOfWork.ProductVariantOption.Remove(deletedOption);
+                                    }
+                                }
                             }
                         }
     

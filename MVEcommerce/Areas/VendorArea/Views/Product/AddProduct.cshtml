@@ -306,23 +306,6 @@
 
             return isValid;
         }
-
-        function previewMainImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('mainImageContainer').style.display = 'block';
-                    document.getElementById('mainImagePreview').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function removeMainImage() {
-            document.getElementById('mainImage').value = '';
-            document.getElementById('mainImageContainer').style.display = 'none';
-        }
     </script>
 
     <script>
@@ -511,11 +494,13 @@
                 }
                 reader.readAsDataURL(file);
             }
+            validateForm();
         }
 
         function removeMainImage() {
             document.getElementById('mainImage').value = '';
             document.getElementById('mainImageContainer').style.display = 'none';
+            validateForm();
         }
 
         function previewAdditionalImages(event) {
