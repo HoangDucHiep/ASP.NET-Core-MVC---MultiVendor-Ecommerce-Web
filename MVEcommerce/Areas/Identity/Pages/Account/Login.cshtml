@@ -50,7 +50,7 @@
                                 <button id="login-submit" type="submit" class="woocommerce-button button woocommerce-form-login__submit">Sign in</button>
                             </p>
                         </form>
-                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="woocommerce-form woocommerce-form-register register ">
+                        <form id="registerForm" asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="woocommerce-form woocommerce-form-register register ">
                             <div asp-validation-summary="ModelOnly" style="color: #e22525; role="alert"></div>
                             <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                 <label asp-for="Input.Email">Email</label>

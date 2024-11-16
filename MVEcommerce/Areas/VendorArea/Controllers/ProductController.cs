@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using MVEcommerce.DataAccess.Data;
 using MVEcommerce.Models.ViewModels.Account;
 using MVEcommerce.Utility;
+using Newtonsoft.Json;
 
 namespace MVEcommerce.Areas.VendorArea.Controllers
 {
@@ -217,7 +218,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProduct(VendorEditProductVM vm, IFormFile? mainImage, List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages, List<string> deleteImages, List<ProductVariantOption> deletedProductVariantOptions, ProductVariant deletedProductVariant)
+        public async Task<IActionResult> EditProduct(VendorEditProductVM vm, IFormFile? mainImage, List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages, string deleteImages, List<ProductVariantOption> deletedProductVariantOptions, ProductVariant deletedProductVariant)
         {
             if (ModelState.IsValid)
             {
@@ -278,13 +279,17 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         }
         
                         // Remove images
-                        foreach (var imageId in deleteImages)
+                        if (!string.IsNullOrEmpty(deleteImages))
                         {
-                            var image = product.ProductImages.FirstOrDefault(i => i.ImageId == int.Parse(imageId));
-                            if (image != null)
+                            var imageIds = JsonConvert.DeserializeObject<List<int>>(deleteImages);
+                            foreach (var imageId in imageIds)
                             {
-                                _unitOfWork.ProductImage.Remove(image);
-                                DeleteImage(image.ImageUrl);
+                                var image = product.ProductImages.FirstOrDefault(i => i.ImageId == imageId);
+                                if (image != null)
+                                {
+                                    _unitOfWork.ProductImage.Remove(image);
+                                    DeleteImage(image.ImageUrl);
+                                }
                             }
                         }
                         

@@ -137,7 +137,7 @@
                                                         <div class="col-12">
                                                             <div class="mb-4">
                                                                 <label class="form-label">Option Images</label>
-
+                                                                <input type="hidden" id="deleteImages" name="deleteImages" />
                                                                 <div id="optionImagesPreview_@j" class="d-flex flex-wrap gap-2 mb-2">
 
                                                                     <!-- Image previews will be added here -->
@@ -147,7 +147,7 @@
                                                                         {
                                                                             <div style="position: relative; width: 100px; height: 100px;">
                                                                                 <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
-                                                                                <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="removeExistingImage('@image.ImageId', this)">×</button>
+                                                                                <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="">×</button>
                                                                             </div>
                                                                         }
                                                                     }
@@ -240,7 +240,7 @@
                                     {
                                         <div style="position: relative; width: 100px; height: 100px;">
                                             <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
-                                            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="removeExistingImage('@image.ImageId', this)">×</button>
+                                            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="RemoveExistAdditonImages(this, @image.ImageId)">×</button>
                                         </div>
                                     }
                                 }
@@ -589,6 +589,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const wrapper = document.createElement('div');
+                    wrapper.className = 'image-wrapper'; // Thêm class image-wrapper
                     wrapper.style.position = 'relative';
                     wrapper.style.width = '100px';
                     wrapper.style.height = '100px';
@@ -676,5 +677,28 @@
             files.forEach(file => dataTransfer.items.add(file));
             input.files = dataTransfer.files;
         }
+
+
+        let deleteImages = [];
+
+        function RemoveExistAdditonImages(button, imageId) {
+            // Tìm phần tử cha gần nhất là div
+            const imageWrapper = button.closest('div');
+            
+            // Kiểm tra nếu phần tử cha tồn tại
+            if (imageWrapper) {
+                // Xóa ảnh trên UI
+                imageWrapper.remove();
+
+                // Thêm ảnh vào danh sách deleteImages
+                deleteImages.push(imageId);
+
+                // Cập nhật input ẩn với danh sách deleteImages
+                document.getElementById('deleteImages').value = JSON.stringify(deleteImages);
+            } else {
+                console.error('Cannot find the parent div element.');
+            }
+        }
+            
     </script>
 }
