@@ -59,55 +59,57 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 try
                 {
                     // Group cart items by vendor
-                    var vendorGroups = cartItems.GroupBy(c => c.Product.VendorId);
+                    var vendorGroups = cartItems.GroupBy(c => c.Product.VendorId).ToList();
 
-                    // Create the main order
-                    var mainOrder = new Order
+                    // Check if all products are from the same vendor
+                    if (vendorGroups.Count == 1)
                     {
-                        UserId = userId,
-                        OrderDate = DateTime.Now,
-                        Status = "Pending",
-                        TotalAmount = 0 // Will be updated later
-                    };
-                    _unitOfWork.Order.Add(mainOrder);
-                    _unitOfWork.Save();
-
-                    // Create suborders for each vendor group
-                    foreach (var vendorGroup in vendorGroups)
-                    {
-                        var subOrder = new Order
-                        {
-                            UserId = userId,
-                            OrderDate = DateTime.Now,
-                            Status = "Pending",
-                            ParentOrderId = mainOrder.OrderId,
-                            TotalAmount = 0 // Will be updated later
-                        };
-                        _unitOfWork.Order.Add(subOrder);
+                        // Create the main order
+                        var mainOrder = CreateOrder(userId, null);
+                        _unitOfWork.Order.Add(mainOrder);
                         _unitOfWork.Save();
 
-                        // Create order details for each product in the vendor group
-                        foreach (var cartItem in vendorGroup)
+                        // Create order details for each product
+                        foreach (var cartItem in cartItems)
                         {
-                            var orderDetail = new OrderDetail
-                            {
-                                OrderId = subOrder.OrderId,
-                                ProductId = cartItem.ProductId,
-                                Quantity = cartItem.Quantity,
-                                Price = cartItem.Product.Price.Value
-                            };
+                            var orderDetail = CreateOrderDetail(mainOrder.OrderId, cartItem);
                             _unitOfWork.OrderDetail.Add(orderDetail);
 
-                            // Update suborder total amount
-                            subOrder.TotalAmount += orderDetail.Price * orderDetail.Quantity;
+                            // Update main order total amount
+                            mainOrder.TotalAmount += orderDetail.Price * orderDetail.Quantity;
                         }
 
-                        // Update main order total amount
-                        mainOrder.TotalAmount += subOrder.TotalAmount;
+                        // Save all changes
+                        _unitOfWork.Save();
                     }
+                    else
+                    {
+                        // Create the main order
+                        var mainOrder = CreateOrder(userId, null);
+                        _unitOfWork.Order.Add(mainOrder);
+                        _unitOfWork.Save();
 
-                    // Save all changes
-                    _unitOfWork.Save();
+                        // Create suborders for each vendor group
+                        foreach (var vendorGroup in vendorGroups)
+                        {
+                            var subOrder = CreateOrder(userId, mainOrder.OrderId);
+                            _unitOfWork.Order.Add(subOrder);
+                            _unitOfWork.Save();
+
+                            foreach (var cartItem in vendorGroup)
+                            {
+                                var orderDetail = CreateOrderDetail(subOrder.OrderId, cartItem);
+                                _unitOfWork.OrderDetail.Add(orderDetail);
+
+                                // Update suborder total amount
+                                subOrder.TotalAmount += orderDetail.Price * orderDetail.Quantity;
+                            }
+
+                            mainOrder.TotalAmount += subOrder.TotalAmount;
+                        }
+
+                        _unitOfWork.Save();
+                    }
 
                     // Clear the shopping cart
                     _unitOfWork.ShoppingCart.RemoveRange(cartItems);
@@ -127,6 +129,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
             }
         }
 
+
         public IActionResult PlaceOrderTest()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -136,6 +139,29 @@ namespace MVEcommerce.Areas.Customer.Controllers
             var cartItems = _unitOfWork.ShoppingCart.GetAll(c => c.UserId == userId, includeProperties: "Product").ToList();
 
             return View(cartItems);
+        }
+
+        private Order CreateOrder(string userId, Guid? parentOrderId)
+        {
+            return new Order
+            {
+                UserId = userId,
+                OrderDate = DateTime.Now,
+                Status = "Pending",
+                ParentOrderId = parentOrderId,
+                TotalAmount = 0 // Will be updated later
+            };
+        }
+
+        private OrderDetail CreateOrderDetail(Guid orderId, ShoppingCart cartItem)
+        {
+            return new OrderDetail
+            {
+                OrderId = orderId,
+                ProductId = cartItem.ProductId,
+                Quantity = cartItem.Quantity,
+                Price = cartItem.Product.Price.Value
+            };
         }
     }
 }

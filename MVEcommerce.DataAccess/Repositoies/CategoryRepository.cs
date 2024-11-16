@@ -12,12 +12,6 @@ namespace MVEcommerce.DataAccess.Repositoies
             _db = db;
         }
 
-		public Category GetBySlug(string slug)
-		{
-			return _db.Categories.FirstOrDefault(c => c.Slug == slug);
-		}
-
-
 		public void Update(Category obj)
         {
             _db.Update(obj);

@@ -17,6 +17,7 @@ namespace MVEcommerce.DataAccess.Repositoies
         public IShoppingCartRepository ShoppingCart { get; private set; }
         public IOrderRepository Order { get; private set; }
         public IOrderDetailRepository OrderDetail { get; private set; }
+        public IAddressRepository Address { get; private set; }
 
 
         public UnitOfWork (ApplicationDbContext db)
@@ -31,6 +32,7 @@ namespace MVEcommerce.DataAccess.Repositoies
             ShoppingCart = new ShoppingCartRepository(_db);
             Order = new OrderRepository(_db);
             OrderDetail = new OrderDetailRepository(_db);
+            Address = new AddressRepository(_db);
         }
         
 

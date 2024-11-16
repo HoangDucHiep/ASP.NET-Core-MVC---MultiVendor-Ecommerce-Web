@@ -30,7 +30,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         [Route("category/{slug}")]
         public IActionResult ProductsByCategory(string slug)
         {
-            var category = _unitOfWork.Category.GetBySlug(slug);
+            var category = _unitOfWork.Category.Get(c=>c.Slug == slug);
             if (category == null)
             {
                 return NotFound(); 
@@ -114,7 +114,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
 		public IActionResult ProductDetail(string slug)
         {
-               var product = _unitOfWork.Product.GetProductBySlug(slug); 
+               var product = _unitOfWork.Product.Get(c=>c.Slug == slug); 
 
                     if (product == null)
                     {

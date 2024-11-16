@@ -20,6 +20,7 @@ namespace MVEcommerce.DataAccess.Data
 		public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
         // User Stuffs
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -101,7 +102,8 @@ namespace MVEcommerce.DataAccess.Data
 				PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(null, "Password123!"),
 				SecurityStamp = string.Empty,
 				ConcurrencyStamp = string.Empty,
-				FullName = "Truffles Vendor"
+				FullName = "Truffles Vendor",
+
 			};
 
 			modelBuilder.Entity<ApplicationUser>().HasData(user);
