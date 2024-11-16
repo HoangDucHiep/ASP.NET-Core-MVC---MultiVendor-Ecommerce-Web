@@ -14,6 +14,28 @@ namespace MVEcommerce.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    AddressId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VendorId = table.Column<int>(type: "int", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Apartment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -189,11 +211,18 @@ namespace MVEcommerce.DataAccess.Migrations
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ParentOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Order_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Order_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -217,6 +246,8 @@ namespace MVEcommerce.DataAccess.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Avartar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Banner = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -405,7 +436,7 @@ namespace MVEcommerce.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Avatar", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FullName", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a", 0, null, "", "ApplicationUser", "truffles@example.com", true, "Truffles Vendor", null, false, null, "TRUFFLES@EXAMPLE.COM", "TRUFFLES_VENDOR", "AQAAAAIAAYagAAAAEJbJpH0pWF3AVscCQ6JfMRp3yIs6VWgdyYEHp0fBTsW1sH1c2QDcvK/c2qnxElN6gw==", null, false, "", false, "truffles_vendor" });
+                values: new object[] { "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a", 0, null, "", "ApplicationUser", "truffles@example.com", true, "Truffles Vendor", null, false, null, "TRUFFLES@EXAMPLE.COM", "TRUFFLES_VENDOR", "AQAAAAIAAYagAAAAEChZdTrBA+QUamEx4Z/58pVvOBt31VF/Q9yjUYzz7TuELXSC2QaihgGdnQZGQIQ6Hw==", null, false, "", false, "truffles_vendor" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
@@ -427,8 +458,8 @@ namespace MVEcommerce.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Vendors",
-                columns: new[] { "VendorId", "CreatedAt", "Name", "Status", "UpdatedAt", "UserId" },
-                values: new object[] { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Truffles", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a" });
+                columns: new[] { "VendorId", "Avartar", "Banner", "CreatedAt", "Name", "Status", "UpdatedAt", "UserId" },
+                values: new object[] { 1, null, null, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Truffles", "active", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a" });
 
             migrationBuilder.InsertData(
                 table: "Products",
@@ -523,6 +554,11 @@ namespace MVEcommerce.DataAccess.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_AddressId",
+                table: "Order",
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_ParentOrderId",
@@ -630,6 +666,9 @@ namespace MVEcommerce.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductVariantsOption");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "ProductVariants");

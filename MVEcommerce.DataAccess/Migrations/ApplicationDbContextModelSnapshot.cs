@@ -223,6 +223,9 @@ namespace MVEcommerce.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -241,6 +244,8 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("ParentOrderId");
 
@@ -704,9 +709,6 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VendorId"));
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Avartar")
                         .HasColumnType("nvarchar(max)");
 
@@ -731,8 +733,6 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     b.HasKey("VendorId");
 
-                    b.HasIndex("AddressId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Vendors");
@@ -741,7 +741,6 @@ namespace MVEcommerce.DataAccess.Migrations
                         new
                         {
                             VendorId = 1,
-                            AddressId = 0,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Truffles",
                             Status = "active",
@@ -983,7 +982,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
                             NormalizedUserName = "TRUFFLES_VENDOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMoHVdS1DMmoI8UUV0xwPG3Xh+OHfZdH8dY7+V/MhYZnFJvYGgEDrixQH1CMosKPnw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEChZdTrBA+QUamEx4Z/58pVvOBt31VF/Q9yjUYzz7TuELXSC2QaihgGdnQZGQIQ6Hw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -994,6 +993,12 @@ namespace MVEcommerce.DataAccess.Migrations
 
             modelBuilder.Entity("MVEcommerce.Models.Order", b =>
                 {
+                    b.HasOne("MVEcommerce.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MVEcommerce.Models.Order", "ParentOrder")
                         .WithMany("SubOrders")
                         .HasForeignKey("ParentOrderId")
@@ -1004,6 +1009,8 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Address");
 
                     b.Navigation("ParentOrder");
 
@@ -1114,19 +1121,11 @@ namespace MVEcommerce.DataAccess.Migrations
 
             modelBuilder.Entity("MVEcommerce.Models.Vendor", b =>
                 {
-                    b.HasOne("MVEcommerce.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MVEcommerce.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Address");
 
                     b.Navigation("User");
                 });

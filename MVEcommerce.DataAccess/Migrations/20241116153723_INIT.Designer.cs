@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVEcommerce.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241116125259_INIT")]
+    [Migration("20241116153723_INIT")]
     partial class INIT
     {
         /// <inheritdoc />
@@ -24,6 +24,58 @@ namespace MVEcommerce.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MVEcommerce.Models.Address", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"));
+
+                    b.Property<string>("Apartment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("VendorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("MVEcommerce.Models.Category", b =>
                 {
@@ -174,6 +226,9 @@ namespace MVEcommerce.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -192,6 +247,8 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("ParentOrderId");
 
@@ -655,6 +712,12 @@ namespace MVEcommerce.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VendorId"));
 
+                    b.Property<string>("Avartar")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Banner")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -922,7 +985,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
                             NormalizedUserName = "TRUFFLES_VENDOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJbJpH0pWF3AVscCQ6JfMRp3yIs6VWgdyYEHp0fBTsW1sH1c2QDcvK/c2qnxElN6gw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEChZdTrBA+QUamEx4Z/58pVvOBt31VF/Q9yjUYzz7TuELXSC2QaihgGdnQZGQIQ6Hw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -933,6 +996,12 @@ namespace MVEcommerce.DataAccess.Migrations
 
             modelBuilder.Entity("MVEcommerce.Models.Order", b =>
                 {
+                    b.HasOne("MVEcommerce.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MVEcommerce.Models.Order", "ParentOrder")
                         .WithMany("SubOrders")
                         .HasForeignKey("ParentOrderId")
@@ -944,6 +1013,8 @@ namespace MVEcommerce.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Address");
+
                     b.Navigation("ParentOrder");
 
                     b.Navigation("User");
@@ -952,7 +1023,7 @@ namespace MVEcommerce.DataAccess.Migrations
             modelBuilder.Entity("MVEcommerce.Models.OrderDetail", b =>
                 {
                     b.HasOne("MVEcommerce.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1120,6 +1191,8 @@ namespace MVEcommerce.DataAccess.Migrations
 
             modelBuilder.Entity("MVEcommerce.Models.Order", b =>
                 {
+                    b.Navigation("OrderDetails");
+
                     b.Navigation("SubOrders");
                 });
 
