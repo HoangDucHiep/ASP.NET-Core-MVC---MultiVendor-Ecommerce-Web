@@ -1,0 +1,53 @@
+﻿@model MVEcommerce.Models.ViewModels.CategoryProduct.CategoryProduct
+@{
+    ViewData["Title"] = "Search";
+}
+
+@if (Model?.Products == null || !Model.Products.Any())
+{
+    <p>Không tìm thấy sản phẩm nào.+ViewBag.Products</p>
+}
+else
+{
+    <div class="search-list result-list-found">
+        @foreach (var product in Model.Products)
+        {
+            var price = product.Sale > 0 ? product.Price * (1 - product.Sale / 100) : product.Price;
+
+            <div class="list-item">
+                <a class="image-item" href="">
+                    <img width="1400" height="1400" src="@product.ProductImages!.Where(x => x. IsMain).FirstOrDefault()!.ImageUrl" class="attachment-shop_catalog size-shop_catalog" alt="" decoding="async" sizes="(max-width: 1400px) 100vw, 1400px">
+                </a>
+                <div class="content-item">
+                    @*asp *@
+                    <a class="title-item" href="">@product.Name</a>
+                    <div class="price-item">
+                        <span class="woocs_price_code" data-currency="" data-redraw-id="6738a7834012c" data-product-id="@product.ProductId">
+                            @if (@product.Sale > 0)
+                            {
+                                <del aria-hidden="true">
+                                    <span class="woocommerce-Price-amount amount">
+                                        <bdi>
+                                            <span class="woocommerce-Price-currencySymbol">$</span>@product.Price
+                                        </bdi>
+                                    </span>
+                                </del>
+                                <span class="screen-reader-text">Original price was: $@product.Price.</span>
+                            }
+
+                            <ins aria-hidden="true">
+                                <span class="woocommerce-Price-amount amount">
+                                    <bdi>
+                                        <span class="woocommerce-Price-currencySymbol">$</span>@price
+                                    </bdi>
+                                </span>
+                            </ins>
+                            <span class="screen-reader-text">Current price is: @price</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+}
