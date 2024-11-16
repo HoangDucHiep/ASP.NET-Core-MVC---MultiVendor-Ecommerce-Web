@@ -13,19 +13,6 @@ namespace MVEcommerce.DataAccess.Repositoies
             _db = db;
         }
 
-		public Product GetBySlug(string slug)
-		{
-			return _db.Products.FirstOrDefault(c => c.Slug == slug);
-		}
-		public Product GetProductBySlug(string slug)
-		{
-			return _db.Products
-				.Include(p => p.ProductImages)
-				.Include(p => p.ProductVariants)
-					.ThenInclude(v => v.ProductVariantOptions)
-					.Include(p => p.Category)
-				.FirstOrDefault(p => p.Slug == slug);
-		}
 		public void Update(Product obj)
         {
             _db.Update(obj);

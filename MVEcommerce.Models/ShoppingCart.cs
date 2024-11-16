@@ -16,6 +16,11 @@ namespace MVEcommerce.Models
 
         [ForeignKey("Product")]
         public int ProductId { get; set; }
+
+        [ForeignKey("ProductVariantOption")]
+        public int? VariantOptionID { get; set; } = null;
+        public virtual ProductVariantOption? ProductVariantOption { get; set; }
+
         [ValidateNever]
         public virtual Product Product { get; set; }
 

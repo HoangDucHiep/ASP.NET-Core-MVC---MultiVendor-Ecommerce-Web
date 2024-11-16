@@ -1,8 +1,7 @@
-﻿
-@model MVEcommerce.Models.ViewModels.CategoryProduct.CategoryProduct
+﻿@model MVEcommerce.Models.ViewModels.CategoryProduct.CategoryProduct
 @{
-    ViewData["Title"] = "ProductsByCategory";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "ProductsByCategory";
+	//Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 
@@ -38,22 +37,22 @@
 								<path d="M14.4 8h14.4v3.2h-14.4v-3.2z"></path>
 								<path d="M3.2 20.8h14.4v3.2h-14.4v-3.2z"></path>
 							</svg>
-						</span> 
-						
+						</span>
+
 						Filter
 					</button>
 					<span class="woocommerce-ordering__label">Sort by:</span>
-						<form class="woocommerce-ordering" method="get">
-							<select name="orderby" class="orderby" aria-label="Shop order">
-								<option value="menu_order" selected="selected">Default</option>
-								<option value="popularity">Popularity</option>
-								<option value="rating">Average rating</option>
-								<option value="date">Latest</option>
-								<option value="price">Price: low to high</option>
-								<option value="price-desc">Price: high to low</option>
-							</select>
-							<input type="hidden" name="paged" value="1">
-						</form>
+					<form class="woocommerce-ordering" method="get">
+						<select name="orderby" class="orderby" aria-label="Shop order">
+							<option value="menu_order" selected="selected">Default</option>
+							<option value="popularity">Popularity</option>
+							<option value="rating">Average rating</option>
+							<option value="date">Latest</option>
+							<option value="price">Price: low to high</option>
+							<option value="price-desc">Price: high to low</option>
+						</select>
+						<input type="hidden" name="paged" value="1">
+					</form>
 					<div id="motta-toolbar-view" class="motta-toolbar-view">
 						<a href="#" class="grid-2 " data-view="grid-2" data-type="grid-2">
 							<span class="motta-svg-icon motta-svg-icon--view-large">
@@ -71,7 +70,7 @@
 									<path d="M13.333 18.667v6.667h-6.667v-6.667h6.667zM14.667 17.333h-9.333v9.333h9.333v-9.333z"></path>
 									<path d="M25.333 18.667v6.667h-6.667v-6.667h6.667zM26.667 17.333h-9.333v9.333h9.333v-9.333z"></path>
 									<path d="M37.333 6.667v6.667h-6.667v-6.667h6.667zM38.667 5.333h-9.333v9.333h9.333v-9.333z"></path>
-                                    <path d="M37.333 18.667v6.667h-6.667v-6.667h6.667zM38.667 17.333h-9.333v9.333h9.333v-9.333z"></path>	
+									<path d="M37.333 18.667v6.667h-6.667v-6.667h6.667zM38.667 17.333h-9.333v9.333h9.333v-9.333z"></path>
 								</svg>
 							</span>
 						</a>
@@ -81,16 +80,16 @@
 									<path d="M10.667 6.667v2.667h-2.667v-2.667h2.667zM12 5.333h-5.333v5.333h5.333v-5.333z"></path>
 									<path d="M10.667 14.667v2.667h-2.667v-2.667h2.667zM12 13.333h-5.333v5.333h5.333v-5.333z"></path>
 									<path d="M10.667 22.667v2.667h-2.667v-2.667h2.667zM12 21.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M18.667 6.667v2.667h-2.667v-2.667h2.667zM20 5.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M18.667 14.667v2.667h-2.667v-2.667h2.667zM20 13.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M18.667 22.667v2.667h-2.667v-2.667h2.667zM20 21.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M26.667 6.667v2.667h-2.667v-2.667h2.667zM28 5.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M26.667 14.667v2.667h-2.667v-2.667h2.667zM28 13.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M26.667 22.667v2.667h-2.667v-2.667h2.667zM28 21.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M34.667 6.667v2.667h-2.667v-2.667h2.667zM36 5.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M34.667 14.667v2.667h-2.667v-2.667h2.667zM36 13.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M34.667 22.667v2.667h-2.667v-2.667h2.667zM36 21.333h-5.333v5.333h5.333v-5.333z"></path>
-                                </svg>
+									<path d="M18.667 6.667v2.667h-2.667v-2.667h2.667zM20 5.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M18.667 14.667v2.667h-2.667v-2.667h2.667zM20 13.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M18.667 22.667v2.667h-2.667v-2.667h2.667zM20 21.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M26.667 6.667v2.667h-2.667v-2.667h2.667zM28 5.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M26.667 14.667v2.667h-2.667v-2.667h2.667zM28 13.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M26.667 22.667v2.667h-2.667v-2.667h2.667zM28 21.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M34.667 6.667v2.667h-2.667v-2.667h2.667zM36 5.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M34.667 14.667v2.667h-2.667v-2.667h2.667zM36 13.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M34.667 22.667v2.667h-2.667v-2.667h2.667zM36 21.333h-5.333v5.333h5.333v-5.333z"></path>
+								</svg>
 							</span>
 						</a>
 						<a href="#" class="grid-5 " data-view="grid-5" data-type="grid-5">
@@ -106,7 +105,7 @@
 									<path d="M22.667 14.667v2.667h-2.667v-2.667h2.667zM24 13.333h-5.333v5.333h5.333v-5.333z"></path>
 									<path d="M22.667 22.667v2.667h-2.667v-2.667h2.667zM24 21.333h-5.333v5.333h5.333v-5.333z"></path>
 									<path d="M30.667 6.667v2.667h-2.667v-2.667h2.667zM32 5.333h-5.333v5.333h5.333v-5.333z"></path>
-                                    <path d="M30.667 14.667v2.667h-2.667v-2.667h2.667zM32 13.333h-5.333v5.333h5.333v-5.333z"></path>
+									<path d="M30.667 14.667v2.667h-2.667v-2.667h2.667zM32 13.333h-5.333v5.333h5.333v-5.333z"></path>
 									<path d="M30.667 22.667v2.667h-2.667v-2.667h2.667zM32 21.333h-5.333v5.333h5.333v-5.333z"></path>
 									<path d="M38.667 6.667v2.667h-2.667v-2.667h2.667zM40 5.333h-5.333v5.333h5.333v-5.333z"></path>
 									<path d="M38.667 14.667v2.667h-2.667v-2.667h2.667zM40 13.333h-5.333v5.333h5.333v-5.333z"></path>
@@ -126,35 +125,24 @@
 								</svg>
 							</span>
 						</a>
-						</div>
+					</div>
 				</div>
 			</div>
+
 			<ul class="products product-card-layout-1 columns-2 mobile-col-2 product-list-no-desc-mobile">
 				@foreach (var product in Model.Products)
 				{
-					var gg = product.Price - product.Sale;
+					var gg = product.Price * (1 - product.Sale / 100);
 					<li class="product type-product post-17 status-publish first instock product_cat-electronics product_tag-electric product_tag-electric-10 product_tag-electric-4 product_tag-electric-5 product_tag-laptop product_tag-toys has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
 						<div class="product-inner">
 							<span class="woocommerce-badges">
-								@if (product.Sale>0)
+								@if (product.Sale > 0)
 								{
 									<span class="onsale woocommerce-badge">Sale</span>
 								}
 							</span>
 							<div class="product-thumbnail">
 								<div class="product-thumbnails--slider swiper-container swiper-container-initialized swiper-container-horizontal">
-									@* <div class="swiper-wrapper">
-										@foreach (var image in product.ProductImages!.Where(x => x.IsMain).ToList())
-										{
-											<a href="../../product/11-inch-tablet-pro-2020-space-gray/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link swiper-slide swiper-slide-active" style="width: 404px;">
-												<img loading="lazy" width="300" height="300" src="@image.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" decoding="async" sizes="(max-width: 300px) 100vw, 300px">
-											</a>
-											 //<a href="../../product/11-inch-tablet-pro-2020-space-gray/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link swiper-slide" style="width: 404px;">
-											//	<img loading="lazy" src="@product.ProductImages!.Where(x => x. IsMain).FirstOrDefault()!.ImageUrl" data-src="@product.ProductImages!.Where(x => x.IsMain).FirstOrDefault()!.ImageUrl" width="300" height="300" alt="@product.Name" class="swiper-lazy">
-											//</a> 
-										}
-										
-									</div> *@
 									<div class="swiper-wrapper">
 										<a href="../../product/11-inch-tablet-pro-2020-space-gray/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link swiper-slide swiper-slide-active" style="width: 404px;">
 											<img loading="lazy" width="300" height="300" src="@product.ProductImages!.Where(x => x. IsMain).FirstOrDefault()!.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" decoding="async" sizes="(max-width: 300px) 100vw, 300px">
@@ -172,6 +160,7 @@
 											<path d="M13.552 0.72l2.656 1.76-9.008 13.52 9.008 13.52-2.656 1.76-10.192-15.28z"></path>
 										</svg>
 									</span>
+
 									<span class="motta-svg-icon motta-svg-icon--arrow-right-long motta-product-card-swiper-next motta-product-card-swiper-button" tabindex="0" role="button" aria-label="Next slide" aria-disabled="false">
 										<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 19 32">
 											<path d="M5.648 31.28l-2.656-1.76 9.008-13.52-9.008-13.52 2.656-1.76 10.192 15.28z"></path>
@@ -180,21 +169,23 @@
 									<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
 								</div>
 								<div class="product-featured-icons">
-									<a href="index4551.html?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="11-inch Tablet Pro 2020 Space Gray" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add “11-inch Tablet Pro 2020 Space Gray” to the wishlist">
+									<a href="index4551.html?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="@product.Name" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add “@product.Name” to the wishlist">
 										<span class="motta-button__icon add-to-wishlist-button__icon wcboost-wishlist-button__icon">
 											<span class="motta-svg-icon motta-svg-icon--wishlist">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M22.736 6.4v0c1.792 0 3.44 1.12 4.128 2.768 0.8 1.92 0.112 4.144-1.856 6.112l-9.024 8.992-9.024-8.976c-1.984-1.984-2.64-4.144-1.824-6.080 0.688-1.68 2.352-2.8 4.144-2.8 1.504 0 3.040 0.752 4.448 2.16l2.256 2.256 2.256-2.256c1.44-1.424 2.992-2.176 4.496-2.176zM22.736 3.2c-2.176 0-4.544 0.912-6.752 3.104-2.192-2.176-4.544-3.088-6.704-3.088-6.368 0-11.040 7.904-4.576 14.336l11.28 11.248 11.28-11.248c6.496-6.448 1.856-14.352-4.528-14.352v0z"></path>
-													</svg>
+												</svg>
 											</span>
 										</span>
 										<span class="motta-button__text add-to-wishlist-button__text wcboost-wishlist-button__text" data-add="Add To Wishlist" data-remove="Remove Wishlist" data-view="View Wishlist">Wishlist</span>
-									</a><a href="indexcc23.html?add_to_compare=17" data-product_id="17" data-product_title="11-inch Tablet Pro 2020 Space Gray" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare “11-inch Tablet Pro 2020 Space Gray”" role="button">
+									</a>
+									<a href="indexcc23.html?add_to_compare=17" data-product_id="17" data-product_title="@product.Name" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare “@product.Name”" role="button">
 										<span class="wcboost-products-compare-button__icon"><span class="motta-svg-icon motta-svg-icon--compare"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M13.136 14.864l-3.68-3.664h16.144v-3.2h-16.144l3.68-3.664-2.272-2.272-7.52 7.536 7.52 7.536z"></path><path d="M21.136 14.864l-2.272 2.272 3.68 3.664h-16.144v3.2h16.144l-3.68 3.664 2.272 2.272 7.52-7.536z"></path></svg></span></span>
 										<span class="wcboost-products-compare-button__text" data-add="Add To Compare" data-remove="Remove Compare" data-view="Browse Compare">Compare</span>
 									</a>
 								</div>
 							</div>
+
 							<div class="product-summary show-vendor">
 								<div class="short-description">
 									@product.Description
@@ -207,20 +198,24 @@
 										<div class="motta-more__content">
 
 											All the Power You Expect, without the Cord. Go where ambition takes you with the Cordless Hand Mixer from KitchenAid.
-											
+
 										</div>
 										<button class="motta-more__button motta-button--subtle">Show More</button>
 									</div>
 								</div>
+
 								<div class="product-variation-items ">
-									<div class="product-variation-items--text">COLORRRR</div>
+									<div class="product-variation-items--text">@product.ProductVariants?.Count() color</div>
 								</div>
+
 								<div class="meta-wrapper">
 									<div class="meta meta-sku">Sku: <span>woo-polo</span></div>
 								</div>
 
-								<h2 class="woocommerce-loop-product__title"><a asp-contronller="Home" asp-action="ProductDetail" asp-route-slug="@product.Slug" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@product.Name</a></h2>
-								
+								<h2 class="woocommerce-loop-product__title">
+									<a href="../../product/11-inch-tablet-pro-2020-space-gray/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@product.Name</a>
+								</h2>
+
 								<div class="motta-rating">
 									<div class="star-rating" role="img" aria-label="Rated 5.00 out of 5">
 										<span class="max-rating rating-stars">
@@ -274,50 +269,54 @@
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
-													</path></svg></span></span><span class="screen-reader-text">Rated <strong class="rating">5.00</strong> out of 5</span>
-										</div>					
-										<div class="review-count"><span class="average">5.00</span> (<span class="count">3</span><span class="text"> Reviews</span>)</div>
+													</path>
+												</svg>
+											</span>
+										</span><span class="screen-reader-text">Rated <strong class="rating">5.00</strong> out of 5</span>
+									</div>
+									<div class="review-count"><span class="average">5.00</span> (<span class="count">3</span><span class="text"> Reviews</span>)</div>
 								</div>
-								
+
 								<span class="price">
 									<span class="woocs_price_code" data-currency="" data-redraw-id="672196f7a1e4f" data-product-id="17">
 										<del aria-hidden="true">
-											<span class="woocommerce-Price-amount amount"> 
-												@if(product.Sale>0)
+											<span class="woocommerce-Price-amount amount">
+												@if (product.Sale > 0)
 												{
 													<bdi><span class="woocommerce-Price-currencySymbol">$</span>@product.Price</bdi>
 												}
 											</span>
-										</del> 
+										</del>
 										<span class="screen-reader-text">Original price was: +@product.Price</span>
-                                        <ins aria-hidden="true">
-                                            <span class="woocommerce-Price-amount amount">
-                                                <bdi><span class="woocommerce-Price-currencySymbol">$</span>@gg</bdi>
-                                            </span>
-                                        </ins>
-                                        <span class="screen-reader-text">Current price is: @gg </span>
-                                    </span>
+										<ins aria-hidden="true">
+											<span class="woocommerce-Price-amount amount">
+												<bdi><span class="woocommerce-Price-currencySymbol">$</span>@gg</bdi>
+											</span>
+										</ins>
+										<span class="screen-reader-text">Current price is: @gg </span>
+									</span>
 								</span>
 								@*ANH VENDORS*@
 								<div class="sold-by-meta show-attributes">
 									<a href="../../store/sanvo/index.html">
-										<img loading="lazy" src="@product.ProductImages!.Where(x => x.IsMain).FirstOrDefault()!.ImageUrl" width="96" height="96" alt="Sanvo" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">	
+										<img loading="lazy" src="@product.ProductImages!.Where(x => x.IsMain).FirstOrDefault()!.ImageUrl" width="96" height="96" alt="Sanvo" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo">
 										<span class="vendor-name">@product.Vendor?.Name</span>
 									</a>
 								</div>
 
 							</div>
+							@*engggggggggggggggggggg*@
 							<div class="product-actions">
 								<span class="price">
 									<span class="woocs_price_code" data-currency="" data-redraw-id="672196f7a9c58" data-product-id="17">
 										<del aria-hidden="true">
-											<span class="woocommerce-Price-amount amount"> 
-												@if (product.Sale > 0 )
+											<span class="woocommerce-Price-amount amount">
+												@if (product.Sale > 0)
 												{
 													<bdi><span class="woocommerce-Price-currencySymbol">$</span>@product.Price</bdi>
 												}
 											</span>
-										</del> 
+										</del>
 										<span class="screen-reader-text">Original price was: @product.Price</span>
 										<ins aria-hidden="true">
 											<span class="woocommerce-Price-amount amount">
@@ -327,15 +326,19 @@
 										<span class="screen-reader-text">Current price is: @gg g</span>
 									</span>
 								</span>
-								<a href="index0ba2.html?add-to-cart=17" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="17" data-product_sku="woo-polo" aria-label="Add to cart: “11-inch Tablet Pro 2020 Space Gray”" aria-describedby="" rel="nofollow"><span>Add to cart</span></a><a href="../../product/11-inch-tablet-pro-2020-space-gray/index.html" class="button motta-button motta-button--quickview motta-button--ghost" data-toggle="modal" data-target="quick-view-modal" data-id="17" data-text="Quick View" rel="nofollow">
+								@*router*@
+								<a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id=@product.ProductId data-product_sku="woo-polo" aria-label="Add to cart: “@product.Name”" aria-describedby="" rel="nofollow" onclick="addToCart(@product.ProductId),showProduct(@product.ProductId)">
+									<span>Add to cart+@ViewBag.abc</span>
+								</a>
+								<a href="" class="button motta-button motta-button--quickview motta-button--ghost" data-toggle="modal" data-target="quick-view-modal" data-id="17" data-text="Quick View" rel="nofollow">
 									<span>Quick View</span>
 								</a>
 								<div class="product-featured-icons">
-									<a href="indexcc23.html?add_to_compare=17" data-product_id="17" data-product_title="11-inch Tablet Pro 2020 Space Gray" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare “11-inch Tablet Pro 2020 Space Gray”" role="button">
+									<a href="indexcc23.html?add_to_compare=17" data-product_id="17" data-product_title="@product.Name" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare “@product.Name”" role="button">
 										<span class="wcboost-products-compare-button__icon"><span class="motta-svg-icon motta-svg-icon--compare"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M13.136 14.864l-3.68-3.664h16.144v-3.2h-16.144l3.68-3.664-2.272-2.272-7.52 7.536 7.52 7.536z"></path><path d="M21.136 14.864l-2.272 2.272 3.68 3.664h-16.144v3.2h16.144l-3.68 3.664 2.272 2.272 7.52-7.536z"></path></svg></span></span>
 										<span class="wcboost-products-compare-button__text" data-add="Add To Compare" data-remove="Remove Compare" data-view="Browse Compare">Compare</span>
 									</a>
-									<a href="index4551.html?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="11-inch Tablet Pro 2020 Space Gray" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add “11-inch Tablet Pro 2020 Space Gray” to the wishlist">
+									<a href="index4551.html?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="@product.Name" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add “@product.Name” to the wishlist">
 										<span class="motta-button__icon add-to-wishlist-button__icon wcboost-wishlist-button__icon">
 											<span class="motta-svg-icon motta-svg-icon--wishlist">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
@@ -365,7 +368,7 @@
 			</nav>
 		</main>
 	</div>
-	@* <aside id="mobile-filter-sidebar-panel" class="widget-area primary-sidebar catalog-sidebar">
+	<aside id="mobile-filter-sidebar-panel" class="widget-area primary-sidebar catalog-sidebar">
 		<div class="sidebar__backdrop"></div>
 		<div class="sidebar__container">
 			<span class="motta-svg-icon motta-svg-icon--close panel__button-close"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M28.336 5.936l-2.272-2.272-10.064 10.080-10.064-10.080-2.272 2.272 10.080 10.064-10.080 10.064 2.272 2.272 10.064-10.080 10.064 10.080 2.272-2.272-10.080-10.064z"></path></svg></span>		<div class="sidebar__header">
@@ -494,7 +497,60 @@
 				</section>
 			</div>
 		</div>
-	</aside> *@<!-- #primary -->
-
+	</aside> <!-- #primary -->
 </div>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	function addToCart(productId) {
+		const url = '/api/addToCart';
+
+		const data = {
+			productId: productId,
+			quantity: 1
+		};
+
+		fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(result => {
+				if (result.success) {
+					alert(result.message);
+				} else {
+					alert(result.message);
+				}
+			})
+			.catch(error => console.error("Error:", error));
+	}
+
+	function showProduct(id) {
+		$.ajax({
+			type: 'GET',
+			url: '@Url.Action("ShowProductModal", "Home")',
+			data: { productId: id },
+			success: function (partialView) {
+				$('#motta-popup-add-to-cart').css('display', 'block');
+				$('#opp').css('opacity', '1');
+				$('#show').html(partialView)
+			},
+			Error: function (x) {
+				alert(x.responseText);
+			}
+		})
+		$(document).on('click', '.modal__button-close, .modal__backdrop', function () {
+			$('#motta-popup-add-to-cart').css('display', 'none');
+			$('#opp').css('opacity', '0');
+		});
+
+	}
+</script>
+
 

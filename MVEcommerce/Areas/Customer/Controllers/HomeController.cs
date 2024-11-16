@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
 using MVEcommerce.Models.ViewModels.Account;
-
+using MVEcommerce.Models.ViewModels.AddToCart;
+using System.Security.Claims;
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -29,7 +30,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         [Route("category/{slug}")]
         public IActionResult ProductsByCategory(string slug)
         {
-            var category = _unitOfWork.Category.GetBySlug(slug);
+            var category = _unitOfWork.Category.Get(c=>c.Slug == slug);
             if (category == null)
             {
                 return NotFound();
@@ -47,24 +48,87 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             return View(categoryProduct);
         }
-        [Route("ProductDetail/{slug}")]
-        public IActionResult ProductDetail(string slug)
-        {
-            var product = _unitOfWork.Product.GetProductBySlug(slug);
 
-            if (product == null)
+		[HttpGet]
+		public IActionResult ShowProductModal(int productId)
+		{
+			var product = _unitOfWork.Product.GetAll(
+				p => p.ProductId == productId,
+				includeProperties: "Category,ProductImages,ProductVariants").FirstOrDefault();
+
+			if (product == null)
+			{
+
+				return NotFound("Product not found.");
+			}
+
+
+			return PartialView("ShowProductModal", product);
+		}
+
+		[HttpPost]
+        [Route("api/addToCart")]
+        public IActionResult AddToCart([FromBody] AddToCart cartItem)
+        {
+            if (User.Identity is not ClaimsIdentity claimsIdentity)
             {
-                return NotFound();
+                return Unauthorized(new { success = false, message = "Bạn chưa đăng nhập!" });
             }
 
-            var viewModel = new ProductDetailViewModel
+            var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
             {
-                product = product,
-                ProductImage = product.ProductImages?.FirstOrDefault(),
-                productVariant = product.ProductVariants?.FirstOrDefault(),
-                productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
-                category = product.Category,
-                ProductImages = product.ProductImages?.ToList()
+                return Unauthorized(new { success = false, message = "Không tìm thấy thông tin người dùng!" });
+            }
+
+            var userId = userIdClaim.Value;
+
+            var existingCartItem = _unitOfWork.ShoppingCart
+                .GetAll(c => c.ProductId == cartItem.ProductId && c.UserId == userId && c.VariantOptionID == cartItem.VariantOptionID)
+                .FirstOrDefault();
+
+            if (existingCartItem != null)
+            {
+                existingCartItem.Quantity += cartItem.Quantity;
+                _unitOfWork.ShoppingCart.Update(existingCartItem);
+            }
+            else
+            {
+                var newCartItem = new ShoppingCart
+                {
+                    ProductId = cartItem.ProductId,
+                    UserId = userId,
+                    Quantity = cartItem.Quantity > 0 ? cartItem.Quantity : 1,
+                    VariantOptionID = cartItem.VariantOptionID
+                };
+
+                _unitOfWork.ShoppingCart.Add(newCartItem);
+            }
+
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng!" });
+        }
+
+
+		public IActionResult ProductDetail(string slug)
+        {
+               var product = _unitOfWork.Product.Get(c=>c.Slug == slug); 
+
+                    if (product == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var viewModel = new ProductDetailViewModel
+                    {
+                        product = product,
+                        ProductImage = product.ProductImages?.FirstOrDefault(),
+                        productVariant = product.ProductVariants?.FirstOrDefault(),
+                        productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
+                        category = product.Category,
+                        ProductImages = product.ProductImages?.ToList(),
             };
 
 

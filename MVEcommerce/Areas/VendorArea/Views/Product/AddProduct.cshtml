@@ -48,6 +48,7 @@
                         <div class="mb-4">
                             <label asp-for="Product.Name" class="form-label">Name <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Products are the goods or services you sell."></i></label>
                             <input type="text" class="form-control" asp-for="Product.Name" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc.">
+                            <span asp-validation-for="Product.Name" class="text-danger"></span>
                         </div>
                         <!-- End Form -->
 
@@ -57,6 +58,7 @@
                                 <div class="mb-4">
                                     <label asp-for="Product.SKU" class="form-label">SKU</label>
                                     <input type="text" class="form-control" asp-for="Product.SKU" placeholder="eg. 348121032" aria-label="eg. 348121032">
+                                    <span asp-validation-for="Product.SKU" class="text-danger"></span>
                                 </div>
                                 <!-- End Form -->
                             </div>
@@ -90,66 +92,12 @@
                         <!-- Add product variants and options here -->
                         <div id="variants">
                             <h4>Variants</h4>
-                            <button type="button" class="btn btn-secondary mb-3" onclick="showVariantInput()">Add Variant</button>
+                            <button type="button" class="btn btn-secondary mb-3" id="toggleVariantButton" onclick="toggleVariantInput()">Add Variant</button>
                             <div id="variant-list" style="display: none;">
-                                <div class="variant-item mb-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Variant Name</label>
-                                        <input type="text" class="form-control" asp-for="ProductVariant.Name" />
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">Options</label>
-                                        <div id="option-list">
-                                            @for (int j = 0; j < Model.ProductVariantOptions.Count; j++)
-                                            {
-                                                var option = Model.ProductVariantOptions[j];
-                                                <div class="option-item row mb-3">
-                                                    <input type="hidden" asp-for="ProductVariantOptions[@j].VariantId" value="@Model.ProductVariant.VariantId" />
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Value" placeholder="Option Value" />
-                                                    </div>
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Price" placeholder="Option Price" />
-                                                    </div>
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Stock" placeholder="Option Stock" />
-                                                    </div>
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].SKU" placeholder="Option SKU" />
-                                                    </div>
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Sale" placeholder="Option Sale" />
-                                                    </div>
-                                                    <div class="col-md-2 text-end">
-                                                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <div class="col-12">
-                                                        <div class="mb-4">
-                                                            <label class="form-label">Option Images</label>
-                                                            <div id="optionImagesPreview_@j" class="d-flex flex-wrap gap-2 mb-2">
-                                                                <!-- Image previews will be added here -->
-                                                            </div>
-                                                            <input type="file" 
-                                                                class="form-control" 
-                                                                multiple 
-                                                                accept="image/*"
-                                                                onchange="previewOptionImages(event, @j)" 
-                                                                name="optionImages[@j]" />
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                        <button type="button" class="btn btn-secondary" onclick="addOption()">Add Option</button>
-                                    </div>
-                                    <hr />
-                                </div>
+                                
                             </div>
                         </div>
+                    
                     </div>
                     <!-- Body -->
                 </div>
@@ -159,7 +107,7 @@
 
             <div class="col-lg-4">
                 <!-- Card -->
-                <div class="card mb-3 mb-lg-5">
+                <div class="card mb-3 mb-lg-5" id="product-price-sale-stocks" style="display: block">
                     <!-- Header -->
                     <div class="card-header">
                         <h4 class="card-header-title">Pricing</h4>
@@ -170,16 +118,25 @@
                         <!-- Form -->
                         <div class="mb-4">
                             <label asp-for="Product.Price" class="form-label">Price</label>
-                            <input type="text" class="form-control" asp-for="Product.Price" placeholder="0.00" aria-label="0.00">
+                            <input type="text" class="form-control" asp-for="Product.Price" placeholder="0.00" aria-label="0.00" required>
+                            <span asp-validation-for="Product.Price" class="text-danger"></span>
+                            <span id="productPriceValidate" class="text-danger" style="display: none;">Price is required.</span>
                         </div>
                         <!-- End Form -->
 
                         <!-- Form -->
                         <div class="mb-4">
                             <label asp-for="Product.Sale" class="form-label">Sale</label>
-                            <input type="text" class="form-control" asp-for="Product.Sale" placeholder="0.00" aria-label="0.00" value="0.0">
+                            <input type="text" class="form-control" asp-for="Product.Sale" placeholder="0.00" aria-label="0.00" value="0.0" required>
+                            <span asp-validation-for="Product.Sale" class="text-danger"></span>
                         </div>
                         <!-- End Form -->
+
+                        <div class="mb-4">
+                            <label asp-for="Product.Stock" class="form-label">Stocks</label>
+                            <input type="text" class="form-control" asp-for="Product.Stock" placeholder="0.00" aria-label="0.00" value="1" required>
+                            <span asp-validation-for="Product.Stock" class="text-danger"></span>
+                        </div>
                     </div>
                     <!-- Body -->
                 </div>
@@ -199,8 +156,9 @@
                                             onclick="removeMainImage()"></button>
                                 </div>
                             </div>
-                            <input type="file" id="mainImage" name="mainImage" class="form-control" accept="image/*" 
+                            <input required type="file" id="mainImage" name="mainImage" class="form-control" accept="image/*" 
                                 onchange="previewMainImage(event)"/>
+                            <span id="mainImageError" class="text-danger" style="display: none;">Main image is required.</span>
                         </div>
 
                         <div class="mb-4">
@@ -224,12 +182,174 @@
 
 @section Scripts {
     <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
+
+        function validateForm() {
+            let isValid = true;
+
+            // Validate main image
+            const mainImageInput = document.getElementById('mainImage');
+            const mainImageError = document.getElementById('mainImageError');
+            if (!mainImageInput.files.length) {
+                mainImageError.style.display = 'block';
+                isValid = false;
+            } else {
+                mainImageError.style.display = 'none';
+            }
+
+            // Validate Variant Name
+            const variantNameInput = document.querySelector('input[name="ProductVariant.Name"]');
+            const variantNameError = document.querySelector('.variant-name-error');
+
+            if (!variantNameInput.value.trim()) {
+                variantNameInput.classList.add('is-invalid');
+                variantNameError.innerText = 'Variant Name is required.';
+                isValid = false;
+            } else {
+                variantNameInput.classList.remove('is-invalid');
+                variantNameError.innerText = '';
+            }
+
+            // Validate variant options
+            const options = document.querySelectorAll('.option-item');
+            options.forEach(option => {
+                const valueInput = option.querySelector('input[name*="Value"]');
+                const priceInput = option.querySelector('input[name*="Price"]');
+                const stockInput = option.querySelector('input[name*="Stock"]');
+                const skuInput = option.querySelector('input[name*="SKU"]');
+                const saleInput = option.querySelector('input[name*="Sale"]');
+
+                if (!valueInput.value.trim()) {
+                    valueInput.classList.add('is-invalid');
+                    const errorSpan = valueInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    valueInput.insertAdjacentHTML('afterend', '<span class="text-danger">Option value is required.</span>');
+                    isValid = false;
+                } else {
+                    valueInput.classList.remove('is-invalid');
+                    const errorSpan = valueInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+
+                if (!priceInput.value.trim() || isNaN(priceInput.value) || Number(priceInput.value) <= 0) {
+                    priceInput.classList.add('is-invalid');
+                    const errorSpan = priceInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    priceInput.insertAdjacentHTML('afterend', '<span class="text-danger">Price must be a number greater than 0.</span>');
+                    isValid = false;
+                } else {
+                    priceInput.classList.remove('is-invalid');
+                    const errorSpan = priceInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+
+                if (!stockInput.value.trim() || isNaN(stockInput.value) || Number(stockInput.value) <= 0) {
+                    stockInput.classList.add('is-invalid');
+                    const errorSpan = stockInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    stockInput.insertAdjacentHTML('afterend', '<span class="text-danger">Stock must be a number greater than 0.</span>');
+                    isValid = false;
+                } else {
+                    stockInput.classList.remove('is-invalid');
+                    const errorSpan = stockInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+
+                if (!skuInput.value.trim()) {
+                    skuInput.classList.add('is-invalid');
+                    const errorSpan = skuInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    skuInput.insertAdjacentHTML('afterend', '<span class="text-danger">SKU is required.</span>');
+                    isValid = false;
+                } else {
+                    skuInput.classList.remove('is-invalid');
+                    const errorSpan = skuInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+
+                if (!saleInput.value.trim() || isNaN(saleInput.value) || Number(saleInput.value) < 0 || Number(saleInput.value) > 100) {
+                    saleInput.classList.add('is-invalid');
+                    const errorSpan = saleInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    saleInput.insertAdjacentHTML('afterend', '<span class="text-danger">Sale must be a number between 0 and 100.</span>');
+                    isValid = false;
+                } else {
+                    saleInput.classList.remove('is-invalid');
+                    const errorSpan = saleInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+            });
+
+            return isValid;
+        }
+    </script>
+
+    <script>
         function showVariantInput() {
             document.getElementById('variant-list').style.display = 'block';
         }
 
+        function toggleVariantInput() {
+            var variantList = document.getElementById('variant-list');
+            var toggleButton = document.getElementById('toggleVariantButton');
+            var productInfor = document.getElementById('product-price-sale-stocks');
+            if (variantList.style.display === 'none') {
+                variantList.style.display = 'block';
+                productInfor.style.display = 'none';
+                toggleButton.innerText = 'Remove Variant';
+                variantList.innerHTML = `
+                    <div class="variant-item mb-4">
+                        <div class="mb-4" id="variant">
+                            <label class="form-label">Variant Name</label>
+                            <input type="text" class="form-control" name="ProductVariant.Name" />
+                            <span class="text-danger variant-name-error"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Options</label>
+                            <div id="option-list"></div>
+                            <button type="button" class="btn btn-secondary" onclick="addOption()">Add Option</button>
+                        </div>
+                        <hr />
+                    </div>`;
+                addOption();
+            } else {
+                variantList.style.display = 'none';
+                productInfor.style.display = 'block';
+                toggleButton.innerText = 'Add Variant';
+                variantList.innerHTML = ''; // Clear the variant list content
+                // Reinitialize the variant list content
+            }
+        }
+
         function addOption() {
             var optionIndex = document.querySelectorAll('#option-list .option-item').length;
+
+            console.log("Option Index: " + optionIndex);
+
             var optionHtml = `
                 <div class="option-item row mb-3">
                     <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
@@ -246,7 +366,7 @@
                         <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].SKU" placeholder="Option SKU" />
                     </div>
                     <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" />
+                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" Value="0"/>
                     </div>
                     <div class="col-md-2 text-end">
                         <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
@@ -256,12 +376,7 @@
                             <label class="form-label">Option Images</label>
                             <div id="optionImagesPreview_${optionIndex}" class="d-flex flex-wrap gap-2 mb-2">
                             </div>
-                            <input type="file" 
-                                class="form-control" 
-                                multiple 
-                                accept="image/*"
-                                onchange="previewOptionImages(event, ${optionIndex})" 
-                                name="optionImages[${optionIndex}]" />
+                            <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, ${optionIndex})" name="optionImages[${optionIndex}]" id="optionImages_${optionIndex}" />
                         </div>
                     </div>
                 </div>`;
@@ -271,6 +386,7 @@
         function removeOption(button) {
             button.closest('.option-item').remove();
         }
+
     </script>
 
     <script>
@@ -365,6 +481,9 @@
     @* Image *@
     <script>
         
+        let selectedAdditionalImages = [];
+        let selectedOptionImages = {};
+
         function previewMainImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -375,30 +494,27 @@
                 }
                 reader.readAsDataURL(file);
             }
+            validateForm();
         }
 
         function removeMainImage() {
             document.getElementById('mainImage').value = '';
             document.getElementById('mainImageContainer').style.display = 'none';
+            validateForm();
         }
 
         function previewAdditionalImages(event) {
             const container = document.getElementById('additionalImagesPreview');
-            handleImagePreviews(event.target.files, container);
-        }
-
-        function previewOptionImages(event, index) {
             const files = event.target.files;
-            const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
-            previewContainer.innerHTML = '';
-
             Array.from(files).forEach(file => {
+                selectedAdditionalImages.push(file);
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const wrapper = document.createElement('div');
                     wrapper.style.position = 'relative';
                     wrapper.style.width = '100px';
                     wrapper.style.height = '100px';
+                    wrapper.style.marginRight = '10px';
 
                     const img = document.createElement('img');
                     img.src = e.target.result;
@@ -413,7 +529,56 @@
                     removeBtn.style.top = '5px';
                     removeBtn.style.right = '5px';
                     removeBtn.style.padding = '0 6px';
-                    removeBtn.onclick = () => wrapper.remove();
+                    removeBtn.onclick = () => {
+                        wrapper.remove();
+                        selectedAdditionalImages = selectedAdditionalImages.filter(f => f !== file);
+                        updateHiddenInput('additionalImages', selectedAdditionalImages);
+                    };
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    container.appendChild(wrapper);
+                }
+                reader.readAsDataURL(file);
+            });
+            updateHiddenInput('additionalImages', selectedAdditionalImages);
+        }
+
+        function previewOptionImages(event, index) {
+            if (!selectedOptionImages[index]) {
+                selectedOptionImages[index] = [];
+            }
+            const files = event.target.files;
+            const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
+
+            Array.from(files).forEach(file => {
+                selectedOptionImages[index].push(file);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'relative';
+                    wrapper.style.width = '100px';
+                    wrapper.style.height = '100px';
+                    wrapper.style.marginRight = '10px';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '5px';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '×';
+                    removeBtn.className = 'btn btn-sm btn-danger position-absolute';
+                    removeBtn.style.top = '5px';
+                    removeBtn.style.right = '5px';
+                    removeBtn.style.padding = '0 6px';
+                    removeBtn.onclick = () => {
+                        wrapper.remove();
+                        selectedOptionImages[index] = selectedOptionImages[index].filter(f => f !== file);
+                        updateHiddenInput(`optionImages_${index}`, selectedOptionImages[index]);
+                    };
 
                     wrapper.appendChild(img);
                     wrapper.appendChild(removeBtn);
@@ -421,36 +586,17 @@
                 }
                 reader.readAsDataURL(file);
             });
+            updateHiddenInput(`optionImages_${index}`, selectedOptionImages[index]);
         }
 
-        function handleImagePreviews(files, container) {
-            for (const file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const wrapper = document.createElement('div');
-                    wrapper.style.position = 'relative';
-                    wrapper.style.width = '100px';
-                    wrapper.style.marginRight = '10px';
+        function updateHiddenInput(inputId, files) {
+            const input = document.getElementById(inputId);
 
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '100%';
-                    img.style.height = 'auto';
+            console.log("------------\n" + input)
 
-                    const removeBtn = document.createElement('button');
-                    removeBtn.className = 'btn-close';
-                    removeBtn.style.position = 'absolute';
-                    removeBtn.style.top = '5px';
-                    removeBtn.style.right = '5px';
-                    removeBtn.onclick = () => wrapper.remove();
-
-                    wrapper.appendChild(img);
-                    wrapper.appendChild(removeBtn);
-                    container.appendChild(wrapper);
-                }
-                reader.readAsDataURL(file);
-            }
+            const dataTransfer = new DataTransfer();
+            files.forEach(file => dataTransfer.items.add(file));
+            input.files = dataTransfer.files;
         }
-
     </script>
 }

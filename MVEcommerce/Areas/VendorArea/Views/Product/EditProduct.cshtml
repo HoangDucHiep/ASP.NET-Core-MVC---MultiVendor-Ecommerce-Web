@@ -1,5 +1,5 @@
 @using MVEcommerce.Models.ViewModels.VendorProduct
-@model VendorAddProductVM
+@model VendorEditProductVM
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -17,6 +17,15 @@
             </nav>
 
             <h1 class="page-header-title">Edit Product</h1>
+
+            <div class="mt-2">
+                <a class="text-body me-3" href="javascript:;">
+                    <i class="bi-clipboard me-1"></i> Duplicate
+                </a>
+                <a class="text-body" href="javascript:;">
+                    <i class="bi-eye me-1"></i> Preview
+                </a>
+            </div>
         </div>
         <!-- End Col -->
     </div>
@@ -24,9 +33,8 @@
 
     <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Product.ProductId" />
-        <input type="hidden" id="imagesToDelete" name="imagesToDelete" value="" />
-        <input type="hidden" id="optionsToDelete" name="optionsToDelete" value="" />
-        <input type="hidden" asp-for="Product.ProductId" />
+        <input type="hidden" asp-for="Product.VendorId" />
+
         <div class="row">
             <div class="col-lg-8 mb-3 mb-lg-0">
                 <!-- Card -->
@@ -43,6 +51,7 @@
                         <div class="mb-4">
                             <label asp-for="Product.Name" class="form-label">Name <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Products are the goods or services you sell."></i></label>
                             <input type="text" class="form-control" asp-for="Product.Name" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc.">
+                            <span asp-validation-for="Product.Name" class="text-danger"></span>
                         </div>
                         <!-- End Form -->
 
@@ -52,6 +61,7 @@
                                 <div class="mb-4">
                                     <label asp-for="Product.SKU" class="form-label">SKU</label>
                                     <input type="text" class="form-control" asp-for="Product.SKU" placeholder="eg. 348121032" aria-label="eg. 348121032">
+                                    <span asp-validation-for="Product.SKU" class="text-danger"></span>
                                 </div>
                                 <!-- End Form -->
                             </div>
@@ -63,7 +73,7 @@
                                     <label for="categoryLabel" class="form-label">Category</label>
                                     <!-- Select -->
                                     <div class="tom-select-custom">
-                                        <select asp-for="Product.CategoryId" asp-items="@Model.Categories" class="js-select form-select" id="categoryLabel" data-hs-tom-select-options='{
+                                        <select asp-for="@Model.Product.CategoryId" asp-items="@Model.Categories" class="js-select form-select" id="categoryLabel" data-hs-tom-select-options='{
                                         "searchInDropdown": false,
                                         "hideSearch": true,
                                         "placeholder": "Select category"
@@ -79,81 +89,86 @@
                         <!-- End Row -->
 
                         <div class="row">
-                            <textarea id="editor" class="form-control" asp-for="Product.Description"></textarea>
+                            <textarea id="editor" class="form-control" asp-for="@Model.Product.Description"></textarea>
                         </div>
 
                         <!-- Add product variants and options here -->
                         <div id="variants">
                             <h4>Variants</h4>
-                            <button type="button" class="btn btn-secondary mb-3" id="addVariantButton" onclick="showVariantInput()">Add Variant</button>
+                            <button type="button" class="btn btn-secondary mb-3" id="toggleVariantButton" onclick="toggleVariantInput()">Add Variant</button>
                             <div id="variant-list" style="display: none;">
-                                <div class="variant-item mb-4">
-                                    <input type="hidden" asp-for="ProductVariant.VariantId" />
-                                    <div class="mb-4">
-                                        <label class="form-label">Variant Name</label>
-                                        <input type="text" class="form-control" asp-for="ProductVariant.Name" />
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">Options</label>
-                                        <div id="option-list">
-                                            @for (int j = 0; j < Model.ProductVariantOptions.Count; j++)
-                                            {
-                                                var option = Model.ProductVariantOptions[j];
-                                                <div class="option-item row mb-3">
-                                                    <input type="hidden" asp-for="ProductVariantOptions[@j].OptionId" />
-                                                    <input type="hidden" asp-for="ProductVariantOptions[@j].VariantId" value="@Model.ProductVariant.VariantId" />
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Value" placeholder="Option Value" />
-                                                    </div>
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Price" placeholder="Option Price" />
-                                                    </div>
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Stock" placeholder="Option Stock" />
-                                                    </div>
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].SKU" placeholder="Option SKU" />
-                                                    </div>
-                                                    <div class="col-md-2 mb-2 mb-md-0">
-                                                        <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Sale" placeholder="Option Sale" />
-                                                    </div>
-                                                    <div class="col-md-2 text-end">
-                                                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="mb-4">
-                                                            <label class="form-label">Option Images</label>
-                                                            <div id="optionImagesPreview_@j" class="d-flex flex-wrap gap-2 mb-2">
-                                                                <!-- Image previews will be added here -->
-                                                                @* if dont have product Images *@
-                                                                @if (option != null && option.ProductImages != null && option.ProductImages.Count != 0)
-                                                                {
-                                                                    @foreach (var image in option.ProductImages)
-                                                                    {
-                                                                        <div style="position: relative; width: 100px; height: 100px;">
-                                                                            <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
-                                                                            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="removeExistingImage('@image.ImageId', this)">×</button>
-                                                                        </div>
-                                                                    }
-                                                                }
-                                                            </div>
-                                                            <input type="file" 
-                                                                   class="form-control" 
-                                                                   multiple 
-                                                                   accept="image/*"
-                                                                   onchange="previewOptionImages(event, @j)" 
-                                                                   name="optionImages[@j][]" />
+                                @if (Model?.ProductVariantOptions?.Count > 0)
+                                {
+                                    <div class="variant-item mb-4">
+                                        <div class="mb-4" id="variant">
+                                            <label class="form-label">Variant Name</label>
+                                            <input type="text" class="form-control" asp-for="ProductVariant.Name" />
+                                            <input type="hidden" asp-for="ProductVariant.VariantId" />
+                                            <input type="hidden" class="form-control" asp-for="ProductVariant.ProductId" />
+                                            <span class="text-danger variant-name-error"></span>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Options</label>
+                                            <div id="option-list">
+                                                @for (int j = 0; j < Model.ProductVariantOptions.Count; j++)
+                                                {
+                                                    var option = Model.ProductVariantOptions[j];
+                                                    <div class="option-item row mb-3">
+                                                        <input type="hidden" asp-for="ProductVariantOptions[@j].OptionId" />
+                                                        <input type="hidden" asp-for="ProductVariantOptions[@j].VariantId" value="@Model.ProductVariant.VariantId" />
+                                                        <div class="col-md-2 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Value" placeholder="Option Value" />
+                                                        </div>
+                                                        <div class="col-md-2 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Price" placeholder="Option Price" />
+                                                        </div>
+                                                        <div class="col-md-2 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Stock" placeholder="Option Stock" />
+                                                        </div>
+                                                        <div class="col-md-2 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].SKU" placeholder="Option SKU" />
+                                                        </div>
+                                                        <div class="col-md-2 mb-2 mb-md-0">
+                                                            <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Sale" placeholder="Option Sale" />
                                                         </div>
                                                     </div>
-                                                </div>
-                                            }
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <div class="mb-4">
+                                                                <label class="form-label">Option Images</label>
+                                                                <input type="hidden" id="deleteImages" name="deleteImages" />
+                                                                <div id="optionImagesPreview_@j" class="d-flex flex-wrap gap-2 mb-2">
+
+                                                                    <!-- Image previews will be added here -->
+                                                                    @if (option != null && option.ProductImages != null && option.ProductImages.Count != 0)
+                                                                    {
+                                                                        @foreach (var image in option.ProductImages)
+                                                                        {
+                                                                            <div style="position: relative; width: 100px; height: 100px;">
+                                                                                <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
+                                                                                <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="">×</button>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                </div>
+
+                                                                <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, @j)" name="optionImages[@j]" id="optionImages_@j"/>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <button type="button" class="btn btn-secondary" onclick="addOption()">Add Option</button>
                                         </div>
-                                        <button type="button" class="btn btn-secondary" onclick="addOption()">Add Option</button>
+                                        <hr />
                                     </div>
-                                    <hr />
-                                </div>
+                                }
                             </div>
                         </div>
+                    
                     </div>
                     <!-- Body -->
                 </div>
@@ -163,7 +178,7 @@
 
             <div class="col-lg-4">
                 <!-- Card -->
-                <div class="card mb-3 mb-lg-5">
+                <div class="card mb-3 mb-lg-5" id="product-price-sale-stocks">
                     <!-- Header -->
                     <div class="card-header">
                         <h4 class="card-header-title">Pricing</h4>
@@ -175,6 +190,8 @@
                         <div class="mb-4">
                             <label asp-for="Product.Price" class="form-label">Price</label>
                             <input type="text" class="form-control" asp-for="Product.Price" placeholder="0.00" aria-label="0.00">
+                            <span asp-validation-for="Product.Price" class="text-danger"></span>
+                            <span id="productPriceValidate" class="text-danger" style="display: none;">Price is required.</span>
                         </div>
                         <!-- End Form -->
 
@@ -182,6 +199,13 @@
                         <div class="mb-4">
                             <label asp-for="Product.Sale" class="form-label">Sale</label>
                             <input type="text" class="form-control" asp-for="Product.Sale" placeholder="0.00" aria-label="0.00" value="0.0">
+                            <span asp-validation-for="Product.Sale" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Product.Stock" class="form-label">Stocks</label>
+                            <input type="text" class="form-control" asp-for="Product.Stock" placeholder="0.00" aria-label="0.00" value="1" required>
+                            <span asp-validation-for="Product.Stock" class="text-danger"></span>
                         </div>
                         <!-- End Form -->
                     </div>
@@ -199,23 +223,26 @@
                             <div class="main-image-preview" style="margin-bottom: 10px;">
                                 <div id="mainImageContainer" style="position: relative; width: 200px;">
                                     <img id="mainImagePreview" src="@Model.Product.ProductImages.FirstOrDefault(i => i.IsMain)?.ImageUrl" alt="Main image preview" style="width: 100%; height: auto;"/>
-                                    <button type="button" class="btn-close" style="position: absolute; top: 5px; right: 5px;" 
-                                            onclick="removeMainImage()"></button>
                                 </div>
                             </div>
                             <input type="file" id="mainImage" name="mainImage" class="form-control" accept="image/*" 
                                 onchange="previewMainImage(event)"/>
+                            <span id="mainImageError" class="text-danger" style="display: none;">Main image is required.</span>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Additional Images</label>
                             <div id="additionalImagesPreview" class="d-flex flex-wrap gap-2 mb-2">
-                                @foreach (var image in Model.Product.ProductImages.Where(i => !i.IsMain && i.VariantOptionID == null))
+                                <!-- Image previews will be added here -->
+                                @if (Model.Product.ProductImages != null && Model.Product.ProductImages.Count > 1)
                                 {
-                                    <div style="position: relative; width: 100px; height: 100px;">
-                                        <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
-                                        <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="removeExistingImage('@image.ImageId', this)">×</button>
-                                    </div>
+                                    @foreach (var image in Model.Product.ProductImages.Where(i => !i.IsMain))
+                                    {
+                                        <div style="position: relative; width: 100px; height: 100px;">
+                                            <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
+                                            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="RemoveExistAdditonImages(this, @image.ImageId)">×</button>
+                                        </div>
+                                    }
                                 }
                             </div>
                             <input type="file" id="additionalImages" name="additionalImages" multiple class="form-control" 
@@ -235,26 +262,182 @@
 </div>
 
 @section Scripts {
+
+    @* VAlidate *@
     <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
+
+        function validateForm() {
+            let isValid = true;
+
+            // Validate Variant Name
+            const variantNameInput = document.querySelector('input[name="ProductVariant.Name"]');
+            const variantNameError = document.querySelector('.variant-name-error');
+
+            if (!variantNameInput.value.trim()) {
+                variantNameInput.classList.add('is-invalid');
+                variantNameError.innerText = 'Variant Name is required.';
+                isValid = false;
+            } else {
+                variantNameInput.classList.remove('is-invalid');
+                variantNameError.innerText = '';
+            }
+
+            // Validate variant options
+            const options = document.querySelectorAll('.option-item');
+            options.forEach(option => {
+                const valueInput = option.querySelector('input[name*="Value"]');
+                const priceInput = option.querySelector('input[name*="Price"]');
+                const stockInput = option.querySelector('input[name*="Stock"]');
+                const skuInput = option.querySelector('input[name*="SKU"]');
+                const saleInput = option.querySelector('input[name*="Sale"]');
+
+                if (!valueInput.value.trim()) {
+                    valueInput.classList.add('is-invalid');
+                    const errorSpan = valueInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    valueInput.insertAdjacentHTML('afterend', '<span class="text-danger">Option value is required.</span>');
+                    isValid = false;
+                } else {
+                    valueInput.classList.remove('is-invalid');
+                    const errorSpan = valueInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+
+                if (!priceInput.value.trim() || isNaN(priceInput.value) || Number(priceInput.value) <= 0) {
+                    priceInput.classList.add('is-invalid');
+                    const errorSpan = priceInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    priceInput.insertAdjacentHTML('afterend', '<span class="text-danger">Price must be a number greater than 0.</span>');
+                    isValid = false;
+                } else {
+                    priceInput.classList.remove('is-invalid');
+                    const errorSpan = priceInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+
+                if (!stockInput.value.trim() || isNaN(stockInput.value) || Number(stockInput.value) <= 0) {
+                    stockInput.classList.add('is-invalid');
+                    const errorSpan = stockInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    stockInput.insertAdjacentHTML('afterend', '<span class="text-danger">Stock must be a number greater than 0.</span>');
+                    isValid = false;
+                } else {
+                    stockInput.classList.remove('is-invalid');
+                    const errorSpan = stockInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+
+                if (!skuInput.value.trim()) {
+                    skuInput.classList.add('is-invalid');
+                    const errorSpan = skuInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    skuInput.insertAdjacentHTML('afterend', '<span class="text-danger">SKU is required.</span>');
+                    isValid = false;
+                } else {
+                    skuInput.classList.remove('is-invalid');
+                    const errorSpan = skuInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+
+                if (!saleInput.value.trim() || isNaN(saleInput.value) || Number(saleInput.value) < 0 || Number(saleInput.value) > 100) {
+                    saleInput.classList.add('is-invalid');
+                    const errorSpan = saleInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                    saleInput.insertAdjacentHTML('afterend', '<span class="text-danger">Sale must be a number between 0 and 100.</span>');
+                    isValid = false;
+                } else {
+                    saleInput.classList.remove('is-invalid');
+                    const errorSpan = saleInput.nextElementSibling;
+                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
+                        errorSpan.remove();
+                    }
+                }
+            });
+
+            return isValid;
+        }
+    </script>
+
+
+    <script>
+
         document.addEventListener("DOMContentLoaded", function() {
             // Show variant input if there are existing variants
             if (@Model.ProductVariantOptions.Count > 0) {
                 document.getElementById('variant-list').style.display = 'block';
-                document.getElementById('addVariantButton').style.display = 'none';
             }
         });
 
+
         function showVariantInput() {
             document.getElementById('variant-list').style.display = 'block';
-            document.getElementById('addVariantButton').style.display = 'none';
+        }
+
+        function toggleVariantInput() {
+            var variantList = document.getElementById('variant-list');
+            var toggleButton = document.getElementById('toggleVariantButton');
+            var productInfor = document.getElementById('product-price-sale-stocks');
+            if (variantList.style.display === 'none') {
+                variantList.style.display = 'block';
+                productInfor.style.display = 'none';
+                toggleButton.innerText = 'Remove Variant';
+                variantList.innerHTML = `
+                    <div class="variant-item mb-4">
+                        <div class="mb-4" id="variant">
+                            <label class="form-label">Variant Name</label>
+                            <input type="text" class="form-control" name="ProductVariant.Name" />
+                            <input type="hidden" class="form-control" asp-for="@Model.ProductVariant.ProductId" value="@Model.Product.ProductId"/>
+                            <span class="text-danger variant-name-error"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Options</label>
+                            <div id="option-list"></div>
+                            <button type="button" class="btn btn-secondary" onclick="addOption()">Add Option</button>
+                        </div>
+                        <hr />
+                    </div>`;
+                addOption();
+            } else {
+                variantList.style.display = 'none';
+                productInfor.style.display = 'block';
+                toggleButton.innerText = 'Add Variant';
+                variantList.innerHTML = ''; // Clear the variant list content
+                // Reinitialize the variant list content
+            }
         }
 
         function addOption() {
             var optionIndex = document.querySelectorAll('#option-list .option-item').length;
+
+            console.log("Option Index: " + optionIndex);
+
             var optionHtml = `
                 <div class="option-item row mb-3">
-                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].OptionId" />
-                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
+                    <input type="hidden" asp-for="ProductVariantOptions[${optionIndex}].OptionId" />
+                    <input type="hidden" asp-for="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
                     <div class="col-md-2 mb-2 mb-md-0">
                         <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
                     </div>
@@ -268,7 +451,7 @@
                         <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].SKU" placeholder="Option SKU" />
                     </div>
                     <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" />
+                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" Value="0"/>
                     </div>
                     <div class="col-md-2 text-end">
                         <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
@@ -277,14 +460,8 @@
                         <div class="mb-4">
                             <label class="form-label">Option Images</label>
                             <div id="optionImagesPreview_${optionIndex}" class="d-flex flex-wrap gap-2 mb-2">
-                                <!-- Image previews will be added here -->
                             </div>
-                            <input type="file" 
-                                   class="form-control" 
-                                   multiple 
-                                   accept="image/*"
-                                   onchange="previewOptionImages(event, ${optionIndex})" 
-                                   name="optionImages[${optionIndex}][]" />
+                            <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, ${optionIndex})" name="optionImages[${optionIndex}]" id="optionImages_${optionIndex}" />
                         </div>
                     </div>
                 </div>`;
@@ -294,6 +471,102 @@
         function removeOption(button) {
             button.closest('.option-item').remove();
         }
+
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: '#editor',
+
+            plugins: [
+                // Core editing features
+                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+                // Your account includes a free trial of TinyMCE premium features
+                // Try the most popular premium features until Nov 28, 2024:
+                'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
+                // Early access to document converters
+                'importword', 'exportword', 'exportpdf'
+            ],
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+            exportpdf_converter_options: { 'format': 'Letter', 'margin_top': '1in', 'margin_right': '1in', 'margin_bottom': '1in', 'margin_left': '1in' },
+            exportword_converter_options: { 'document': { 'size': 'Letter' } },
+            importword_converter_options: { 'formatting': { 'styles': 'inline', 'resets': 'inline', 'defaults': 'inline', } },
+
+            // enable title field in the Image dialog
+            image_title: true,
+            // enable automatic uploads of images represented by blob or data URIs
+            automatic_uploads: true,
+            // add custom filepicker only to Image dialog
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                input.onchange = function () {
+                    var file = this.files[0];
+                    var formData = new FormData();
+                    formData.append('file', file);
+
+                    // Thay đổi URL này thành URL của API upload file của bạn
+                    var uploadUrl = '/api/upload';
+
+                    fetch(uploadUrl, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Giả sử API trả về URL của file đã upload
+                        var fileUrl = data.url;
+                        cb(fileUrl, { title: file.name });
+                    })
+                    .catch(error => {
+                        console.error('Error uploading file:', error);
+                    });
+                };
+
+                input.click();
+            },
+
+            setup: function (editor) {
+                editor.on('remove', function (e) {
+                    var src = e.target.src;
+                    if (src) {
+                        var deleteUrl = '/api/delete';
+
+                        fetch(deleteUrl, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ url: src })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('File deleted:', data);
+                        })
+                        .catch(error => {
+                            console.error('Error deleting file:', error);
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+    @* Image *@
+    <script>
+        
+        let selectedAdditionalImages = [];
+        let selectedOptionImages = {};
 
         function previewMainImage(event) {
             const file = event.target.files[0];
@@ -307,28 +580,20 @@
             }
         }
 
-        function removeMainImage() {
-            document.getElementById('mainImage').value = '';
-            document.getElementById('mainImageContainer').style.display = 'none';
-        }
 
         function previewAdditionalImages(event) {
             const container = document.getElementById('additionalImagesPreview');
-            handleImagePreviews(event.target.files, container);
-        }
-
-        function previewOptionImages(event, index) {
             const files = event.target.files;
-            const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
-            previewContainer.innerHTML = '';
-
             Array.from(files).forEach(file => {
+                selectedAdditionalImages.push(file);
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const wrapper = document.createElement('div');
+                    wrapper.className = 'image-wrapper'; // Thêm class image-wrapper
                     wrapper.style.position = 'relative';
                     wrapper.style.width = '100px';
                     wrapper.style.height = '100px';
+                    wrapper.style.marginRight = '10px';
 
                     const img = document.createElement('img');
                     img.src = e.target.result;
@@ -343,7 +608,56 @@
                     removeBtn.style.top = '5px';
                     removeBtn.style.right = '5px';
                     removeBtn.style.padding = '0 6px';
-                    removeBtn.onclick = () => wrapper.remove();
+                    removeBtn.onclick = () => {
+                        wrapper.remove();
+                        selectedAdditionalImages = selectedAdditionalImages.filter(f => f !== file);
+                        updateHiddenInput('additionalImages', selectedAdditionalImages);
+                    };
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    container.appendChild(wrapper);
+                }
+                reader.readAsDataURL(file);
+            });
+            updateHiddenInput('additionalImages', selectedAdditionalImages);
+        }
+
+        function previewOptionImages(event, index) {
+            if (!selectedOptionImages[index]) {
+                selectedOptionImages[index] = [];
+            }
+            const files = event.target.files;
+            const previewContainer = document.getElementById(`optionImagesPreview_${index}`);
+
+            Array.from(files).forEach(file => {
+                selectedOptionImages[index].push(file);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'relative';
+                    wrapper.style.width = '100px';
+                    wrapper.style.height = '100px';
+                    wrapper.style.marginRight = '10px';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '5px';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '×';
+                    removeBtn.className = 'btn btn-sm btn-danger position-absolute';
+                    removeBtn.style.top = '5px';
+                    removeBtn.style.right = '5px';
+                    removeBtn.style.padding = '0 6px';
+                    removeBtn.onclick = () => {
+                        wrapper.remove();
+                        selectedOptionImages[index] = selectedOptionImages[index].filter(f => f !== file);
+                        updateHiddenInput(`optionImages_${index}`, selectedOptionImages[index]);
+                    };
 
                     wrapper.appendChild(img);
                     wrapper.appendChild(removeBtn);
@@ -351,71 +665,40 @@
                 }
                 reader.readAsDataURL(file);
             });
+            updateHiddenInput(`optionImages_${index}`, selectedOptionImages[index]);
         }
 
-        function handleImagePreviews(files, container) {
-            for (const file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const wrapper = document.createElement('div');
-                    wrapper.style.position = 'relative';
-                    wrapper.style.width = '100px';
-                    wrapper.style.marginRight = '10px';
+        function updateHiddenInput(inputId, files) {
+            const input = document.getElementById(inputId);
 
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '100%';
-                    img.style.height = 'auto';
+            console.log("------------\n" + input)
 
-                    const removeBtn = document.createElement('button');
-                    removeBtn.className = 'btn-close';
-                    removeBtn.style.position = 'absolute';
-                    removeBtn.style.top = '5px';
-                    removeBtn.style.right = '5px';
-                    removeBtn.onclick = () => wrapper.remove();
+            const dataTransfer = new DataTransfer();
+            files.forEach(file => dataTransfer.items.add(file));
+            input.files = dataTransfer.files;
+        }
 
-                    wrapper.appendChild(img);
-                    wrapper.appendChild(removeBtn);
-                    container.appendChild(wrapper);
-                }
-                reader.readAsDataURL(file);
+
+        let deleteImages = [];
+
+        function RemoveExistAdditonImages(button, imageId) {
+            // Tìm phần tử cha gần nhất là div
+            const imageWrapper = button.closest('div');
+            
+            // Kiểm tra nếu phần tử cha tồn tại
+            if (imageWrapper) {
+                // Xóa ảnh trên UI
+                imageWrapper.remove();
+
+                // Thêm ảnh vào danh sách deleteImages
+                deleteImages.push(imageId);
+
+                // Cập nhật input ẩn với danh sách deleteImages
+                document.getElementById('deleteImages').value = JSON.stringify(deleteImages);
+            } else {
+                console.error('Cannot find the parent div element.');
             }
         }
-
-        function removeExistingImage(imageId, button) {
-            fetch(`/api/deleteImage/${imageId}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    button.closest('div').remove();
-                } else {
-                    console.error('Error deleting image');
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting image:', error);
-            });
-        }
-        
-        let deletedImages = [];
-        let deletedOptions = [];
-
-        function removeExistingImage(imageId, button) {
-            deletedImages.push(imageId);
-            document.getElementById('imagesToDelete').value = deletedImages.join(',');
-            button.closest('div').remove();
-        }
-
-        function removeOption(button) {
-            const optionItem = button.closest('.option-item');
-            const optionId = optionItem.querySelector('input[name$=".OptionId"]').value;
-            if (optionId) {
-                deletedOptions.push(optionId);
-                document.getElementById('optionsToDelete').value = deletedOptions.join(',');
-            }
-            optionItem.remove();
-        }
+            
     </script>
-
 }
