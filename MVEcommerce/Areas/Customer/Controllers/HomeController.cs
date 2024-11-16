@@ -7,6 +7,8 @@ using MVEcommerce.Models.ViewModels.ProductDetailViewModel;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
+using MVEcommerce.Models.ViewModels.AddToCart;
+using System.Security.Claims;
 
 
 namespace MVEcommerce.Areas.Customer.Controllers
@@ -47,7 +49,73 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(categoryProduct);
         }
 
-        public IActionResult ProductDetail(string slug)
+		[HttpGet]
+		public IActionResult ShowProductModal(int productId)
+		{
+			var product = _unitOfWork.Product.GetAll(
+				p => p.ProductId == productId,
+				includeProperties: "Category,ProductImages,ProductVariants").FirstOrDefault();
+
+			if (product == null)
+			{
+
+				return NotFound("Product not found.");
+			}
+
+
+			return PartialView("ShowProductModal", product);
+		}
+
+		[HttpPost]
+		public IActionResult AddToCart([FromBody] AddToCart cartItem)
+		{
+			if (User.Identity is not ClaimsIdentity claimsIdentity)
+			{
+				return Unauthorized(new { success = false, message = "Bạn chưa đăng nhập!" });
+			}
+
+			var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+			if (userIdClaim == null)
+			{
+				return Unauthorized(new { success = false, message = "Không tìm thấy thông tin người dùng!"});
+			}
+
+			var userId = userIdClaim.Value;
+
+			
+			var existingCartItem = _unitOfWork.ShoppingCart
+				.GetAll(c => c.ProductId == cartItem.ProductId&& c.UserId == userId)
+				.FirstOrDefault();
+
+
+
+			if (existingCartItem != null)
+			{
+				
+				existingCartItem.Quantity += cartItem.Quantity;
+				_unitOfWork.ShoppingCart.Update(existingCartItem);
+			}
+			else
+			{
+				var newCartItem = new ShoppingCart
+				{
+					ProductId = cartItem.ProductId,
+					UserId = userId,
+					Quantity = cartItem.Quantity > 0 ? cartItem.Quantity : 1
+				};
+
+				_unitOfWork.ShoppingCart.Add(newCartItem);
+			}
+
+			
+			_unitOfWork.Save();
+			
+			return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng!" });
+		}
+
+
+		public IActionResult ProductDetail(string slug)
         {
                var product = _unitOfWork.Product.GetProductBySlug(slug); 
 
