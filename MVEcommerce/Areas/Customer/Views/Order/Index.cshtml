@@ -2,242 +2,618 @@
     ViewData["Title"] = "My Orders";
 }
 
+<div id="page-header" class="page-header">
+    <div class="container clearfix">
+        <div class="page-header__content">
+            <h1 class="page-header__title">Checkout</h1>
+        </div>
+    </div>
+</div>
 
-<div class="container clearfix ">	
-    <h1 class="page-header__title">Checkout</h1>
+<div class="container clearfix ">
     <article id="post-9" class="post-9 page type-page status-publish hentry">
-	<div class="woocommerce"><div class="woocommerce-notices-wrapper"></div><div class="woocommerce-notices-wrapper"></div><div class="row-flex checkout-form-cols"><div class="checkout-coupon checkout-form-col col-flex col-flex-md-6 col-flex-xs-12"><div class="woocommerce-form-coupon-toggle">
-	
-	<div class="woocommerce-info">
-		Have a coupon? <a href="#" class="showcoupon">Enter your code</a>	</div>
-</div>
+        <div class="woocommerce">
+            <div class="woocommerce-notices-wrapper"></div>
+            <div class="woocommerce-notices-wrapper"></div>
+            <div class="row-flex checkout-form-cols">
+                <div class="checkout-coupon checkout-form-col col-flex col-flex-md-6 col-flex-xs-12">
+                </div>
+            </div>
+            <form name="checkout" method="post" class="checkout woocommerce-checkout" enctype="multipart/form-data"
+                novalidate="novalidate">
 
-<form class="checkout_coupon woocommerce-form-coupon" method="post" style="display: none;">
+                <div class="col2-set" id="customer_details">
+                    <div class="col-1">
+                        <div class="woocommerce-billing-fields">
 
-	<p class="bv-p-translate">If you have a coupon code, please apply it below.<bv-p-translate-btn class="bv-p-translate-btn" title="Burning Vocabulary translation" style="left: 92px; display: none; position: absolute !important;">↳</bv-p-translate-btn></p>
+                            <h3>Billing details</h3>
+                            <div class="woocommerce-billing-fields__field-wrapper">
 
-	<p class="form-row form-row-first">
-		<label for="coupon_code" class="screen-reader-text">Coupon:</label>
-		<input type="text" name="coupon_code" class="input-text" placeholder="Coupon code" id="coupon_code" value="">
-	</p>
+                                <p class="form-row form-row-wide" id="billing_name_field" data-priority="30">
+                                    <label  class="">Full Name&nbsp;
+                                    </label>
+                                    <span class="woocommerce-input-wrapper">
+                                        <input type="text" class="input-text " placeholder="" value="" autocomplete="organization">
+                                    </span>
+                                </p>
 
-	<p class="form-row form-row-last">
-		<button type="submit" class="button" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-	</p>
+                                <p class="form-row form-row-wide" id="" data-priority="30">
+                                    <label
+                                        class="">Country / Region&nbsp;
+                                        <abbr class="required" title="required">*</abbr>
+                                    </label>
+                                    <span class="woocommerce-input-wrapper">
+                                        <select style="width: 100%;" name="billing_country" id="billing_country" class="country_to_state country_select" autocomplete="country" data-placeholder="Select a country / region…" data-label="Country / Region"
+                                            tabindex="-1" aria-hidden="true">
+                                            <option value="">Select a country / region…</option>
+                                            <option value="AF">Afghanistan</option>
+                                            <option value="AX">Åland Islands</option>
+                                            <option value="AL">Albania</option>
+                                            <option value="DZ">Algeria</option>
+                                            <option value="AS">American Samoa</option>
+                                            <option value="AD">Andorra</option>
+                                            <option value="AO">Angola</option>
+                                            <option value="AI">Anguilla</option>
+                                            <option value="AQ">Antarctica</option>
+                                            <option value="AG">Antigua and Barbuda</option>
+                                            <option value="AR">Argentina</option>
+                                            <option value="AM">Armenia</option>
+                                            <option value="AW">Aruba</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="AT">Austria</option>
+                                            <option value="AZ">Azerbaijan</option>
+                                            <option value="BS">Bahamas</option>
+                                            <option value="BH">Bahrain</option>
+                                            <option value="BD">Bangladesh</option>
+                                            <option value="BB">Barbados</option>
+                                            <option value="BY">Belarus</option>
+                                            <option value="PW">Belau</option>
+                                            <option value="BE">Belgium</option>
+                                            <option value="BZ">Belize</option>
+                                            <option value="BJ">Benin</option>
+                                            <option value="BM">Bermuda</option>
+                                            <option value="BT">Bhutan</option>
+                                            <option value="BO">Bolivia</option>
+                                            <option value="BQ">Bonaire, Saint Eustatius and Saba</option>
+                                            <option value="BA">Bosnia and Herzegovina</option>
+                                            <option value="BW">Botswana</option>
+                                            <option value="BV">Bouvet Island</option>
+                                            <option value="BR">Brazil</option>
+                                            <option value="IO">British Indian Ocean Territory</option>
+                                            <option value="BN">Brunei</option>
+                                            <option value="BG">Bulgaria</option>
+                                            <option value="BF">Burkina Faso</option>
+                                            <option value="BI">Burundi</option>
+                                            <option value="KH">Cambodia</option>
+                                            <option value="CM">Cameroon</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="CV">Cape Verde</option>
+                                            <option value="KY">Cayman Islands</option>
+                                            <option value="CF">Central African Republic</option>
+                                            <option value="TD">Chad</option>
+                                            <option value="CL">Chile</option>
+                                            <option value="CN">China</option>
+                                            <option value="CX">Christmas Island</option>
+                                            <option value="CC">Cocos (Keeling) Islands</option>
+                                            <option value="CO">Colombia</option>
+                                            <option value="KM">Comoros</option>
+                                            <option value="CG">Congo (Brazzaville)</option>
+                                            <option value="CD">Congo (Kinshasa)</option>
+                                            <option value="CK">Cook Islands</option>
+                                            <option value="CR">Costa Rica</option>
+                                            <option value="HR">Croatia</option>
+                                            <option value="CU">Cuba</option>
+                                            <option value="CW">Curaçao</option>
+                                            <option value="CY">Cyprus</option>
+                                            <option value="CZ">Czech Republic</option>
+                                            <option value="DK">Denmark</option>
+                                            <option value="DJ">Djibouti</option>
+                                            <option value="DM">Dominica</option>
+                                            <option value="DO">Dominican Republic</option>
+                                            <option value="EC">Ecuador</option>
+                                            <option value="EG">Egypt</option>
+                                            <option value="SV">El Salvador</option>
+                                            <option value="GQ">Equatorial Guinea</option>
+                                            <option value="ER">Eritrea</option>
+                                            <option value="EE">Estonia</option>
+                                            <option value="SZ">Eswatini</option>
+                                            <option value="ET">Ethiopia</option>
+                                            <option value="FK">Falkland Islands</option>
+                                            <option value="FO">Faroe Islands</option>
+                                            <option value="FJ">Fiji</option>
+                                            <option value="FI">Finland</option>
+                                            <option value="FR">France</option>
+                                            <option value="GF">French Guiana</option>
+                                            <option value="PF">French Polynesia</option>
+                                            <option value="TF">French Southern Territories</option>
+                                            <option value="GA">Gabon</option>
+                                            <option value="GM">Gambia</option>
+                                            <option value="GE">Georgia</option>
+                                            <option value="DE">Germany</option>
+                                            <option value="GH">Ghana</option>
+                                            <option value="GI">Gibraltar</option>
+                                            <option value="GR">Greece</option>
+                                            <option value="GL">Greenland</option>
+                                            <option value="GD">Grenada</option>
+                                            <option value="GP">Guadeloupe</option>
+                                            <option value="GU">Guam</option>
+                                            <option value="GT">Guatemala</option>
+                                            <option value="GG">Guernsey</option>
+                                            <option value="GN">Guinea</option>
+                                            <option value="GW">Guinea-Bissau</option>
+                                            <option value="GY">Guyana</option>
+                                            <option value="HT">Haiti</option>
+                                            <option value="HM">Heard Island and McDonald Islands</option>
+                                            <option value="HN">Honduras</option>
+                                            <option value="HK">Hong Kong</option>
+                                            <option value="HU">Hungary</option>
+                                            <option value="IS">Iceland</option>
+                                            <option value="IN">India</option>
+                                            <option value="ID">Indonesia</option>
+                                            <option value="IR">Iran</option>
+                                            <option value="IQ">Iraq</option>
+                                            <option value="IE">Ireland</option>
+                                            <option value="IM">Isle of Man</option>
+                                            <option value="IL">Israel</option>
+                                            <option value="IT">Italy</option>
+                                            <option value="CI">Ivory Coast</option>
+                                            <option value="JM">Jamaica</option>
+                                            <option value="JP">Japan</option>
+                                            <option value="JE">Jersey</option>
+                                            <option value="JO">Jordan</option>
+                                            <option value="KZ">Kazakhstan</option>
+                                            <option value="KE">Kenya</option>
+                                            <option value="KI">Kiribati</option>
+                                            <option value="KW">Kuwait</option>
+                                            <option value="KG">Kyrgyzstan</option>
+                                            <option value="LA">Laos</option>
+                                            <option value="LV">Latvia</option>
+                                            <option value="LB">Lebanon</option>
+                                            <option value="LS">Lesotho</option>
+                                            <option value="LR">Liberia</option>
+                                            <option value="LY">Libya</option>
+                                            <option value="LI">Liechtenstein</option>
+                                            <option value="LT">Lithuania</option>
+                                            <option value="LU">Luxembourg</option>
+                                            <option value="MO">Macao</option>
+                                            <option value="MG">Madagascar</option>
+                                            <option value="MW">Malawi</option>
+                                            <option value="MY">Malaysia</option>
+                                            <option value="MV">Maldives</option>
+                                            <option value="ML">Mali</option>
+                                            <option value="MT">Malta</option>
+                                            <option value="MH">Marshall Islands</option>
+                                            <option value="MQ">Martinique</option>
+                                            <option value="MR">Mauritania</option>
+                                            <option value="MU">Mauritius</option>
+                                            <option value="YT">Mayotte</option>
+                                            <option value="MX">Mexico</option>
+                                            <option value="FM">Micronesia</option>
+                                            <option value="MD">Moldova</option>
+                                            <option value="MC">Monaco</option>
+                                            <option value="MN">Mongolia</option>
+                                            <option value="ME">Montenegro</option>
+                                            <option value="MS">Montserrat</option>
+                                            <option value="MA">Morocco</option>
+                                            <option value="MZ">Mozambique</option>
+                                            <option value="MM">Myanmar</option>
+                                            <option value="NA">Namibia</option>
+                                            <option value="NR">Nauru</option>
+                                            <option value="NP">Nepal</option>
+                                            <option value="NL">Netherlands</option>
+                                            <option value="NC">New Caledonia</option>
+                                            <option value="NZ">New Zealand</option>
+                                            <option value="NI">Nicaragua</option>
+                                            <option value="NE">Niger</option>
+                                            <option value="NG">Nigeria</option>
+                                            <option value="NU">Niue</option>
+                                            <option value="NF">Norfolk Island</option>
+                                            <option value="KP">North Korea</option>
+                                            <option value="MK">North Macedonia</option>
+                                            <option value="MP">Northern Mariana Islands</option>
+                                            <option value="NO">Norway</option>
+                                            <option value="OM">Oman</option>
+                                            <option value="PK">Pakistan</option>
+                                            <option value="PS">Palestinian Territory</option>
+                                            <option value="PA">Panama</option>
+                                            <option value="PG">Papua New Guinea</option>
+                                            <option value="PY">Paraguay</option>
+                                            <option value="PE">Peru</option>
+                                            <option value="PH">Philippines</option>
+                                            <option value="PN">Pitcairn</option>
+                                            <option value="PL">Poland</option>
+                                            <option value="PT">Portugal</option>
+                                            <option value="PR">Puerto Rico</option>
+                                            <option value="QA">Qatar</option>
+                                            <option value="RE">Reunion</option>
+                                            <option value="RO">Romania</option>
+                                            <option value="RU">Russia</option>
+                                            <option value="RW">Rwanda</option>
+                                            <option value="BL">Saint Barthélemy</option>
+                                            <option value="SH">Saint Helena</option>
+                                            <option value="KN">Saint Kitts and Nevis</option>
+                                            <option value="LC">Saint Lucia</option>
+                                            <option value="SX">Saint Martin (Dutch part)</option>
+                                            <option value="MF">Saint Martin (French part)</option>
+                                            <option value="PM">Saint Pierre and Miquelon</option>
+                                            <option value="VC">Saint Vincent and the Grenadines</option>
+                                            <option value="WS">Samoa</option>
+                                            <option value="SM">San Marino</option>
+                                            <option value="ST">São Tomé and Príncipe</option>
+                                            <option value="SA">Saudi Arabia</option>
+                                            <option value="SN">Senegal</option>
+                                            <option value="RS">Serbia</option>
+                                            <option value="SC">Seychelles</option>
+                                            <option value="SL">Sierra Leone</option>
+                                            <option value="SG">Singapore</option>
+                                            <option value="SK">Slovakia</option>
+                                            <option value="SI">Slovenia</option>
+                                            <option value="SB">Solomon Islands</option>
+                                            <option value="SO">Somalia</option>
+                                            <option value="ZA">South Africa</option>
+                                            <option value="GS">South Georgia/Sandwich Islands</option>
+                                            <option value="KR">South Korea</option>
+                                            <option value="SS">South Sudan</option>
+                                            <option value="ES">Spain</option>
+                                            <option value="LK">Sri Lanka</option>
+                                            <option value="SD">Sudan</option>
+                                            <option value="SR">Suriname</option>
+                                            <option value="SJ">Svalbard and Jan Mayen</option>
+                                            <option value="SE">Sweden</option>
+                                            <option value="CH">Switzerland</option>
+                                            <option value="SY">Syria</option>
+                                            <option value="TW">Taiwan</option>
+                                            <option value="TJ">Tajikistan</option>
+                                            <option value="TZ">Tanzania</option>
+                                            <option value="TH">Thailand</option>
+                                            <option value="TL">Timor-Leste</option>
+                                            <option value="TG">Togo</option>
+                                            <option value="TK">Tokelau</option>
+                                            <option value="TO">Tonga</option>
+                                            <option value="TT">Trinidad and Tobago</option>
+                                            <option value="TN">Tunisia</option>
+                                            <option value="TR">Turkey</option>
+                                            <option value="TM">Turkmenistan</option>
+                                            <option value="TC">Turks and Caicos Islands</option>
+                                            <option value="TV">Tuvalu</option>
+                                            <option value="UG">Uganda</option>
+                                            <option value="UA">Ukraine</option>
+                                            <option value="AE">United Arab Emirates</option>
+                                            <option value="GB">United Kingdom (UK)</option>
+                                            <option value="US">United States (US)</option>
+                                            <option value="UM">United States (US) Minor Outlying Islands</option>
+                                            <option value="UY">Uruguay</option>
+                                            <option value="UZ">Uzbekistan</option>
+                                            <option value="VU">Vanuatu</option>
+                                            <option value="VA">Vatican</option>
+                                            <option value="VE">Venezuela</option>
+                                            <option value="VN" selected="selected">Vietnam</option>
+                                            <option value="VG">Virgin Islands (British)</option>
+                                            <option value="VI">Virgin Islands (US)</option>
+                                            <option value="WF">Wallis and Futuna</option>
+                                            <option value="EH">Western Sahara</option>
+                                            <option value="YE">Yemen</option>
+                                            <option value="ZM">Zambia</option>
+                                            <option value="ZW">Zimbabwe</option>
+                                        </select>
+                                    </span>
+                                </p>
+                                <p class="form-row address-field validate-required form-row-wide"
+                                    id="billing_address_1_field" data-priority="50"><label for="billing_address_1"
+                                        class="">Street address&nbsp;<abbr class="required"
+                                            title="required">*</abbr></label><span
+                                        class="woocommerce-input-wrapper"><input type="text" class="input-text "
+                                            name="billing_address_1" id="billing_address_1"
+                                            placeholder="House number and street name" value="Ha Noi"
+                                            autocomplete="address-line1"
+                                            data-placeholder="House number and street name"></span></p>
+                                <p class="form-row address-field form-row-wide" id="billing_address_2_field"
+                                    data-priority="60">
+                                    <label for="billing_address_1"
+                                        class="">Apartment, suite, unit, etc.<abbr class="required"
+                                            title="required">*</abbr></label>
+                                    <span class="woocommerce-input-wrapper">
+                                        <input type="text" class="input-text "
+                                            name="billing_address_2" id="billing_address_2"
+                                            placeholder="Apartment, suite, unit, etc." value=""
+                                            autocomplete="address-line2"
+                                            data-placeholder="Apartment, suite, unit, etc.">
+                                    </span>
+                                </p>
+                                <p class="form-row address-field validate-postcode form-row-wide"
+                                    id="billing_postcode_field" data-priority="65"
+                                    data-o_class="form-row form-row-wide address-field validate-postcode"><label
+                                        for="billing_postcode" class="">Postcode / ZIP&nbsp;<span
+                                            class="optional">(optional)</span></label><span
+                                        class="woocommerce-input-wrapper"><input type="text" class="input-text "
+                                            name="billing_postcode" id="billing_postcode" placeholder="" value="69458"
+                                            autocomplete="postal-code"></span></p>
+                                <p class="form-row address-field validate-required form-row-wide"
+                                    id="billing_city_field" data-priority="70"
+                                    data-o_class="form-row form-row-wide address-field validate-required"><label
+                                        for="billing_city" class="">Town / City&nbsp;<abbr class="required"
+                                            title="required">*</abbr></label><span
+                                        class="woocommerce-input-wrapper"><input type="text" class="input-text "
+                                            name="billing_city" id="billing_city" placeholder="" value="Ha noi"
+                                            autocomplete="address-level2"></span></p>
+                                <p class="form-row address-field validate-state form-row-wide" id="billing_state_field"
+                                    style="display: none"
+                                    data-o_class="form-row form-row-wide address-field validate-state"><label
+                                        for="billing_state" class="">State / County&nbsp;<span
+                                            class="optional">(optional)</span></label><span
+                                        class="woocommerce-input-wrapper"><input type="hidden" id="billing_state"
+                                            name="billing_state" placeholder="" data-input-classes=""
+                                            class="hidden"></span></p>
+                                <p class="form-row form-row-wide validate-required validate-phone"
+                                    id="billing_phone_field" data-priority="100"><label for="billing_phone"
+                                        class="">Phone&nbsp;<abbr class="required"
+                                            title="required">*</abbr></label><span
+                                        class="woocommerce-input-wrapper"><input type="tel" class="input-text "
+                                            name="billing_phone" id="billing_phone" placeholder="" value="0375368563"
+                                            autocomplete="tel"></span></p>
+                                <p class="form-row form-row-wide validate-required validate-email"
+                                    id="billing_email_field" data-priority="110"><label for="billing_email"
+                                        class="">Email address&nbsp;<abbr class="required"
+                                            title="required">*</abbr></label><span
+                                        class="woocommerce-input-wrapper"><input type="email" class="input-text "
+                                            name="billing_email" id="billing_email" placeholder=""
+                                            value="hiep221230828@lms.utc.edu.vn" autocomplete="email username"></span>
+                                </p>
+                            </div>
 
-	<div class="clear"></div>
-</form>
-</div></div>
-<form name="checkout" method="post" class="checkout woocommerce-checkout" action="https://motta.uix.store/checkout/" enctype="multipart/form-data" novalidate="novalidate">
+                        </div>
 
-	
-		
-		<div class="col2-set" id="customer_details">
-			<div class="col-1">
-				<div class="woocommerce-billing-fields">
-	
-		<h3>Billing details</h3>
+                    </div>
+                </div>
 
-	
-	
-	<div class="woocommerce-billing-fields__field-wrapper">
-			<p class="form-row form-row-first validate-required" id="billing_first_name_field" data-priority="10"><label for="billing_first_name" class="">First name&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_first_name" id="billing_first_name" placeholder="" value="Hiep" autocomplete="given-name"></span></p><p class="form-row form-row-last validate-required" id="billing_last_name_field" data-priority="20"><label for="billing_last_name" class="">Last name&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_last_name" id="billing_last_name" placeholder="" value="Hoang" autocomplete="family-name"></span></p><p class="form-row form-row-wide" id="billing_company_field" data-priority="30"><label for="billing_company" class="">Company name&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_company" id="billing_company" placeholder="" value="" autocomplete="organization"></span></p><p class="form-row form-row-wide address-field update_totals_on_change validate-required" id="billing_country_field" data-priority="40"><label for="billing_country" class="">Country / Region&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><select name="billing_country" id="billing_country" class="country_to_state country_select select2-hidden-accessible" autocomplete="country" data-placeholder="Select a country / region…" data-label="Country / Region" tabindex="-1" aria-hidden="true"><option value="">Select a country / region…</option><option value="AF">Afghanistan</option><option value="AX">Åland Islands</option><option value="AL">Albania</option><option value="DZ">Algeria</option><option value="AS">American Samoa</option><option value="AD">Andorra</option><option value="AO">Angola</option><option value="AI">Anguilla</option><option value="AQ">Antarctica</option><option value="AG">Antigua and Barbuda</option><option value="AR">Argentina</option><option value="AM">Armenia</option><option value="AW">Aruba</option><option value="AU">Australia</option><option value="AT">Austria</option><option value="AZ">Azerbaijan</option><option value="BS">Bahamas</option><option value="BH">Bahrain</option><option value="BD">Bangladesh</option><option value="BB">Barbados</option><option value="BY">Belarus</option><option value="PW">Belau</option><option value="BE">Belgium</option><option value="BZ">Belize</option><option value="BJ">Benin</option><option value="BM">Bermuda</option><option value="BT">Bhutan</option><option value="BO">Bolivia</option><option value="BQ">Bonaire, Saint Eustatius and Saba</option><option value="BA">Bosnia and Herzegovina</option><option value="BW">Botswana</option><option value="BV">Bouvet Island</option><option value="BR">Brazil</option><option value="IO">British Indian Ocean Territory</option><option value="BN">Brunei</option><option value="BG">Bulgaria</option><option value="BF">Burkina Faso</option><option value="BI">Burundi</option><option value="KH">Cambodia</option><option value="CM">Cameroon</option><option value="CA">Canada</option><option value="CV">Cape Verde</option><option value="KY">Cayman Islands</option><option value="CF">Central African Republic</option><option value="TD">Chad</option><option value="CL">Chile</option><option value="CN">China</option><option value="CX">Christmas Island</option><option value="CC">Cocos (Keeling) Islands</option><option value="CO">Colombia</option><option value="KM">Comoros</option><option value="CG">Congo (Brazzaville)</option><option value="CD">Congo (Kinshasa)</option><option value="CK">Cook Islands</option><option value="CR">Costa Rica</option><option value="HR">Croatia</option><option value="CU">Cuba</option><option value="CW">Curaçao</option><option value="CY">Cyprus</option><option value="CZ">Czech Republic</option><option value="DK">Denmark</option><option value="DJ">Djibouti</option><option value="DM">Dominica</option><option value="DO">Dominican Republic</option><option value="EC">Ecuador</option><option value="EG">Egypt</option><option value="SV">El Salvador</option><option value="GQ">Equatorial Guinea</option><option value="ER">Eritrea</option><option value="EE">Estonia</option><option value="SZ">Eswatini</option><option value="ET">Ethiopia</option><option value="FK">Falkland Islands</option><option value="FO">Faroe Islands</option><option value="FJ">Fiji</option><option value="FI">Finland</option><option value="FR">France</option><option value="GF">French Guiana</option><option value="PF">French Polynesia</option><option value="TF">French Southern Territories</option><option value="GA">Gabon</option><option value="GM">Gambia</option><option value="GE">Georgia</option><option value="DE">Germany</option><option value="GH">Ghana</option><option value="GI">Gibraltar</option><option value="GR">Greece</option><option value="GL">Greenland</option><option value="GD">Grenada</option><option value="GP">Guadeloupe</option><option value="GU">Guam</option><option value="GT">Guatemala</option><option value="GG">Guernsey</option><option value="GN">Guinea</option><option value="GW">Guinea-Bissau</option><option value="GY">Guyana</option><option value="HT">Haiti</option><option value="HM">Heard Island and McDonald Islands</option><option value="HN">Honduras</option><option value="HK">Hong Kong</option><option value="HU">Hungary</option><option value="IS">Iceland</option><option value="IN">India</option><option value="ID">Indonesia</option><option value="IR">Iran</option><option value="IQ">Iraq</option><option value="IE">Ireland</option><option value="IM">Isle of Man</option><option value="IL">Israel</option><option value="IT">Italy</option><option value="CI">Ivory Coast</option><option value="JM">Jamaica</option><option value="JP">Japan</option><option value="JE">Jersey</option><option value="JO">Jordan</option><option value="KZ">Kazakhstan</option><option value="KE">Kenya</option><option value="KI">Kiribati</option><option value="KW">Kuwait</option><option value="KG">Kyrgyzstan</option><option value="LA">Laos</option><option value="LV">Latvia</option><option value="LB">Lebanon</option><option value="LS">Lesotho</option><option value="LR">Liberia</option><option value="LY">Libya</option><option value="LI">Liechtenstein</option><option value="LT">Lithuania</option><option value="LU">Luxembourg</option><option value="MO">Macao</option><option value="MG">Madagascar</option><option value="MW">Malawi</option><option value="MY">Malaysia</option><option value="MV">Maldives</option><option value="ML">Mali</option><option value="MT">Malta</option><option value="MH">Marshall Islands</option><option value="MQ">Martinique</option><option value="MR">Mauritania</option><option value="MU">Mauritius</option><option value="YT">Mayotte</option><option value="MX">Mexico</option><option value="FM">Micronesia</option><option value="MD">Moldova</option><option value="MC">Monaco</option><option value="MN">Mongolia</option><option value="ME">Montenegro</option><option value="MS">Montserrat</option><option value="MA">Morocco</option><option value="MZ">Mozambique</option><option value="MM">Myanmar</option><option value="NA">Namibia</option><option value="NR">Nauru</option><option value="NP">Nepal</option><option value="NL">Netherlands</option><option value="NC">New Caledonia</option><option value="NZ">New Zealand</option><option value="NI">Nicaragua</option><option value="NE">Niger</option><option value="NG">Nigeria</option><option value="NU">Niue</option><option value="NF">Norfolk Island</option><option value="KP">North Korea</option><option value="MK">North Macedonia</option><option value="MP">Northern Mariana Islands</option><option value="NO">Norway</option><option value="OM">Oman</option><option value="PK">Pakistan</option><option value="PS">Palestinian Territory</option><option value="PA">Panama</option><option value="PG">Papua New Guinea</option><option value="PY">Paraguay</option><option value="PE">Peru</option><option value="PH">Philippines</option><option value="PN">Pitcairn</option><option value="PL">Poland</option><option value="PT">Portugal</option><option value="PR">Puerto Rico</option><option value="QA">Qatar</option><option value="RE">Reunion</option><option value="RO">Romania</option><option value="RU">Russia</option><option value="RW">Rwanda</option><option value="BL">Saint Barthélemy</option><option value="SH">Saint Helena</option><option value="KN">Saint Kitts and Nevis</option><option value="LC">Saint Lucia</option><option value="SX">Saint Martin (Dutch part)</option><option value="MF">Saint Martin (French part)</option><option value="PM">Saint Pierre and Miquelon</option><option value="VC">Saint Vincent and the Grenadines</option><option value="WS">Samoa</option><option value="SM">San Marino</option><option value="ST">São Tomé and Príncipe</option><option value="SA">Saudi Arabia</option><option value="SN">Senegal</option><option value="RS">Serbia</option><option value="SC">Seychelles</option><option value="SL">Sierra Leone</option><option value="SG">Singapore</option><option value="SK">Slovakia</option><option value="SI">Slovenia</option><option value="SB">Solomon Islands</option><option value="SO">Somalia</option><option value="ZA">South Africa</option><option value="GS">South Georgia/Sandwich Islands</option><option value="KR">South Korea</option><option value="SS">South Sudan</option><option value="ES">Spain</option><option value="LK">Sri Lanka</option><option value="SD">Sudan</option><option value="SR">Suriname</option><option value="SJ">Svalbard and Jan Mayen</option><option value="SE">Sweden</option><option value="CH">Switzerland</option><option value="SY">Syria</option><option value="TW">Taiwan</option><option value="TJ">Tajikistan</option><option value="TZ">Tanzania</option><option value="TH">Thailand</option><option value="TL">Timor-Leste</option><option value="TG">Togo</option><option value="TK">Tokelau</option><option value="TO">Tonga</option><option value="TT">Trinidad and Tobago</option><option value="TN">Tunisia</option><option value="TR">Turkey</option><option value="TM">Turkmenistan</option><option value="TC">Turks and Caicos Islands</option><option value="TV">Tuvalu</option><option value="UG">Uganda</option><option value="UA">Ukraine</option><option value="AE">United Arab Emirates</option><option value="GB">United Kingdom (UK)</option><option value="US">United States (US)</option><option value="UM">United States (US) Minor Outlying Islands</option><option value="UY">Uruguay</option><option value="UZ">Uzbekistan</option><option value="VU">Vanuatu</option><option value="VA">Vatican</option><option value="VE">Venezuela</option><option value="VN" selected="selected">Vietnam</option><option value="VG">Virgin Islands (British)</option><option value="VI">Virgin Islands (US)</option><option value="WF">Wallis and Futuna</option><option value="EH">Western Sahara</option><option value="YE">Yemen</option><option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-label="Country / Region" role="combobox"><span class="select2-selection__rendered" id="select2-billing_country-container" role="textbox" aria-readonly="true" title="Vietnam">Vietnam</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span><noscript><button type="submit" name="woocommerce_checkout_update_totals" value="Update country / region">Update country / region</button></noscript></span></p><p class="form-row address-field validate-required form-row-wide" id="billing_address_1_field" data-priority="50"><label for="billing_address_1" class="">Street address&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_1" id="billing_address_1" placeholder="House number and street name" value="Ha Noi" autocomplete="address-line1" data-placeholder="House number and street name"></span></p><p class="form-row address-field form-row-wide" id="billing_address_2_field" data-priority="60"><label for="billing_address_2" class="screen-reader-text">Apartment, suite, unit, etc.&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_2" id="billing_address_2" placeholder="Apartment, suite, unit, etc. (optional)" value="" autocomplete="address-line2" data-placeholder="Apartment, suite, unit, etc. (optional)"></span></p><p class="form-row address-field validate-postcode form-row-wide" id="billing_postcode_field" data-priority="65" data-o_class="form-row form-row-wide address-field validate-postcode"><label for="billing_postcode" class="">Postcode / ZIP&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_postcode" id="billing_postcode" placeholder="" value="69458" autocomplete="postal-code"></span></p><p class="form-row address-field validate-required form-row-wide" id="billing_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required"><label for="billing_city" class="">Town / City&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="Ha noi" autocomplete="address-level2"></span></p><p class="form-row address-field validate-state form-row-wide" id="billing_state_field" style="display: none" data-o_class="form-row form-row-wide address-field validate-state"><label for="billing_state" class="">State / County&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="hidden" id="billing_state" name="billing_state" placeholder="" data-input-classes="" class="hidden"></span></p><p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Phone&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="tel" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="0375368563" autocomplete="tel"></span></p><p class="form-row form-row-wide validate-required validate-email" id="billing_email_field" data-priority="110"><label for="billing_email" class="">Email address&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="email" class="input-text " name="billing_email" id="billing_email" placeholder="" value="hiep221230828@lms.utc.edu.vn" autocomplete="email username"></span></p></div>
+                <h3 id="order_review_heading">Your order</h3>
 
-	</div>
 
-			</div>
+                <div id="order_review" class="woocommerce-checkout-review-order">
+                    <table class="shop_table woocommerce-checkout-review-order-table">
+                        <thead>
+                            <tr>
+                                <th class="product-name">Product</th>
+                                <th class="product-total">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="cart_item">
+                                <td class="product-name">
+                                    11-inch Tablet Pro 2020 Space Gray&nbsp; <strong
+                                        class="product-quantity">×&nbsp;1</strong>
+                                    <dl class="variation">
+                                        <dt class="variation-Vendor">Vendor:</dt>
+                                        <dd class="variation-Vendor">
+                                            <p>Sanvo</p>
+                                        </dd>
+                                    </dl>
+                                </td>
+                                <td class="product-total">
+                                    <span class="woocs_special_price_code"><span
+                                            class="woocommerce-Price-amount amount"><bdi><span
+                                                    class="woocommerce-Price-currencySymbol">$</span>449.00</bdi></span></span>
+                                </td>
+                            </tr>
+                            <tr class="cart_item">
+                                <td class="product-name">
+                                    Apple - iPhone 11 64GB - Red&nbsp; <strong
+                                        class="product-quantity">×&nbsp;1</strong>
+                                    <dl class="variation">
+                                        <dt class="variation-Vendor">Vendor:</dt>
+                                        <dd class="variation-Vendor">
+                                            <p>Sanvo</p>
+                                        </dd>
+                                    </dl>
+                                </td>
+                                <td class="product-total">
+                                    <span class="woocs_special_price_code"><span
+                                            class="woocommerce-Price-amount amount"><bdi><span
+                                                    class="woocommerce-Price-currencySymbol">$</span>299.00</bdi></span></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
 
-			<div class="col-2">
-				<div class="woocommerce-shipping-fields">
-	
-		<h3 id="ship-to-different-address">
-			<label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
-				<input id="ship-to-different-address-checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" type="checkbox" name="ship_to_different_address" value="1"> <span>Ship to a different address?</span>
-			</label>
-		</h3>
+                            <tr class="cart-subtotal">
+                                <th>Subtotal</th>
+                                <td><span class="woocs_special_price_code"><span
+                                            class="woocommerce-Price-amount amount"><bdi><span
+                                                    class="woocommerce-Price-currencySymbol">$</span>748.00</bdi></span></span>
+                                </td>
+                            </tr>
 
-		<div class="shipping_address" style="display: none;">
 
-			
-			<div class="woocommerce-shipping-fields__field-wrapper">
-							<p class="form-row form-row-first validate-required" id="shipping_first_name_field" data-priority="10"><label for="shipping_first_name" class="">First name&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_first_name" id="shipping_first_name" placeholder="" value="Hiep" autocomplete="given-name"></span></p><p class="form-row form-row-last validate-required" id="shipping_last_name_field" data-priority="20"><label for="shipping_last_name" class="">Last name&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_last_name" id="shipping_last_name" placeholder="" value="Hoang" autocomplete="family-name"></span></p><p class="form-row form-row-wide" id="shipping_company_field" data-priority="30"><label for="shipping_company" class="">Company name&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_company" id="shipping_company" placeholder="" value="" autocomplete="organization"></span></p><p class="form-row form-row-wide address-field update_totals_on_change validate-required" id="shipping_country_field" data-priority="40"><label for="shipping_country" class="">Country / Region&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><select name="shipping_country" id="shipping_country" class="country_to_state country_select select2-hidden-accessible" autocomplete="country" data-placeholder="Select a country / region…" data-label="Country / Region" tabindex="-1" aria-hidden="true"><option value="">Select a country / region…</option><option value="AF">Afghanistan</option><option value="AX">Åland Islands</option><option value="AL">Albania</option><option value="DZ">Algeria</option><option value="AS">American Samoa</option><option value="AD">Andorra</option><option value="AO">Angola</option><option value="AI">Anguilla</option><option value="AQ">Antarctica</option><option value="AG">Antigua and Barbuda</option><option value="AR">Argentina</option><option value="AM">Armenia</option><option value="AW">Aruba</option><option value="AU">Australia</option><option value="AT">Austria</option><option value="AZ">Azerbaijan</option><option value="BS">Bahamas</option><option value="BH">Bahrain</option><option value="BD">Bangladesh</option><option value="BB">Barbados</option><option value="BY">Belarus</option><option value="PW">Belau</option><option value="BE">Belgium</option><option value="BZ">Belize</option><option value="BJ">Benin</option><option value="BM">Bermuda</option><option value="BT">Bhutan</option><option value="BO">Bolivia</option><option value="BQ">Bonaire, Saint Eustatius and Saba</option><option value="BA">Bosnia and Herzegovina</option><option value="BW">Botswana</option><option value="BV">Bouvet Island</option><option value="BR">Brazil</option><option value="IO">British Indian Ocean Territory</option><option value="BN">Brunei</option><option value="BG">Bulgaria</option><option value="BF">Burkina Faso</option><option value="BI">Burundi</option><option value="KH">Cambodia</option><option value="CM">Cameroon</option><option value="CA">Canada</option><option value="CV">Cape Verde</option><option value="KY">Cayman Islands</option><option value="CF">Central African Republic</option><option value="TD">Chad</option><option value="CL">Chile</option><option value="CN">China</option><option value="CX">Christmas Island</option><option value="CC">Cocos (Keeling) Islands</option><option value="CO">Colombia</option><option value="KM">Comoros</option><option value="CG">Congo (Brazzaville)</option><option value="CD">Congo (Kinshasa)</option><option value="CK">Cook Islands</option><option value="CR">Costa Rica</option><option value="HR">Croatia</option><option value="CU">Cuba</option><option value="CW">Curaçao</option><option value="CY">Cyprus</option><option value="CZ">Czech Republic</option><option value="DK">Denmark</option><option value="DJ">Djibouti</option><option value="DM">Dominica</option><option value="DO">Dominican Republic</option><option value="EC">Ecuador</option><option value="EG">Egypt</option><option value="SV">El Salvador</option><option value="GQ">Equatorial Guinea</option><option value="ER">Eritrea</option><option value="EE">Estonia</option><option value="SZ">Eswatini</option><option value="ET">Ethiopia</option><option value="FK">Falkland Islands</option><option value="FO">Faroe Islands</option><option value="FJ">Fiji</option><option value="FI">Finland</option><option value="FR">France</option><option value="GF">French Guiana</option><option value="PF">French Polynesia</option><option value="TF">French Southern Territories</option><option value="GA">Gabon</option><option value="GM">Gambia</option><option value="GE">Georgia</option><option value="DE">Germany</option><option value="GH">Ghana</option><option value="GI">Gibraltar</option><option value="GR">Greece</option><option value="GL">Greenland</option><option value="GD">Grenada</option><option value="GP">Guadeloupe</option><option value="GU">Guam</option><option value="GT">Guatemala</option><option value="GG">Guernsey</option><option value="GN">Guinea</option><option value="GW">Guinea-Bissau</option><option value="GY">Guyana</option><option value="HT">Haiti</option><option value="HM">Heard Island and McDonald Islands</option><option value="HN">Honduras</option><option value="HK">Hong Kong</option><option value="HU">Hungary</option><option value="IS">Iceland</option><option value="IN">India</option><option value="ID">Indonesia</option><option value="IR">Iran</option><option value="IQ">Iraq</option><option value="IE">Ireland</option><option value="IM">Isle of Man</option><option value="IL">Israel</option><option value="IT">Italy</option><option value="CI">Ivory Coast</option><option value="JM">Jamaica</option><option value="JP">Japan</option><option value="JE">Jersey</option><option value="JO">Jordan</option><option value="KZ">Kazakhstan</option><option value="KE">Kenya</option><option value="KI">Kiribati</option><option value="KW">Kuwait</option><option value="KG">Kyrgyzstan</option><option value="LA">Laos</option><option value="LV">Latvia</option><option value="LB">Lebanon</option><option value="LS">Lesotho</option><option value="LR">Liberia</option><option value="LY">Libya</option><option value="LI">Liechtenstein</option><option value="LT">Lithuania</option><option value="LU">Luxembourg</option><option value="MO">Macao</option><option value="MG">Madagascar</option><option value="MW">Malawi</option><option value="MY">Malaysia</option><option value="MV">Maldives</option><option value="ML">Mali</option><option value="MT">Malta</option><option value="MH">Marshall Islands</option><option value="MQ">Martinique</option><option value="MR">Mauritania</option><option value="MU">Mauritius</option><option value="YT">Mayotte</option><option value="MX">Mexico</option><option value="FM">Micronesia</option><option value="MD">Moldova</option><option value="MC">Monaco</option><option value="MN">Mongolia</option><option value="ME">Montenegro</option><option value="MS">Montserrat</option><option value="MA">Morocco</option><option value="MZ">Mozambique</option><option value="MM">Myanmar</option><option value="NA">Namibia</option><option value="NR">Nauru</option><option value="NP">Nepal</option><option value="NL">Netherlands</option><option value="NC">New Caledonia</option><option value="NZ">New Zealand</option><option value="NI">Nicaragua</option><option value="NE">Niger</option><option value="NG">Nigeria</option><option value="NU">Niue</option><option value="NF">Norfolk Island</option><option value="KP">North Korea</option><option value="MK">North Macedonia</option><option value="MP">Northern Mariana Islands</option><option value="NO">Norway</option><option value="OM">Oman</option><option value="PK">Pakistan</option><option value="PS">Palestinian Territory</option><option value="PA">Panama</option><option value="PG">Papua New Guinea</option><option value="PY">Paraguay</option><option value="PE">Peru</option><option value="PH">Philippines</option><option value="PN">Pitcairn</option><option value="PL">Poland</option><option value="PT">Portugal</option><option value="PR">Puerto Rico</option><option value="QA">Qatar</option><option value="RE">Reunion</option><option value="RO">Romania</option><option value="RU">Russia</option><option value="RW">Rwanda</option><option value="BL">Saint Barthélemy</option><option value="SH">Saint Helena</option><option value="KN">Saint Kitts and Nevis</option><option value="LC">Saint Lucia</option><option value="SX">Saint Martin (Dutch part)</option><option value="MF">Saint Martin (French part)</option><option value="PM">Saint Pierre and Miquelon</option><option value="VC">Saint Vincent and the Grenadines</option><option value="WS">Samoa</option><option value="SM">San Marino</option><option value="ST">São Tomé and Príncipe</option><option value="SA">Saudi Arabia</option><option value="SN">Senegal</option><option value="RS">Serbia</option><option value="SC">Seychelles</option><option value="SL">Sierra Leone</option><option value="SG">Singapore</option><option value="SK">Slovakia</option><option value="SI">Slovenia</option><option value="SB">Solomon Islands</option><option value="SO">Somalia</option><option value="ZA">South Africa</option><option value="GS">South Georgia/Sandwich Islands</option><option value="KR">South Korea</option><option value="SS">South Sudan</option><option value="ES">Spain</option><option value="LK">Sri Lanka</option><option value="SD">Sudan</option><option value="SR">Suriname</option><option value="SJ">Svalbard and Jan Mayen</option><option value="SE">Sweden</option><option value="CH">Switzerland</option><option value="SY">Syria</option><option value="TW">Taiwan</option><option value="TJ">Tajikistan</option><option value="TZ">Tanzania</option><option value="TH">Thailand</option><option value="TL">Timor-Leste</option><option value="TG">Togo</option><option value="TK">Tokelau</option><option value="TO">Tonga</option><option value="TT">Trinidad and Tobago</option><option value="TN">Tunisia</option><option value="TR">Turkey</option><option value="TM">Turkmenistan</option><option value="TC">Turks and Caicos Islands</option><option value="TV">Tuvalu</option><option value="UG">Uganda</option><option value="UA">Ukraine</option><option value="AE">United Arab Emirates</option><option value="GB">United Kingdom (UK)</option><option value="US">United States (US)</option><option value="UM">United States (US) Minor Outlying Islands</option><option value="UY">Uruguay</option><option value="UZ">Uzbekistan</option><option value="VU">Vanuatu</option><option value="VA">Vatican</option><option value="VE">Venezuela</option><option value="VN" selected="selected">Vietnam</option><option value="VG">Virgin Islands (British)</option><option value="VI">Virgin Islands (US)</option><option value="WF">Wallis and Futuna</option><option value="EH">Western Sahara</option><option value="YE">Yemen</option><option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-label="Country / Region" role="combobox"><span class="select2-selection__rendered" id="select2-shipping_country-container" role="textbox" aria-readonly="true" title="Vietnam">Vietnam</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span><noscript><button type="submit" name="woocommerce_checkout_update_totals" value="Update country / region">Update country / region</button></noscript></span></p><p class="form-row address-field validate-required form-row-wide" id="shipping_address_1_field" data-priority="50"><label for="shipping_address_1" class="">Street address&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_address_1" id="shipping_address_1" placeholder="House number and street name" value="Ha Noi" autocomplete="address-line1" data-placeholder="House number and street name"></span></p><p class="form-row address-field form-row-wide" id="shipping_address_2_field" data-priority="60"><label for="shipping_address_2" class="screen-reader-text">Apartment, suite, unit, etc.&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_address_2" id="shipping_address_2" placeholder="Apartment, suite, unit, etc. (optional)" value="" autocomplete="address-line2" data-placeholder="Apartment, suite, unit, etc. (optional)"></span></p><p class="form-row address-field validate-postcode form-row-wide" id="shipping_postcode_field" data-priority="65" data-o_class="form-row form-row-wide address-field validate-postcode"><label for="shipping_postcode" class="">Postcode / ZIP&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_postcode" id="shipping_postcode" placeholder="" value="69458" autocomplete="postal-code"></span></p><p class="form-row address-field validate-required form-row-wide" id="shipping_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required"><label for="shipping_city" class="">Town / City&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_city" id="shipping_city" placeholder="" value="Ha noi" autocomplete="address-level2"></span></p><p class="form-row address-field validate-state form-row-wide" id="shipping_state_field" style="display: none" data-o_class="form-row form-row-wide address-field validate-state"><label for="shipping_state" class="">State / County&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="hidden" id="shipping_state" name="shipping_state" placeholder="" data-input-classes="" class="hidden"></span></p></div>
 
-			
-		</div>
 
-	</div>
-<div class="woocommerce-additional-fields">
-	
-	
-		
-		<div class="woocommerce-additional-fields__field-wrapper">
-							<p class="form-row notes" id="order_comments_field" data-priority=""><label for="order_comments" class="">Order notes&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><textarea name="order_comments" class="input-text " id="order_comments" placeholder="Notes about your order, e.g. special notes for delivery." rows="2" cols="5"></textarea></span></p>					</div>
+                            <tr class="woocommerce-shipping-totals shipping">
+                                <td colspan="2" data-title="Shipping:  Sanvo">
+                                    <h3 class="shipping-title">Shipping: Sanvo</h3>
 
-	
-	</div>
-			</div>
-		</div>
+                                    <ul id="shipping_method" class="woocommerce-shipping-methods">
+                                        <li>
+                                            <input type="radio" name="shipping_method[0]" data-index="0"
+                                                id="shipping_method_0_free_shipping4" value="free_shipping:4"
+                                                class="shipping_method" checked="checked"><label
+                                                for="shipping_method_0_free_shipping4">Free shipping</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" name="shipping_method[0]" data-index="0"
+                                                id="shipping_method_0_flat_rate5" value="flat_rate:5"
+                                                class="shipping_method"><label for="shipping_method_0_flat_rate5">Flat
+                                                rate: <span class="woocommerce-Price-amount amount"><bdi><span
+                                                            class="woocommerce-Price-currencySymbol">$</span>10.00</bdi></span></label>
+                                        </li>
+                                    </ul>
 
-		<wc-order-attribution-inputs><input type="hidden" name="wc_order_attribution_source_type" value="referral"><input type="hidden" name="wc_order_attribution_referrer" value="https://localhost:7114/"><input type="hidden" name="wc_order_attribution_utm_campaign" value="(none)"><input type="hidden" name="wc_order_attribution_utm_source" value="localhost"><input type="hidden" name="wc_order_attribution_utm_medium" value="referral"><input type="hidden" name="wc_order_attribution_utm_content" value="/"><input type="hidden" name="wc_order_attribution_utm_id" value="(none)"><input type="hidden" name="wc_order_attribution_utm_term" value="(none)"><input type="hidden" name="wc_order_attribution_session_entry" value="https://motta.uix.store/store/borda/"><input type="hidden" name="wc_order_attribution_session_start_time" value="2024-11-16 15:17:57"><input type="hidden" name="wc_order_attribution_session_pages" value="13"><input type="hidden" name="wc_order_attribution_session_count" value="4"><input type="hidden" name="wc_order_attribution_user_agent" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"></wc-order-attribution-inputs>
-		
-		
-	<h3 id="order_review_heading">Your order</h3>
-	
-	
-	<div id="order_review" class="woocommerce-checkout-review-order">
-		<table class="shop_table woocommerce-checkout-review-order-table">
-	<thead>
-		<tr>
-			<th class="product-name">Product</th>
-			<th class="product-total">Subtotal</th>
-		</tr>
-	</thead>
-	<tbody>
-						<tr class="cart_item">
-					<td class="product-name">
-						11-inch Tablet Pro 2020 Space Gray&nbsp;						 <strong class="product-quantity">×&nbsp;1</strong>						<dl class="variation">
-			<dt class="variation-Vendor">Vendor:</dt>
-		<dd class="variation-Vendor"><p>Sanvo</p>
-</dd>
-	</dl>
-					</td>
-					<td class="product-total">
-						<span class="woocs_special_price_code"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>449.00</bdi></span></span>					</td>
-				</tr>
-								<tr class="cart_item">
-					<td class="product-name">
-						Apple - iPhone 11 64GB - Red&nbsp;						 <strong class="product-quantity">×&nbsp;1</strong>						<dl class="variation">
-			<dt class="variation-Vendor">Vendor:</dt>
-		<dd class="variation-Vendor"><p>Sanvo</p>
-</dd>
-	</dl>
-					</td>
-					<td class="product-total">
-						<span class="woocs_special_price_code"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>299.00</bdi></span></span>					</td>
-				</tr>
-					</tbody>
-	<tfoot>
+                                    <p class="woocommerce-shipping-contents"><small>11-inch Tablet Pro 2020 Space Gray
+                                            ×1</small></p>
+                                </td>
+                            </tr>
+                            <tr class="woocommerce-shipping-totals shipping">
+                                <td colspan="2" data-title="Shipping:  ">
+                                    <h3 class="shipping-title">Shipping: </h3>
 
-		<tr class="cart-subtotal">
-			<th>Subtotal</th>
-			<td><span class="woocs_special_price_code"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>748.00</bdi></span></span></td>
-		</tr>
+                                    <ul id="shipping_method" class="woocommerce-shipping-methods">
+                                        <li>
+                                            <input type="radio" name="shipping_method[1]" data-index="1"
+                                                id="shipping_method_1_free_shipping4" value="free_shipping:4"
+                                                class="shipping_method" checked="checked"><label
+                                                for="shipping_method_1_free_shipping4">Free shipping</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" name="shipping_method[1]" data-index="1"
+                                                id="shipping_method_1_flat_rate5" value="flat_rate:5"
+                                                class="shipping_method"><label for="shipping_method_1_flat_rate5">Flat
+                                                rate: <span class="woocommerce-Price-amount amount"><bdi><span
+                                                            class="woocommerce-Price-currencySymbol">$</span>10.00</bdi></span></label>
+                                        </li>
+                                    </ul>
 
-		
-		
-			
-			<tr class="woocommerce-shipping-totals shipping">
-	<td colspan="2" data-title="Shipping:  Sanvo">
-		<h3 class="shipping-title">Shipping:  Sanvo</h3>
+                                    <p class="woocommerce-shipping-contents"><small>Apple - iPhone 11 64GB - Red
+                                            ×1</small></p>
+                                </td>
+                            </tr>
 
-					<ul id="shipping_method" class="woocommerce-shipping-methods">
-									<li>
-						<input type="radio" name="shipping_method[0]" data-index="0" id="shipping_method_0_free_shipping4" value="free_shipping:4" class="shipping_method" checked="checked"><label for="shipping_method_0_free_shipping4">Free shipping</label>					</li>
-									<li>
-						<input type="radio" name="shipping_method[0]" data-index="0" id="shipping_method_0_flat_rate5" value="flat_rate:5" class="shipping_method"><label for="shipping_method_0_flat_rate5">Flat rate: <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>10.00</bdi></span></label>					</li>
-							</ul>
-						
-					<p class="woocommerce-shipping-contents"><small>11-inch Tablet Pro 2020 Space Gray ×1</small></p>		
-			</td>
-</tr>
-<tr class="woocommerce-shipping-totals shipping">
-	<td colspan="2" data-title="Shipping:  ">
-		<h3 class="shipping-title">Shipping:  </h3>
 
-					<ul id="shipping_method" class="woocommerce-shipping-methods">
-									<li>
-						<input type="radio" name="shipping_method[1]" data-index="1" id="shipping_method_1_free_shipping4" value="free_shipping:4" class="shipping_method" checked="checked"><label for="shipping_method_1_free_shipping4">Free shipping</label>					</li>
-									<li>
-						<input type="radio" name="shipping_method[1]" data-index="1" id="shipping_method_1_flat_rate5" value="flat_rate:5" class="shipping_method"><label for="shipping_method_1_flat_rate5">Flat rate: <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>10.00</bdi></span></label>					</li>
-							</ul>
-						
-					<p class="woocommerce-shipping-contents"><small>Apple - iPhone 11 64GB - Red ×1</small></p>		
-			</td>
-</tr>
 
-			
-		
-		
-		
-		
-		<tr class="order-total">
-			<th>Total</th>
-			<td><strong><span class="woocs_special_price_code"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>748.00</bdi></span></span></strong> </td>
-		</tr>
 
-		
-	</tfoot>
-</table>
 
-<div id="payment" class="woocommerce-checkout-payment">
-			<ul class="wc_payment_methods payment_methods methods">
-			<li class="wc_payment_method payment_method_bacs">
-	<input id="payment_method_bacs" type="radio" class="input-radio" name="payment_method" value="bacs" data-order_button_text="">
 
-	<label for="payment_method_bacs">
-		Direct bank transfer 	</label>
-			<div class="payment_box payment_method_bacs" style="display: none;">
-			<p class="bv-p-translate">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.<bv-p-translate-btn class="bv-p-translate-btn" title="Burning Vocabulary translation" style="left: 0px; top: -18px; display: none; position: absolute !important;">↳</bv-p-translate-btn></p>
-		</div>
-	</li>
-<li class="wc_payment_method payment_method_cheque">
-	<input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method" value="cheque" data-order_button_text="">
+                            <tr class="order-total">
+                                <th>Total</th>
+                                <td><strong><span class="woocs_special_price_code"><span
+                                                class="woocommerce-Price-amount amount"><bdi><span
+                                                        class="woocommerce-Price-currencySymbol">$</span>748.00</bdi></span></span></strong>
+                                </td>
+                            </tr>
 
-	<label for="payment_method_cheque">
-		Check payments 	</label>
-			<div class="payment_box payment_method_cheque" style="display: none;">
-			<p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-		</div>
-	</li>
-<li class="wc_payment_method payment_method_cod">
-	<input id="payment_method_cod" type="radio" class="input-radio" name="payment_method" value="cod" checked="checked" data-order_button_text="">
 
-	<label for="payment_method_cod">
-		Cash on delivery 	</label>
-			<div class="payment_box payment_method_cod" style="">
-			<p class="bv-p-translate">Pay with cash upon delivery.<bv-p-translate-btn class="bv-p-translate-btn" title="Burning Vocabulary translation" style="left: -28px; display: none; position: absolute !important;">↳</bv-p-translate-btn></p>
-		</div>
-	</li>
-		</ul>
-		<div class="form-row place-order">
-		<noscript>
-			Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so.			<br/><button type="submit" class="button alt" name="woocommerce_checkout_update_totals" value="Update totals">Update totals</button>
-		</noscript>
+                        </tfoot>
+                    </table>
 
-			<div class="woocommerce-terms-and-conditions-wrapper">
-		<div class="woocommerce-privacy-policy-text"><p class="bv-p-translate">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="https://motta.uix.store/?page_id=6659" class="woocommerce-privacy-policy-link" target="_blank">privacy policy</a>.<bv-p-translate-btn class="bv-p-translate-btn" title="Burning Vocabulary translation" style="left: -28px; display: none; position: absolute !important;">↳</bv-p-translate-btn></p>
-</div><div class="woocommerce-terms-and-conditions" style="display: none; max-height: 200px; overflow: auto;"><p>This is an example page. It’s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>
-<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
-<p>Hi there! I’m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like piña coladas. (And gettin’ caught in the rain.)</p>
-</blockquote>
-<p>…or something like this:</p>
-<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
-<p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p>
-</blockquote>
-<p>As a new WordPress user, you should go to <a href="https://motta.uix.store/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>
-</div>
-					<p class="form-row validate-required woocommerce-validated">
-				<label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
-				<input type="checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" name="terms" id="terms">
-					<span class="woocommerce-terms-and-conditions-checkbox-text">I have <bvtag class="memorize_new_word bv_motta_uix_store bv_browserName_google_chrome _id_1731772488289 burning_vocabulary">read</bvtag> and agree to the website <a href="https://motta.uix.store/terms-and-conditions-page/" class="woocommerce-terms-and-conditions-link" target="_blank">terms and conditions</a></span>&nbsp;<abbr class="required" title="required">*</abbr>
-				</label>
-				<input type="hidden" name="terms-field" value="1">
-			</p>
-			</div>
-	
-		
-		<button type="submit" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="Place order" data-value="Place order">Place order</button>
-		
-		<input type="hidden" id="woocommerce-process-checkout-nonce" name="woocommerce-process-checkout-nonce" value="ad27d5cba7"><input type="hidden" name="_wp_http_referer" value="/?wc-ajax=update_order_review">	</div>
-</div>
+                    <div id="payment" class="woocommerce-checkout-payment">
+                        <ul class="wc_payment_methods payment_methods methods">
+                            <li class="wc_payment_method payment_method_bacs">
+                                <input id="payment_method_bacs" type="radio" class="input-radio" name="payment_method"
+                                    value="bacs" data-order_button_text="">
 
-	</div>
+                                <label for="payment_method_bacs">
+                                    Direct bank transfer
+                                </label>
+                                <div class="payment_box payment_method_bacs" style="display: none;">
+                                    <p class="bv-p-translate">Make your payment directly into our bank account. Please
+                                        use your Order ID as the payment reference. Your order will not be shipped until
+                                        the funds have cleared in our account.<bv-p-translate-btn
+                                            class="bv-p-translate-btn" title="Burning Vocabulary translation"
+                                            style="left: 0px; top: -18px; display: none; position: absolute !important;">↳</bv-p-translate-btn>
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="wc_payment_method payment_method_cheque">
+                                <input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method"
+                                    value="cheque" data-order_button_text="">
 
-	
-</form>
+                                <label for="payment_method_cheque">
+                                    Check payments
+                                </label>
+                                <div class="payment_box payment_method_cheque" style="display: none;">
+                                    <p>Please send a check to Store Name, Store Street, Store Town, Store State /
+                                        County, Store Postcode.</p>
+                                </div>
+                            </li>
+                            <li class="wc_payment_method payment_method_cod">
+                                <input id="payment_method_cod" type="radio" class="input-radio" name="payment_method"
+                                    value="cod" checked="checked" data-order_button_text="">
 
-</div>
-	</article>
+                                <label for="payment_method_cod">
+                                    Cash on delivery
+                                </label>
+                                <div class="payment_box payment_method_cod" style="">
+                                    <p class="bv-p-translate">Pay with cash upon delivery.<bv-p-translate-btn
+                                            class="bv-p-translate-btn" title="Burning Vocabulary translation"
+                                            style="left: -28px; display: none; position: absolute !important;">↳</bv-p-translate-btn>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="form-row place-order">
+                            <noscript>
+                                Since your browser does not support JavaScript, or it is disabled, please ensure you
+                                click the <em>Update Totals</em> button before placing your order. You may be charged
+                                more than the amount stated above if you fail to do so. <br /><button type="submit"
+                                    class="button alt" name="woocommerce_checkout_update_totals"
+                                    value="Update totals">Update totals</button>
+                            </noscript>
+
+                            <div class="woocommerce-terms-and-conditions-wrapper">
+                                <div class="woocommerce-privacy-policy-text">
+                                    <p class="bv-p-translate">Your personal data will be used to process your order,
+                                        support your experience throughout this website, and for other purposes
+                                        described in our <a href="https://motta.uix.store/?page_id=6659"
+                                            class="woocommerce-privacy-policy-link" target="_blank">privacy
+                                            policy</a>.<bv-p-translate-btn class="bv-p-translate-btn"
+                                            title="Burning Vocabulary translation"
+                                            style="left: -28px; display: none; position: absolute !important;">↳</bv-p-translate-btn>
+                                    </p>
+                                </div>
+                                <div class="woocommerce-terms-and-conditions"
+                                    style="display: none; max-height: 200px; overflow: auto;">
+                                    <p>This is an example page. It’s different from a blog post because it will stay in
+                                        one place and will show up in your site navigation (in most themes). Most people
+                                        start with an About page that introduces them to potential site visitors. It
+                                        might say something like this:</p>
+                                    <blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+                                        <p>Hi there! I’m a bike messenger by day, aspiring actor by night, and this is
+                                            my website. I live in Los Angeles, have a great dog named Jack, and I like
+                                            piña coladas. (And gettin’ caught in the rain.)</p>
+                                    </blockquote>
+                                    <p>…or something like this:</p>
+                                    <blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+                                        <p>The XYZ Doohickey Company was founded in 1971, and has been providing quality
+                                            doohickeys to the public ever since. Located in Gotham City, XYZ employs
+                                            over 2,000 people and does all kinds of awesome things for the Gotham
+                                            community.</p>
+                                    </blockquote>
+                                    <p>As a new WordPress user, you should go to <a
+                                            href="https://motta.uix.store/wp-admin/">your dashboard</a> to delete this
+                                        page and create new pages for your content. Have fun!</p>
+                                </div>
+                                <p class="form-row validate-required woocommerce-validated">
+                                    <label
+                                        class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
+                                        <input type="checkbox"
+                                            class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
+                                            name="terms" id="terms">
+                                        <span class="woocommerce-terms-and-conditions-checkbox-text">I have <bvtag
+                                                class="memorize_new_word bv_motta_uix_store bv_browserName_google_chrome _id_1731772488289 burning_vocabulary">
+                                                read</bvtag> and agree to the website <a
+                                                href="https://motta.uix.store/terms-and-conditions-page/"
+                                                class="woocommerce-terms-and-conditions-link" target="_blank">terms and
+                                                conditions</a></span>&nbsp;<abbr class="required"
+                                            title="required">*</abbr>
+                                    </label>
+                                    <input type="hidden" name="terms-field" value="1">
+                                </p>
+                            </div>
+
+
+                            <button type="submit" class="button alt" name="woocommerce_checkout_place_order"
+                                id="place_order" value="Place order" data-value="Place order">Place order</button>
+
+                            <input type="hidden" id="woocommerce-process-checkout-nonce"
+                                name="woocommerce-process-checkout-nonce" value="ad27d5cba7"><input type="hidden"
+                                name="_wp_http_referer" value="/?wc-ajax=update_order_review">
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </div>
+    </article>
 
 
 </div>

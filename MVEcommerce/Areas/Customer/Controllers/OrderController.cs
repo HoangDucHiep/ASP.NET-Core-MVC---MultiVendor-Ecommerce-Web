@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MVEcommerce.DataAccess.Data;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
+using MVEcommerce.Models.ViewModels.OrderVMs;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,25 +16,46 @@ namespace MVEcommerce.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ApplicationDbContext _db;
 
-        public OrderController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
+        public OrderController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _db = db;
         }
 
         public IActionResult Index()
         {
-            //var claimsIdentity = (ClaimsIdentity)User.Identity;
-            //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            
+            if (User.Identity is not ClaimsIdentity claimsIdentity)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            var userId = userIdClaim.Value;
 
-            //var orders = _unitOfWork.Order.GetAll(
-            //    o => o.UserId == claim.Value,
-            //    includeProperties: "OrderDetails,OrderDetails.Product"
-            //);
+            ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Id == userId)!;
 
-            return View();
+            var orders = _unitOfWork.Order.GetAll(o => o.UserId == userId, includeProperties: "OrderDetails,OrderDetails.Product.Vendor").OrderByDescending(o => o.OrderDate).ToList();
+
+            Address userAddress = _unitOfWork.Address.Get(a=>a.UserId == userId);
+
+            var vm = new OrderIndexViewModel
+            {
+                User = user,
+                Orders = orders,
+                address = userAddress
+            };
+
+            return View(vm);
         }
+
+
 
         public IActionResult OrderConfirmation()
         {

@@ -13,6 +13,7 @@ namespace MVEcommerce.DataAccess.Repositoies.IRepositories
         IShoppingCartRepository ShoppingCart { get; }
         IOrderRepository Order { get; }
         IOrderDetailRepository OrderDetail { get; }
+        IAddressRepository Address { get; }
 
 
         void Save();
