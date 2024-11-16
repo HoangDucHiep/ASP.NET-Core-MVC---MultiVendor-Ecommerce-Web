@@ -67,52 +67,49 @@ namespace MVEcommerce.Areas.Customer.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddToCart([FromBody] AddToCart cartItem)
-		{
-			if (User.Identity is not ClaimsIdentity claimsIdentity)
-			{
-				return Unauthorized(new { success = false, message = "Bạn chưa đăng nhập!" });
-			}
+        [Route("api/addToCart")]
+        public IActionResult AddToCart([FromBody] AddToCart cartItem)
+        {
+            if (User.Identity is not ClaimsIdentity claimsIdentity)
+            {
+                return Unauthorized(new { success = false, message = "Bạn chưa đăng nhập!" });
+            }
 
-			var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-			if (userIdClaim == null)
-			{
-				return Unauthorized(new { success = false, message = "Không tìm thấy thông tin người dùng!"});
-			}
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { success = false, message = "Không tìm thấy thông tin người dùng!" });
+            }
 
-			var userId = userIdClaim.Value;
+            var userId = userIdClaim.Value;
 
-			
-			var existingCartItem = _unitOfWork.ShoppingCart
-				.GetAll(c => c.ProductId == cartItem.ProductId&& c.UserId == userId)
-				.FirstOrDefault();
+            var existingCartItem = _unitOfWork.ShoppingCart
+                .GetAll(c => c.ProductId == cartItem.ProductId && c.UserId == userId && c.VariantOptionID == cartItem.VariantOptionID)
+                .FirstOrDefault();
 
+            if (existingCartItem != null)
+            {
+                existingCartItem.Quantity += cartItem.Quantity;
+                _unitOfWork.ShoppingCart.Update(existingCartItem);
+            }
+            else
+            {
+                var newCartItem = new ShoppingCart
+                {
+                    ProductId = cartItem.ProductId,
+                    UserId = userId,
+                    Quantity = cartItem.Quantity > 0 ? cartItem.Quantity : 1,
+                    VariantOptionID = cartItem.VariantOptionID
+                };
 
+                _unitOfWork.ShoppingCart.Add(newCartItem);
+            }
 
-			if (existingCartItem != null)
-			{
-				
-				existingCartItem.Quantity += cartItem.Quantity;
-				_unitOfWork.ShoppingCart.Update(existingCartItem);
-			}
-			else
-			{
-				var newCartItem = new ShoppingCart
-				{
-					ProductId = cartItem.ProductId,
-					UserId = userId,
-					Quantity = cartItem.Quantity > 0 ? cartItem.Quantity : 1
-				};
+            _unitOfWork.Save();
 
-				_unitOfWork.ShoppingCart.Add(newCartItem);
-			}
-
-			
-			_unitOfWork.Save();
-			
-			return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng!" });
-		}
+            return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng!" });
+        }
 
 
 		public IActionResult ProductDetail(string slug)
@@ -130,8 +127,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
                         ProductImage = product.ProductImages?.FirstOrDefault(),
                         productVariant = product.ProductVariants?.FirstOrDefault(),
                         productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
-              category = product.Category,
-              ProductImages = product.ProductImages?.ToList()
+                        category = product.Category,
+                        ProductImages = product.ProductImages?.ToList(),
             };
 
 

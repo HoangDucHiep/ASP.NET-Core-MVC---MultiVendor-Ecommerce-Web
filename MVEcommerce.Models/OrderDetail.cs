@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,8 +6,17 @@ namespace MVEcommerce.Models
 {
     public class OrderDetail
     {
+        public OrderDetail()
+        {
+            OrderDetailId = Guid.NewGuid();
+        }
+
         [Key]
-        public int OrderDetailId { get; set; }
+        public Guid OrderDetailId { get; set; }
+
+        [ForeignKey("Order")]
+        public Guid OrderId { get; set; }
+        public virtual Order Order { get; set; }
 
         [ForeignKey("Product")]
         public int ProductId { get; set; }

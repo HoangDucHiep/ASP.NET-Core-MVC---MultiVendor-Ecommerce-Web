@@ -506,7 +506,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	function addToCart(productId) {
-		const url = '@Url.Action("AddToCart", "Home")';
+		const url = '/api/addToCart';
 
 		const data = {
 			productId: productId,
