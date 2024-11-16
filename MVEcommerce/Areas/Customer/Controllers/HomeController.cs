@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using MVEcommerce.Models.ViewModels.Account;
 using MVEcommerce.Models.ViewModels.AddToCart;
 using System.Security.Claims;
+using MVEcommerce.Models.ViewModels.ShoopingCart;
+
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -48,6 +50,66 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             return View(categoryProduct);
         }
+
+        [HttpGet]
+		
+		public IActionResult ShowCart()
+		{
+			if (User.Identity is not ClaimsIdentity claimsIdentity)
+			{
+				return Unauthorized(new { success = false, message = "Bạn chưa đăng nhập!" });
+			}
+
+			var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+			if (userIdClaim == null)
+			{
+				return Unauthorized(new { success = false, message = "Không tìm thấy thông tin người dùng!" });
+			}
+
+			var userId = userIdClaim.Value;
+
+			var cartItems = _unitOfWork.ShoppingCart
+				.GetAll(c => c.UserId == userId, includeProperties: "Product,ProductVariantOption,Product.ProductImages,ProductVariantOption.ProductImages,Product.Vendor")
+				.Select(cartItem =>
+				{
+					var product = cartItem.Product;
+					var variantOption = cartItem.ProductVariantOption;
+
+					var price = variantOption?.Price ?? product.Price ?? 0;
+					var sale = variantOption?.Sale ?? product.Sale ?? 0;
+					var discountedPrice = price - (price * sale / 100);
+
+                    var imageUrl = variantOption?.ProductImages?.FirstOrDefault()?.ImageUrl
+                                   ?? product.ProductImages?.FirstOrDefault()?.ImageUrl;
+								   
+
+					return new CartItemViewModel
+					{
+						ProductId = product.ProductId,
+						ProductName = product.Name,
+						VariantName = variantOption?.Value,
+						Price = discountedPrice,
+						Quantity = cartItem.Quantity,
+						TotalPrice = discountedPrice * cartItem.Quantity,
+						ImageUrl = imageUrl,
+						Stock = variantOption?.Stock ?? product.Stock ?? 0,
+						
+						VendorName = product.Vendor?.Name ?? "Unknown Vendor", 
+						CartId = cartItem.CartId
+					};
+				})
+				.ToList();
+
+			var showProductCart = new ShowProductCart
+			{
+				ListCart = cartItems
+			};
+
+			return View(showProductCart);
+		}
+
+
 
 		[HttpGet]
 		public IActionResult ShowProductModal(int productId)
@@ -108,7 +170,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             _unitOfWork.Save();
 
-            return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng!" });
+            return Json(new { success = true });
         }
 
 
