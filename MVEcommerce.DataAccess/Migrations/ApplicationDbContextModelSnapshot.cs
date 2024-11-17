@@ -55,7 +55,6 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VendorId")
@@ -66,6 +65,10 @@ namespace MVEcommerce.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AddressId");
+
+                    b.HasIndex("VendorId")
+                        .IsUnique()
+                        .HasFilter("[VendorId] IS NOT NULL");
 
                     b.ToTable("Addresses");
                 });
@@ -240,7 +243,7 @@ namespace MVEcommerce.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("VendorId")
+                    b.Property<int?>("VendorId")
                         .HasColumnType("int");
 
                     b.HasKey("OrderId");
@@ -986,13 +989,20 @@ namespace MVEcommerce.DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
                             NormalizedUserName = "TRUFFLES_VENDOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMQ/RGhpjMIaNSJwYtvrGI9t+bYnY4u/O0eZDYzoTD5TOGc5/JBCB4rvzZdY8jFMWQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDTouJmAEsj+oXagEMvmUza6qb84qOMuuxIsBZsW1jW+dKq5MsuNLec+pDKVCi8dlQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UserName = "truffles_vendor",
                             FullName = "Truffles Vendor"
                         });
+                });
+
+            modelBuilder.Entity("MVEcommerce.Models.Address", b =>
+                {
+                    b.HasOne("MVEcommerce.Models.Vendor", null)
+                        .WithOne("Addresses")
+                        .HasForeignKey("MVEcommerce.Models.Address", "VendorId");
                 });
 
             modelBuilder.Entity("MVEcommerce.Models.Order", b =>
@@ -1208,6 +1218,8 @@ namespace MVEcommerce.DataAccess.Migrations
 
             modelBuilder.Entity("MVEcommerce.Models.Vendor", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Products");
                 });
 #pragma warning restore 612, 618

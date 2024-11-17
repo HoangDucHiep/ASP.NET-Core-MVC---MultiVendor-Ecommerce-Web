@@ -108,18 +108,32 @@
                                     <!-- Button Group -->
                                     <div class="btn-group">
                                         <button type="button"
-                                                class="btn btn-white btn-icon btn-sm dropdown-toggle dropdown-toggle-empty"
+                                                class="btn btn-white btn-icon btn-sm dropdown-toggle-empty"
                                                 id="productsEditDropdown1" data-bs-toggle="dropdown"
-                                                aria-expanded="false"></button>
-
+                                                aria-expanded="false"><i class="bi bi-chevron-right arrow-icon"></i></button>
                                         <div class="dropdown-menu dropdown-menu-end mt-1"
                                              aria-labelledby="productsEditDropdown1">
-                                            <a class="dropdown-item" href="#">
-                                                <i class="bi-trash dropdown-item-icon"></i> Unpublish
-                                            </a>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="bi-archive dropdown-item-icon"></i> Delete
-                                            </a>
+                                            @if (product.Status == ProductStatus.INACTIVE)
+                                            {
+                                                <form asp-action="PublishProduct" asp-route-id="@product.ProductId" method="post">
+                                                    <button type="submit" class="dropdown-item" data-product-id="@product.ProductId">
+                                                        <i class="bi-upload dropdown-item-icon"></i> Publish
+                                                    </button>
+                                                </form>
+                                            }
+                                            @if (product.Status == ProductStatus.ACTIVE)
+                                            {
+                                                <form asp-action="UnpublishProduct" asp-route-id="@product.ProductId" method="post">
+                                                    <button type="submit" class="dropdown-item" data-product-id="@product.ProductId">
+                                                        <i class="bi-upload dropdown-item-icon"></i> Unpublish
+                                                    </button>
+                                                </form>
+                                            }
+                                            <form asp-action="DeleteProduct" asp-route-id="@product.ProductId" method="post">
+                                                <button type="submit" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-product-id="@product.ProductId">
+                                                    <i class="bi-archive dropdown-item-icon"></i> Delete
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                     <!-- End Button Group -->
@@ -131,6 +145,8 @@
             </table>
         </div>
         <!-- End Table -->
+    
+
         <!-- Footer -->
         <div class="card-footer">
             <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
@@ -172,3 +188,4 @@
             <!-- End Row -->
         </div>
         <!-- End Footer -->
+        

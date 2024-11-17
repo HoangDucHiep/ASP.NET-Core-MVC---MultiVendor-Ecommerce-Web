@@ -7,6 +7,7 @@ using MVEcommerce.Utility;
 using MVEcommerce.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace MVEcommerce.Areas.VendorArea.Controllers
 {
@@ -53,68 +54,113 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditShop(VendorDetailVM vendorDetailVM, IFormFile avatarFile, IFormFile bannerFile)
+        public IActionResult EditShop(VendorDetailVM vendorDetailVM, IFormFile? avatarFile, IFormFile? bannerFile)
         {
             if (ModelState.IsValid)
             {
-                var vendor = vendorDetailVM.Vendor;
-                var address = vendorDetailVM.Address;
-
-                if (avatarFile != null)
+                using (var transaction = _unitOfWork.BeginTransaction())
                 {
-                    string wwwRootPath = _hostEnvironment.WebRootPath;
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(avatarFile.FileName);
-                    string uploads = Path.Combine(wwwRootPath, @"images\vendors");
-                    string fullPath = Path.Combine(uploads, fileName);
-
-                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    try
                     {
-                        avatarFile.CopyTo(fileStream);
+                        var vendor = _unitOfWork.Vendor.Get(v => v.VendorId == vendorDetailVM.Vendor.VendorId);
+                        var address = _unitOfWork.Address.Get(a => a.AddressId == vendorDetailVM.Address.AddressId);
+
+                        if (vendor == null || address == null)
+                        {
+                            return NotFound();
+                        }
+
+                        // Handle avatar file upload
+                        if (avatarFile != null)
+                        {
+                            var avatarPath = Path.Combine(_hostEnvironment.WebRootPath, "images", "avatars");
+                            var avatarFileName = Guid.NewGuid().ToString() + Path.GetExtension(avatarFile.FileName);
+                            var avatarFilePath = Path.Combine(avatarPath, avatarFileName);
+
+                            // Delete old avatar if exists
+                            if (!string.IsNullOrEmpty(vendor.Avartar))
+                            {
+                                var oldAvatarPath = Path.Combine(_hostEnvironment.WebRootPath, vendor.Avartar.TrimStart('/'));
+                                if (System.IO.File.Exists(oldAvatarPath))
+                                {
+                                    System.IO.File.Delete(oldAvatarPath);
+                                }
+                            }
+
+                            // Ensure the directory exists
+                            if (!Directory.Exists(avatarPath))
+                            {
+                                Directory.CreateDirectory(avatarPath);
+                            }
+
+                            using (var fileStream = new FileStream(avatarFilePath, FileMode.Create))
+                            {
+                                avatarFile.CopyTo(fileStream);
+                            }
+
+                            vendor.Avartar = "/images/avatars/" + avatarFileName;
+                        }
+
+                        // Handle banner file upload
+                        if (bannerFile != null)
+                        {
+                            var bannerPath = Path.Combine(_hostEnvironment.WebRootPath, "images", "banners");
+                            var bannerFileName = Guid.NewGuid().ToString() + Path.GetExtension(bannerFile.FileName);
+                            var bannerFilePath = Path.Combine(bannerPath, bannerFileName);
+
+                            // Ensure the directory exists
+                            if (!Directory.Exists(bannerPath))
+                            {
+                                Directory.CreateDirectory(bannerPath);
+                            }
+
+                            // Delete old banner if exists
+                            if (!string.IsNullOrEmpty(vendor.Banner))
+                            {
+                                var oldBannerPath = Path.Combine(_hostEnvironment.WebRootPath, vendor.Banner.TrimStart('/'));
+                                if (System.IO.File.Exists(oldBannerPath))
+                                {
+                                    System.IO.File.Delete(oldBannerPath);
+                                }
+                            }
+
+                            using (var fileStream = new FileStream(bannerFilePath, FileMode.Create))
+                            {
+                                bannerFile.CopyTo(fileStream);
+                            }
+
+                            vendor.Banner = "/images/banners/" + bannerFileName;
+                        }
+
+                        // Update vendor and address details
+                        vendor.Name = vendorDetailVM.Vendor.Name;
+                        vendor.UpdatedAt = DateTime.Now;
+
+                        address.Country = vendorDetailVM.Address.Country;
+                        address.City = vendorDetailVM.Address.City;
+                        address.Street = vendorDetailVM.Address.Street;
+                        address.Apartment = vendorDetailVM.Address.Apartment;
+                        address.ZipCode = vendorDetailVM.Address.ZipCode;
+                        address.Email = vendorDetailVM.Address.Email;
+                        address.PhoneNumber = vendorDetailVM.Address.PhoneNumber;
+                        address.VendorId = vendor.VendorId;
+
+                        _unitOfWork.Vendor.Update(vendor);
+                        _unitOfWork.Address.Update(address);
+                        _unitOfWork.Save();
+
+                        transaction.Commit();
+
+                        return RedirectToAction(nameof(Index));
                     }
-
-                    vendor.Avartar = @"\images\vendors\" + fileName;
-                }
-
-                if (bannerFile != null)
-                {
-                    string wwwRootPath = _hostEnvironment.WebRootPath;
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(bannerFile.FileName);
-                    string uploads = Path.Combine(wwwRootPath, @"images\vendors");
-                    string fullPath = Path.Combine(uploads, fileName);
-
-                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    catch (Exception)
                     {
-                        bannerFile.CopyTo(fileStream);
+                        transaction.Rollback();
+                        throw;
                     }
-
-                    vendor.Banner = @"\images\vendors\" + fileName;
                 }
-
-                if (vendor.VendorId == 0)
-                {
-                    // get current user ID
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    vendor.UserId = userId;
-                    _unitOfWork.Vendor.Add(vendor);
-                }
-                else
-                {
-                    _unitOfWork.Vendor.Update(vendor);
-                }
-
-                if (address.AddressId == 0)
-                {
-                    address.VendorId = vendor.VendorId;
-                    _unitOfWork.Address.Add(address);
-                }
-                else
-                {
-                    _unitOfWork.Address.Update(address);
-                }
-
-                _unitOfWork.Save();
-                return RedirectToAction(nameof(Index));
             }
+
             return View(vendorDetailVM);
         }
     }
