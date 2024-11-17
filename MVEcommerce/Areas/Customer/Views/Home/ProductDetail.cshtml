@@ -252,8 +252,10 @@
 																data-variant-option-id="@image.VariantOptionID"
 																tabindex="0"
 																role="button"
-																onclick="updateProductInfo('@image.ImageUrl', @image.ProductVariantOption.Sale, @image.ProductVariantOption.Price, '@image.VariantOptionID')">
-
+																onclick="updateProductInfo('@image.ImageUrl', @image.ProductVariantOption.Sale, @image.ProductVariantOption.Price, '@image.VariantOptionID'),
+																selectVariantOption('@image.ImageUrl', @image.VariantOptionID)
+																">
+																
 																<img src="@image.ImageUrl"
 																	 alt="Product Image"
 																	 data-large="@image.ImageUrl"
@@ -302,12 +304,13 @@
 										<input class="motta_product_id" type="hidden" data-title="@Model.product.Name" value="18">
 										<div class="quantity ">
 											<span class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path></svg></span>	<label class="screen-reader-text" for="quantity_67219833bb0e5">Apple - iPhone 11 64GB quantity</label>
-											<input type="number" id="quantity_67219833bb0e5" class="input-text qty text" width="15" height="10" name="quantity" value="1" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off " style="text-align: center;">
+											<input type="number" id="quantity_" class="input-text qty text" width="15" height="10" name="quantity" value="1" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off " style="text-align: center;">
 											<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
 										</div>
 										<br />
-										<button type="submit" class="single_add_to_cart_button button alt disabled wc-variation-selection-needed">
-											<span class="motta-svg-icon motta-svg-icon--cart-trolley single_add_to_cart_button--icon"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M25.248 22.4l3.552-14.4h-18.528l-0.96-4.8h-6.112v3.2h3.488l3.2 16h15.36zM24.704 11.2l-1.968 8h-10.24l-1.6-8h13.808z"></path><path d="M25.6 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path><path d="M14.4 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path></svg></span>		<span class="single_add_to_cart_button--text">Add to cart</span>
+										<button type="submit" id="addToCartButton" class="single_add_to_cart_button button alt disabled wc-variation-selection-needed" onclick="addToCart(@Model.product.ProductId)" disabled>
+											<span class="motta-svg-icon motta-svg-icon--cart-trolley single_add_to_cart_button--icon"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M25.248 22.4l3.552-14.4h-18.528l-0.96-4.8h-6.112v3.2h3.488l3.2 16h15.36zM24.704 11.2l-1.968 8h-10.24l-1.6-8h13.808z"></path><path d="M25.6 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path><path d="M14.4 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path></svg></span>		
+											<span class="single_add_to_cart_button--text">Add to cart</span>
 										</button>
 
 										<button type="submit" class="motta-buy-now-button motta-button motta-button--ghost disabled wc-variation-selection-needed">Buy Now</button>
@@ -515,8 +518,45 @@
 		if (mainImage) mainImage.src = imageUrl;
 	}
 
+	let selectedVariantOptionID = null;
 
+	function selectVariantOption(imageUrl, variantOptionID) {
+		selectedVariantOptionID = variantOptionID;
+		const addToCartButton = document.getElementById("addToCartButton");
+		addToCartButton.disabled = false;
+		addToCartButton.classList.remove("disabled");
+	}
 
+	function addToCart(productId) {
+		var quantity = parseInt($('#quantity_').val());
+		if (!selectedVariantOptionID) {
+			alert("Please select a product option before adding to cart!");
+			return;
+		}
+	
+		const data = {
+			productId: productId,
+			variantOptionId: selectedVariantOptionID,
+			quantity: quantity
+		};
+	
+		fetch('/api/addToCart', {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(result => {
+				if (!result.success) {					
+					alert(result.message || "Failed to add product to cart.");
+				}
+			})
+			.catch(error => {
+				console.error("Error:", error);
+			});
+	}
 
 
 </script>

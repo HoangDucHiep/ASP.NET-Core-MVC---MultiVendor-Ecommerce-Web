@@ -11,6 +11,7 @@ namespace MVEcommerce.Models.ViewModels.ShoopingCart
 		public int ProductId { get; set; }
 		public string ProductName { get; set; }
 		public string VariantName { get; set; }
+		public int? VariantOptionID { get; set; } = null;
 		public decimal Price { get; set; }
 		public int Quantity { get; set; }
 		public decimal TotalPrice { get; set; }
