@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
+using MVEcommerce.Models;
 using MVEcommerce.Models.ViewModels.ShoopingCart;
 using System.Security.Claims;
 
@@ -66,7 +67,9 @@ namespace MVEcommerce.Areas.Customer.Controllers
 						ImageUrl = imageUrl,
 						Stock = variantOption?.Stock ?? product.Stock ?? 0,
 						VendorName = product.Vendor?.Name ?? "Unknown Vendor",
-						CartId = cartItem.CartId
+						CartId = cartItem.CartId,
+						VariantOptionID = variantOption?.VariantId ?? null
+
 					};
 				})
 				.ToList();
@@ -84,7 +87,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 		[Route("api/UpdateQuantity")]
         public IActionResult UpdateQuantity(int cartId, int quantity, int? optionId = null)
         {
-            var cartItem = _unitOfWork.ShoppingCart.GetAll(c => c.CartId == cartId).FirstOrDefault();
+            var cartItem = _unitOfWork.ShoppingCart.GetAll(c => c.CartId == cartId && c.VariantOptionID == optionId).FirstOrDefault();
 
             if (cartItem == null)
             {
@@ -102,20 +105,15 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             _unitOfWork.Save();
 
-            return Json(new
-            {
-                success = true
-				
-				
-			});
+            return Json(new {  success = true });
         }
 
 
         [HttpPost]
 		[Route("api/RemoveFromCart")]
-        public IActionResult RemoveFromCart(int cartId)
+        public IActionResult RemoveFromCart(int cartId, int? optionId = null)
         {
-            var cartItem = _unitOfWork.ShoppingCart.GetAll(c => c.CartId == cartId).FirstOrDefault();
+            var cartItem = _unitOfWork.ShoppingCart.GetAll(c => c.CartId == cartId&& c.VariantOptionID ==optionId ).FirstOrDefault();
 
             if (cartItem == null)
             {
