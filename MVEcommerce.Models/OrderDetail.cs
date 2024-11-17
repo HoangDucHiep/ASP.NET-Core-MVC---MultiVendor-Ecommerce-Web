@@ -22,7 +22,9 @@ namespace MVEcommerce.Models
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
 
-		[Column(TypeName = "decimal(18,2)")]
+        public string? OptionName { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
 		[Column(TypeName = "decimal(18,2)")]

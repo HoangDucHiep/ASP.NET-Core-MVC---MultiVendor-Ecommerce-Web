@@ -1,10 +1,12 @@
-@using MVEcommerce.Models.ViewModels.Account
-@model VendorProductIndexVM
+﻿@using MVEcommerce.Models
+@using MVEcommerce.Utility
+@model IEnumerable<Order>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     Layout = "_VendorPageLayout";
 }
+
 
 <div class="content container-fluid">
     <!-- Page Header -->
@@ -234,7 +236,7 @@
                    class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
                    data-hs-datatables-options='{
             "columnDefs": [{
-            "targets": [0, 10],
+            "targets": [0, 6],
             "width": "5%",
             "orderable": false
             }],
@@ -258,22 +260,18 @@
                                 </label>
                             </div>
                         </th>
-                        <th>Slug</th>
-                        <th class="table-column-ps-0">Product</th>
-                        <th>Category</th>
-                        <th>SKU</th>
-                        <th>Price</th>
-                        <th>Sale</th>
-                        <th>Stocks</th>
-                        <th>Created At</th>
-                        <th>Variants</th>
+                        <th>Order ID</th>
+                        <th class="table-column-ps-0">Date</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Total</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @* Product Item *@
-                    @foreach (var product in Model.Products)
+                    @foreach (var order in Model)
                     {
                         <tr>
                             <td class="table-column-pe-0">
@@ -282,32 +280,25 @@
                                     <label class="form-check-label" for="datatableCheckAll1"></label>
                                 </div>
                             </td>
-                            <td>@product.Slug</td>
-                            <td class="table-column-ps-0">
-                                <a class="d-flex align-items-center" href="ecommerce-product-details.html">
-                                    <div class="flex-shrink-0">
-                                        <img class="avatar avatar-lg" src="@(product.ProductImages?.Where(x => x.IsMain).FirstOrDefault()?.ImageUrl ?? "")" alt="Image Description">
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="text-inherit mb-0">@product.Name</h5>
-                                    </div>
-                                </a>
+
+                            <td class="table-column-ps-0" >
+                                <a asp-action="OrderDetail" asp-route-id="@order.OrderId">@order.OrderId</a>
                             </td>
-                            <td>@product.Category!.Name</td>
-                            <td>@product.SKU</td>
-                            <td>@product.Price</td>
-                            <td>@product.Sale</td>
-                            <td>@product.Stock</td>
-                            <td>@product.CreatedAt.ToString("g")</td>
+
+                            <td>@order.OrderDate.ToShortDateString()</td>
+                            <td>@order.User.UserName</td>
                             <td>
                                 @{
-                                    var numberOfOptions = product.ProductVariants?.SelectMany(v => v.ProductVariantOptions!).Count() ?? 0;
+
+                                    <span class="badge bg-soft-warning @(order.Status == @OrderStatus.PENDING ? "text-warning" : "text-success")">
+                                        <span class="legend-indicator"></span>@order.Status
+                                    </span>
                                 }
-                                @numberOfOptions
                             </td>
+                            <td>@order.TotalAmount</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a class="btn btn-white btn-sm" asp-action="EditProduct" asp-route-id="@product.ProductId">
+                                    <a class="btn btn-white btn-sm" >
                                         <i class="bi-pencil-fill me-1"></i> Edit
                                     </a>
 
@@ -368,7 +359,7 @@
                         <span class="text-secondary me-2">of</span>
 
                         <!-- Pagination Quantity -->
-                        <span id="datatableWithPaginationInfoTotalQty">@Model.Products.Count()</span>
+                        <span id="datatableWithPaginationInfoTotalQty">@Model.Count()</span>
                     </div>
                 </div>
                 <!-- End Col -->

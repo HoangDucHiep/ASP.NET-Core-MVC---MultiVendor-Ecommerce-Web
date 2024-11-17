@@ -6,6 +6,7 @@ using MVEcommerce.DataAccess.Data;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
 using MVEcommerce.Models.ViewModels.OrderVMs;
+using MVEcommerce.Utility;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -59,12 +60,6 @@ namespace MVEcommerce.Areas.Customer.Controllers
             };
         
             return View(vm);
-        }
-
-
-        public IActionResult OrderConfirmation()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -125,6 +120,9 @@ namespace MVEcommerce.Areas.Customer.Controllers
                     {
                         // Create the main order
                         var mainOrder = CreateOrder(userId, null, shippingAddress);
+                        
+                        mainOrder.VendorId = vendorGroups[0].Key;
+
                         _unitOfWork.Order.Add(mainOrder);
                         _unitOfWork.Save();
 
@@ -152,6 +150,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                         foreach (var vendorGroup in vendorGroups)
                         {
                             var subOrder = CreateOrder(userId, mainOrder.OrderId, shippingAddress);
+                            subOrder.VendorId = vendorGroup.Key;
                             _unitOfWork.Order.Add(subOrder);
                             _unitOfWork.Save();
 
@@ -189,24 +188,13 @@ namespace MVEcommerce.Areas.Customer.Controllers
         }
 
 
-        public IActionResult PlaceOrderTest()
-        {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var userId = claim.Value;
-
-            var cartItems = _unitOfWork.ShoppingCart.GetAll(c => c.UserId == userId, includeProperties: "Product").ToList();
-
-            return View(cartItems);
-        }
-
         private Order CreateOrder(string userId, Guid? parentOrderId, string shippingAddress)
         {
             return new Order
             {
                 UserId = userId,
                 OrderDate = DateTime.Now,
-                Status = "Pending",
+                Status = OrderStatus.PENDING,
                 ParentOrderId = parentOrderId,
                 TotalAmount = 0, // Will be updated later
                 ShippingAddress = shippingAddress
@@ -220,8 +208,9 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 OrderId = orderId,
                 ProductId = cartItem.ProductId,
                 Quantity = cartItem.Quantity,
-                Price  = (decimal)(cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Price : cartItem.Product.Price)!,
-                Sale = cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Sale : cartItem.Product.Sale!
+                Price = (decimal)(cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Price : cartItem.Product.Price)!,
+                Sale = cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Sale : cartItem.Product.Sale!,
+                OptionName = cartItem.ProductVariantOption?.Value ?? null
             };
         }
     }

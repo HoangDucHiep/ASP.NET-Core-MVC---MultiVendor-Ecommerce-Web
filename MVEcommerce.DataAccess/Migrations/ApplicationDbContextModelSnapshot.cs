@@ -240,6 +240,9 @@ namespace MVEcommerce.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("VendorId")
+                        .HasColumnType("int");
+
                     b.HasKey("OrderId");
 
                     b.HasIndex("ParentOrderId");
@@ -254,6 +257,9 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.Property<Guid>("OrderDetailId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OptionName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -980,7 +986,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
                             NormalizedUserName = "TRUFFLES_VENDOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ/zjrFmhOjzKirHAs09PplIqrsWsfH7vxxsIKhwesv9vPHKAm5Xj2erloRed6cGkg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMQ/RGhpjMIaNSJwYtvrGI9t+bYnY4u/O0eZDYzoTD5TOGc5/JBCB4rvzZdY8jFMWQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

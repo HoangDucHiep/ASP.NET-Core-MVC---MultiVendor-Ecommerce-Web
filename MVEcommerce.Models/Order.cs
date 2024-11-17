@@ -20,6 +20,9 @@ namespace MVEcommerce.Models
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
+        [ForeignKey("Vendor")]
+        public int? VendorId { get; set; }
+
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
         public string Status { get; set; } = "Pending"; // Pending, Completed, Cancelled

@@ -1,0 +1,202 @@
+﻿@using MVEcommerce.Models
+@using MVEcommerce.Utility
+@model Order
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+  Layout = "_VendorPageLayout";
+}
+
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header d-print-none">
+    <div class="row align-items-center">
+      <div class="col-sm mb-2 mb-sm-0">
+        <div class="d-sm-flex align-items-sm-center">
+          <h1 class="page-header-title">Order <i>@Model.OrderId</i></h1>
+          <span class="badge bg-soft-success ms-sm-3 @(Model.Status == @OrderStatus.PENDING ? "text-warning" : "text-success")">
+            <span class="legend-indicator bg-warning"></span>@Model.Status
+          </span>
+          <span class="ms-2 ms-sm-3">
+          <i class="bi-calendar-week"></i> @Model.OrderDate.ToString("dd MMMM yyyy HH:mm")
+          </span>
+          </div>
+
+          <div class="mt-2">
+            <form asp-controller="OrderManagement" asp-action="UpdateOrderStatus" method="post">
+              @if (Model.Status == OrderStatus.PENDING)
+              {
+              <div class="d-flex gap-2">
+                <a class="text-body me-3" href="javascript:;" onclick="window.print(); return false;">
+                  <i class="bi-printer me-1"></i> Confirm Order
+                </a>
+          
+                <!-- Dropdown -->
+                <select asp-for="@Model.Status" class="form-select form-select-sm" aria-label="Order status" style="max-width: fit-content;">
+                  <option selected disabled>Change status</option>
+                  <option value="@OrderStatus.APPROVED">Approve</option>
+                  <option value="@OrderStatus.REJECTED">Reject</option>
+                </select>
+                <input hidden asp-for="OrderId" />
+
+                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                <!-- End Dropdown -->
+              </div>
+              }
+            </form>
+          </div>
+          
+          </div>
+          <!-- End Col -->
+
+          <div class="col-sm-auto">
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-ghost-secondary btn-icon btn-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Previous order">
+                <i class="bi-arrow-left"></i>
+              </button>
+              <button type="button" class="btn btn-ghost-secondary btn-icon btn-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Next order">
+                <i class="bi-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+          <!-- End Col -->
+        </div>
+        <!-- End Row -->
+      </div>
+      <!-- End Page Header -->
+
+      <div class="row">
+        <div class="col-lg-8 mb-3 mb-lg-0">
+          <!-- Card -->
+          <div class="card mb-3 mb-lg-5">
+            <!-- Header -->
+            <div class="card-header card-header-content-between">
+              <h4 class="card-header-title">Order details <span class="badge bg-soft-dark text-dark rounded-circle ms-1">@Model.OrderDetails.Count()</span></h4>
+            </div>
+            <!-- End Header -->
+
+            <!-- Body -->
+            <div class="card-body">
+              <!-- Media -->
+              @foreach (var orderDetail in Model.OrderDetails)
+              {
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <div class="avatar avatar-xl">
+                                    <img class="img-fluid" src="@orderDetail.Product.ProductImages.Where(i=>i.IsMain == true).FirstOrDefault().ImageUrl" alt="@orderDetail.Product.Name">
+                        </div>
+                    </div>
+
+                    <div class="flex-grow-1 ms-3">
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <a class="h5 d-block">@orderDetail.Product.Name</a>
+                                <div class="fs-6 text-body">
+                                    <span>Option:</span>
+                                    <span class="fw-semibold">@orderDetail.OptionName</span>
+                                </div>
+                            </div>
+                            <!-- End Col -->
+
+                            <div class="col col-md-2 align-self-center">
+                              <h5>
+                                  <span>
+                                      <small>
+                                          <s>$@($"{orderDetail.Price:N2}")</s>
+                                      </small>
+                                      $@($"{(orderDetail.Price * (1 - orderDetail.Sale / 100)):N2}")
+                                  </span>
+                              </h5>
+                            </div>
+                            <!-- End Col -->
+
+                            <div class="col col-md-2 align-self-center">
+                                <h5>@orderDetail.Quantity</h5>
+                            </div>
+                            <!-- End Col -->
+
+                            <div class="col col-md-2 align-self-center text-end">
+                                <h5>$@($"{((orderDetail.Price * (1 - orderDetail.Sale / 100)) * orderDetail.Quantity):N2}")</h5>
+                            </div>
+                            <!-- End Col -->
+                        </div>
+                        <!-- End Row -->
+                    </div>
+                </div>
+                <!-- End Media -->
+
+              }
+
+
+              <hr>
+
+              <hr>
+
+              <div class="row justify-content-md-end mb-3">
+                <div class="col-md-8 col-lg-7">
+                    <dl class="row text-sm-end">
+                        <dt class="col-sm-6">Amount paid:</dt>
+                        <dd class="col-sm-6">$@($"{Model.OrderDetails.Sum(od => (od.Price * (1 - od.Sale / 100)) * od.Quantity):N2}")</dd>
+                    </dl>
+                </div>
+            </div>
+              <!-- End Row -->
+            </div>
+            <!-- End Body -->
+          </div>
+          <!-- End Card -->
+        </div>
+
+        <div class="col-lg-4">
+          <!-- Card -->
+          <div class="card">
+            <!-- Header -->
+            <div class="card-header">
+              <h4 class="card-header-title">Customer</h4>
+            </div>
+            <!-- End Header -->
+
+            <!-- Body -->
+            <div class="card-body">
+              <!-- List Group -->
+              <ul class="list-group list-group-flush list-group-no-gutters">
+                <li class="list-group-item">
+                  <a class="d-flex align-items-center" href="#">
+                    @* <div class="avatar avatar-circle">
+                      <img class="avatar-img" src="./assets/img/160x160/img10.jpg" alt="Image Description">
+                    </div> *@
+                    <div class="flex-grow-3 ms-3">
+                        <span class="text-body text-inherit">Name: </span>
+                    </div>
+                    <div class="flex-grow-7 ms-3">
+                      <span class="text-body text-inherit">@Model.User.UserName</span>
+                    </div>
+                  </a>
+                </li>
+
+                <li class="list-group-item">
+                  <ul class="list-unstyled list-py-2 text-body">
+                    <li><i class="bi-at me-2"></i>@Model.User.Email</li>
+                    <li><i class="bi-phone me-2"></i>@Model.User.PhoneNumber</li>
+                  </ul>
+                </li>
+
+                <li class="list-group-item">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5>Shipping address</h5>
+                  </div>
+
+                  <span class="d-block text-body">
+                    @Model.ShippingAddress
+                  </span>
+                </li>
+              </ul>
+              <!-- End List Group -->
+            </div>
+            <!-- End Body -->
+          </div>
+          <!-- End Card -->
+        </div>
+      </div>
+      <!-- End Row -->
+    </div>
