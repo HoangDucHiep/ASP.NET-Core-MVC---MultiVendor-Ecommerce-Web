@@ -143,7 +143,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             _unitOfWork.Save();
 
-            return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng!" });
+            return Json(new { success = true });
         }
 
 	[Route("ProductDetail/{slug}")]
