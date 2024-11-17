@@ -12,6 +12,7 @@ using MVEcommerce.Models.ViewModels.AddToCart;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Filters;
+using MVEcommerce.DataAccess.Data;
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -36,11 +37,12 @@ namespace MVEcommerce.Areas.Customer.Controllers
             }
         }
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IWebHostEnvironment hostingEnvironment)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IWebHostEnvironment hostingEnvironment, ApplicationDbContext db)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
+            _context = db;
         }
 		[HttpGet]
 		public IActionResult Search(string query)
@@ -159,7 +161,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             _unitOfWork.Save();
 
-            return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng!" });
+            return Json(new { success = true });
         }
 
 	[Route("ProductDetail/{slug}")]
@@ -191,7 +193,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 		public IActionResult Index()
         {
 
-            var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;
+            var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList();
 
             foreach (var product in products)
             {
@@ -275,17 +277,19 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
         public IActionResult AccounntOverview()
         {
-            var user = _context.ApplicationUsers.Where(x => x.Id == userId);
+            var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
             return View(user);
         }
 
         public IActionResult Addresses()
         {
-            return View();
+            var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
+            return View(user);
         }
         public IActionResult AccountDetail()
         {
-            return View();
+            var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
+            return View(user);
         }
 
 

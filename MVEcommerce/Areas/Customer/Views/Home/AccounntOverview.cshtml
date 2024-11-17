@@ -3,7 +3,7 @@
     ViewData["Title"] = "AccounntOverview";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model MVEcommerce.Models.ApplicationUser
+@model  MVEcommerce.Models.ApplicationUser
 
 <style>
     /* General Styles */
@@ -161,38 +161,62 @@
 
 <div class="container123">
     <!-- Sidebar -->
-    <div class="sidebar123">
-        <div class="profile123">
-            <div class="avatar123"></div>
-            <h3>Hello!</h3>
-            <p>@Model.FullName</p>
+ 
+        <div class="sidebar123">
+            <div class="profile123">
+                <div class="avatar123"></div>
+                <h3>Hello!</h3>
+                <p>@Model.FullName</p>
+            </div>
+            <ul class="menu123">
+                <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
+                <li><a asp-controller="Home" asp-action="AccountDetail"><i class="fa fa-user"></i> Account details</a></li>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li >
+                        <form id="logoutForm" class="form-inline account-panel__link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <a class="motta-button motta-button--text">
+                                <button type="submit" style="border: none; background: transparent; color: black; margin: 0; padding: 0; min-width: auto !important;">
+                                    <span class="motta-button__icon" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; text-align: left;">
+                                        <span class="motta-svg-icon motta-svg-icon--sign-out" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; min-width: auto !important;">
+                                            <svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32" style="min-width: auto !important;">
+                                                <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                                <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    <span class="motta-button__text" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle;">
+                                        Sign Out
+                                    </span>
+                                </button>
+                            </a>
+                        </form>
+                    </li>
+                }
+            </ul>
         </div>
-        <ul class="menu123">
-            <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
-            <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
-            <li><a href="#"><i class="fa fa-address-book"></i> Addresses</a></li>
-            <li><a href="#"><i class="fa fa-user"></i> Account details</a></li>
-            <li><a href="#"><i class="fa fa-sign-out-alt"></i> Log out</a></li>
-        </ul>
-    </div>
 
-    <!-- Main Content -->
-    <div class="content123">
-        <h1>My account</h1>
-        <h3>Account overview</h3>
-        <p>From your account dashboard you can view your <a href="#">Recent orders</a>.</p>
-        <p>Manage your <a href="#">Shipping Address</a>.</p>
-        <p>Edit your <a href="#">Password</a> and <a href="#">Account details</a>.</p>
-        <div class="vendor-box123">
-            <div class="vendor-text123">
-                <h4>Become a Vendor</h4>
-                <p>Vendors can sell products and manage a store with a vendor dashboard.</p>
-            </div>
-            <div class="vendor-action123">
-                <a href="#" class="button123">Become a Vendor</a>
+        <!-- Main Content -->
+        <div class="content123">
+            <h1>My account</h1>
+            <h3>Account overview</h3>
+            <p>From your account dashboard you can view your <a href="#">Recent orders</a>.</p>
+            <p>Manage your <a href="#">Shipping Address</a>.</p>
+            <p>Edit your <a href="#">Password</a> and <a href="#">Account details</a>.</p>
+            <div class="vendor-box123">
+                <div class="vendor-text123">
+                    <h4>Become a Vendor</h4>
+                    <p>Vendors can sell products and manage a store with a vendor dashboard.</p>
+                </div>
+                <div class="vendor-action123">
+                    <a href="#" class="button123">Become a Vendor</a>
+                </div>
             </div>
         </div>
-    </div>
+    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </div>
 

@@ -3,16 +3,154 @@
     ViewData["Title"] = "AccountDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@model MVEcommerce.Models.ApplicationUser
 <style>
-
     /* General Styles */
-    body {
+
+
+    .container123 {
+        display: flex;
+        flex-wrap: wrap; /* Đảm bảo giao diện responsive */
+        min-height: 100vh;
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
         background-color: #f9f9f9;
-        color: #333;
+    }
+
+    /* Sidebar */
+    .sidebar123 {
+        width: 250px;
+        background: #fff;
+        border-right: 1px solid #ddd;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+        .sidebar123 .profile123 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar123 .avatar123 {
+            width: 80px;
+            height: 80px;
+            background-color: #ddd;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+        }
+
+        .sidebar123 h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .sidebar123 p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .sidebar123 .menu123 {
+            list-style: none;
+            padding: 0;
+        }
+
+            .sidebar123 .menu123 li {
+                margin-bottom: 15px;
+            }
+
+                .sidebar123 .menu123 li a {
+                    text-decoration: none;
+                    color: #333;
+                    font-size: 16px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                    .sidebar123 .menu123 li a i {
+                        margin-right: 10px;
+                    }
+
+    /* Content */
+    .content123 {
+        flex: 1;
+        padding: 40px;
+        background: #fff;
+        box-sizing: border-box;
+    }
+
+        .content123 h1 {
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .content123 p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+    .address-box123 {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+
+        .address-box123 h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .address-box123 p {
+            font-size: 14px;
+            color: #666;
+            margin: 0 0 10px;
+        }
+
+    .btn12345 {
+        background-color: #000;
+        color: #fff;
+        border: none;
+        padding: 30px 0px;
+        width: 60px;
+        height: 20px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .btn12345:hover {
+            background-color: #333;
+        }
+
+    /* Responsive Styles */
+    @@media (max-width: 768px) {
+        .sidebar123 {
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .content123 {
+            padding: 20px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .content123 h1 {
+            font-size: 24px;
+        }
+
+        .sidebar123 .menu123 li a {
+            font-size: 14px;
+        }
+
+        .btn12345 {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
     }
 
     .container {
@@ -114,71 +252,72 @@
             background-color: #0056b3;
         }
 
-  
-   
+    
 </style>
+
 
 <div class="container123">
     <!-- Sidebar -->
-    <div class="sidebar123">
-        <div class="profile123">
-            <div class="avatar123"></div>
-            <h3>Hello!</h3>
-            <p>cshbchshc</p>
+    
+        <div class="sidebar123">
+            <div class="profile123">
+                <div class="avatar123"></div>
+                <h3>Hello!</h3>
+                <p>FullName</p>
+            </div>
+            <ul class="menu123">
+                <li><a asp-controller="Home" asp-action="AccounntOverview"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
+                <li><a href="#"><i class="fa fa-user"></i> Account details</a></li>
+                <li><a href="#"><i class="fa fa-sign-out-alt"></i> Log out</a></li>
+            </ul>
         </div>
-        <ul class="menu123">
-            <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
-            <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
-            <li><a href="#"><i class="fa fa-address-book"></i> Addresses</a></li>
-            <li><a href="#"><i class="fa fa-user"></i> Account details</a></li>
-            <li><a href="#"><i class="fa fa-sign-out-alt"></i> Log out</a></li>
-        </ul>
-    </div>
-<div class="main-content">
-    <h1>My Account</h1>
 
-    <!-- Account Details Form -->
-    <section class="account-details">
-        <h2>Account Details</h2>
-        <form id="account-details-form">
-            <div class="form-group">
-                <label for="first-name">First name *</label>
-                <input type="text" id="first-name" required>
-            </div>
-            <div class="form-group">
-                <label for="last-name">Last name *</label>
-                <input type="text" id="last-name" required>
-            </div>
-            <div class="form-group">
-                <label for="display-name">Display name *</label>
-                <input type="text" id="display-name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email address *</label>
-                <input type="email" id="email" required>
-            </div>
-        </form>
-    </section>
+        <!-- Main Content -->
+        <div class="content123">
+            <h1>My account</h1>
+            <section class="account-details">
+                <h2>Account Details</h2>
+                <form id="account-details-form">
+                    
+                    <div class="form-group">
+                        <label for="full-name">Full name *</label>
+                        <input type="text" id="full-name" value="@Model.FullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender *</label>
+                        <input type="text" id="gender" value="@Model.Gender" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address *</label>
+                        <input type="email" id="email" value="@Model.Email" required>
+                    </div>
+                </form>
+            </section>
 
-    <!-- Password Change Form -->
-    <section class="password-change">
-        <h2>Password Change</h2>
-        <form id="password-change-form">
-            <div class="form-group">
-                <label for="current-password">Current Password</label>
-                <input type="password" id="current-password">
-            </div>
-            <div class="form-group">
-                <label for="new-password">New Password</label>
-                <input type="password" id="new-password">
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Confirm New Password</label>
-                <input type="password" id="confirm-password">
-            </div>
-            <button type="submit" class="save-btn">Save changes</button>
-        </form>
-    </section>
+            <!-- Password Change Form -->
+            <section class="password-change">
+                <h2>Password Change</h2>
+                <form id="password-change-form">
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm New Password</label>
+                        <input type="password" id="confirm-password">
+                    </div>
+                    <button type="submit" class="save-btn">Save changes</button>
+                </form>
+            </section>
+        </div>
+    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</div>
+

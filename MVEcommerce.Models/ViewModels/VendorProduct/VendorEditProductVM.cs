@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
@@ -10,7 +11,9 @@ namespace MVEcommerce.Models.ViewModels.VendorProduct
         [ValidateNever]
         public IEnumerable<SelectListItem> Categories { get; set; }
         public ProductVariant ProductVariant { get; set; } = new ProductVariant();
-        public List<ProductVariantOption> ProductVariantOptions { get; set; } = new List<ProductVariantOption>();
-        public List<ProductVariantOption> NewProductVariantOptions { get; set; } = new();
+        public List<ProductVariantOptionVM> ProductVariantOptions { get; set; } = new List<ProductVariantOptionVM>();
+        public List<ProductVariantOptionVM> NewProductVariantOptions { get; set; } = new();
+
+
     }
 }

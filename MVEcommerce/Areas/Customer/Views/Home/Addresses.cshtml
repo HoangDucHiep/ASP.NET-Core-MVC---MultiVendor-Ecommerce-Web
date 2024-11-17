@@ -3,6 +3,7 @@
     ViewData["Title"] = "Addresses";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@model MVEcommerce.Models.ApplicationUser
 
 <style>
     /* General Styles */
@@ -157,18 +158,18 @@
 
     <div class="container123">
         <!-- Sidebar -->
+   
         <div class="sidebar123">
             <div class="profile123">
                 <div class="avatar123"></div>
                 <h3>Hello!</h3>
-                <p>cshbchshc</p>
+                <p>@Model.FullName</p>
             </div>
             <ul class="menu123">
-                <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a asp-controller="Home" asp-action="AccounntOverview"><i class="fa fa-home"></i> Dashboard</a></li>
                 <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
-                <li><a href="#"><i class="fa fa-download"></i> Downloads</a></li>
-                <li><a href="#"><i class="fa fa-address-book"></i> Addresses</a></li>
-                <li><a href="#"><i class="fa fa-user"></i> Account details</a></li>
+                <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
+                <li><a asp-controller="Home" asp-action="AccountDetail"><i class="fa fa-user"></i> Account details</a></li>
                 <li><a href="#"><i class="fa fa-sign-out-alt"></i> Log out</a></li>
             </ul>
         </div>
@@ -177,13 +178,15 @@
         <div class="content123">
             <h1>My account</h1>
             <p>The following addresses will be used on the checkout page by default.</p>
-           
+
             <div class="address-box123">
                 <h3>Shipping address</h3>
                 <p>You have not set up this type of address yet.</p>
                 <button class="btn12345">Add</button>
             </div>
         </div>
+    
+    
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </div>
 
