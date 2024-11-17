@@ -16,6 +16,6 @@ namespace MVEcommerce.Models.ViewModels.ProductDetailViewModel
 		public Category category { get; set; }
 		public List<ProductImage> ProductImages { get; set; }
 
-
+		public List<ProductImage> AllProductImages { get; set; }
 	}
 }

@@ -1,0 +1,149 @@
+@using MVEcommerce.Models
+@using MVEcommerce.Utility
+@model IEnumerable<Order>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<!-- Header -->
+<div class="card-header card-header-content-md-between">
+    <div class="mb-2 mb-md-0">
+        <form>
+            <!-- Search -->
+            <div class="input-group input-group-merge input-group-flush">
+                <div class="input-group-prepend input-group-text">
+                    <i class="bi-search"></i>
+                </div>
+                <input id="datatableSearch" type="search" class="form-control" placeholder="Search orders"
+                    aria-label="Search orders">
+            </div>
+            <!-- End Search -->
+        </form>
+    </div>
+</div>
+<!-- End Header -->
+<!-- Table -->
+<div class="table-responsive datatable-custom">
+    <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
+        data-hs-datatables-options='{
+            "columnDefs": [{
+            "targets": [0, 6],
+            "width": "5%",
+            "orderable": false
+            }],
+            "order": [],
+            "info": {
+            "totalQty": "#datatableWithPaginationInfoTotalQty"
+            },
+            "search": "#datatableSearch",
+            "entries": "#datatableEntries",
+            "pageLength": 12,
+            "isResponsive": false,
+            "isShowPaging": false,
+            "pagination": "datatablePagination"
+            }'>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" class="table-column-pe-0">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="datatableCheckAll">
+                        <label class="form-check-label">
+                        </label>
+                    </div>
+                </th>
+                <th>Order ID</th>
+                <th class="table-column-ps-0">Date</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @* Product Item *@
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td class="table-column-pe-0">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="datatableCheckAll1">
+                            <label class="form-check-label" for="datatableCheckAll1"></label>
+                        </div>
+                    </td>
+                    <td class="table-column-ps-0">
+                        <a asp-action="OrderDetail" asp-route-id="@order.OrderId">@order.OrderId</a>
+                    </td>
+                    <td>@order.OrderDate.ToShortDateString()</td>
+                    <td>@order.User.UserName</td>
+                    <td>
+                        <span class="badge bg-soft-@GetStatusColor(order.Status)" style="color: @GetColor(order.Status);">
+                            <span class="legend-indicator"></span>@order.Status
+                        </span>
+                    </td>
+                    <td>$@order.TotalAmount.ToString("N2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<!-- End Table -->
+<!-- Footer -->
+<div class="card-footer">
+    <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
+        <div class="col-sm mb-2 mb-sm-0">
+            <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
+                <span class="me-2">Showing:</span>
+
+                <!-- Select -->
+                <div class="tom-select-custom">
+                    <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto"
+                        autocomplete="off" data-hs-tom-select-options='{
+                            "searchInDropdown": false,
+                            "hideSearch": true
+                          }'>
+                        <option value="12">12</option>
+                        <option value="14" selected>14</option>
+                        <option value="16">16</option>
+                        <option value="18">18</option>
+                    </select>
+                </div>
+                <!-- End Select -->
+
+                <span class="text-secondary me-2">of</span>
+
+                <!-- Pagination Quantity -->
+                <span id="datatableWithPaginationInfoTotalQty">@Model.Count()</span>
+            </div>
+        </div>
+        <!-- End Col -->
+
+        <div class="col-sm-auto">
+            <div class="d-flex justify-content-center justify-content-sm-end">
+                <!-- Pagination -->
+                <nav id="datatablePagination" aria-label="Activity pagination"></nav>
+            </div>
+        </div>
+        <!-- End Col -->
+    </div>
+    <!-- End Row -->
+</div>
+<!-- End Footer -->
+
+@functions {
+    private string GetStatusColor(string status) => status switch
+    {
+        OrderStatus.PENDING => "warning",
+        OrderStatus.APPROVED => "info",
+        OrderStatus.COMPLETED => "success", 
+        OrderStatus.CANCELLED => "danger",
+        _ => "secondary"
+    };
+
+    private string GetColor(string status) => status switch
+    {
+        OrderStatus.PENDING => "#ff6233",
+        OrderStatus.APPROVED => "#47e448",
+        OrderStatus.COMPLETED => "#1bce85",
+        OrderStatus.CANCELLED => "#e63737",
+        _ => "#6C757D"
+    };
+}

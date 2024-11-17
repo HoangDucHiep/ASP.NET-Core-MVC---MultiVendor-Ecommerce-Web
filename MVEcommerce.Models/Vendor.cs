@@ -13,10 +13,9 @@ namespace MVEcommerce.Models
         [Key]
         public int VendorId { get; set; }
 
-
         public string? Name { get; set; }
 
-        public string? Status { get; set; } = "Active";  // Active, InActive
+        public string? Status { get; set; } = "active";  // Active, InActive
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
@@ -30,5 +29,6 @@ namespace MVEcommerce.Models
         public string UserId { get; set; }
         public virtual ApplicationUser? User { get; set; }
         public virtual ICollection<Product>? Products { get; set; }
+        public virtual Address? Addresses { get; set; }
     }
 }

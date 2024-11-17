@@ -34,7 +34,7 @@ namespace MVEcommerce.Models
         public string? SKU { get; set; }
 		public bool HasVariant { get; set; } = false;
 
-		public string? Status { get; set; } = "active";  // Active, InActive
+		public string? Status { get; set; } = "pending";  // Active, InActive
 
 		public DateTime CreatedAt { get; set; } = DateTime.Now;
 

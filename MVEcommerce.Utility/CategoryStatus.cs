@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace MVEcommerce.Utility
 {
-    public class VendorStatus
+    public class CategoryStatus
     {
-        public const string PENDING = "pending";
         public const string ACTIVE = "active";
-        public const string REJECTED = "rejected";
         public const string INACTIVE = "inactive";
     }
 }
