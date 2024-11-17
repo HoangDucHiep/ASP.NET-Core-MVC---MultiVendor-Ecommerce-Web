@@ -84,7 +84,7 @@
 					<div class="motta-product-gallery">
 
 
-						<div class="flex-viewport" style="overflow: hidden; position: relative; height: 558px;">
+						<div class="flex-viewport" style="overflow: hidden; position: relative; height: 480px;">
 							<div class="woocommerce-product-gallery__wrapper" style="width: 600%; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
 								<img loading="lazy" width="450" height="450" src="@Model.ProductImage.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="@Model.product.Name" decoding="async" sizes="(max-width: 300px) 100vw, 300px" id="main-image">
 							</div>
@@ -92,46 +92,34 @@
 
 
 
-						@*	<div class="woocommerce-product-gallery__thumbs-carousel">
-						<span class="motta-svg-icon motta-thumbs-button-prev motta-swiper-button swiper-button-disabled swiper-button-lock"
-						tabindex="0" role="button" aria-label="Previous slide" aria-disabled="true">
-						<svg viewBox="0 0 19 32">
-						<path d="M13.552 0.72l2.656 1.76-9.008 13.52 9.008 13.52-2.656 1.76-10.192-15.28z"></path>
-						</svg>
-						</span>
 
-						<div class="swiper-container swiper-container-initialized swiper-container-horizontal" style="opacity: 1;">
-						<ol class="flex-control-nav flex-control-thumbs swiper-wrapper" style="transform: translate3d(0px, 0px, 0px); opacity: 1;">
-						<li class="swiper-slide swiper-slide-active" style="width: 76.6px; margin-right: 15px;">
-						<img onload="this.width = this.naturalWidth; this.height = this.naturalHeight"
-						src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/1.jpeg?fit=100%2C100&amp;ssl=1"
-						class="flex-active" draggable="false" width="100" height="100">
-						<span></span>
-						</li>
-						<li class="swiper-slide swiper-slide-next" style="width: 76.6px; margin-right: 15px;">
-						<img onload="this.width = this.naturalWidth; this.height = this.naturalHeight"
-						src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/2.jpeg?fit=100%2C100&amp;ssl=1"
-						draggable="false" width="100" height="100">
-						<span></span>
-						</li>
-						<li class="swiper-slide" style="width: 76.6px; margin-right: 15px;">
-						<img onload="this.width = this.naturalWidth; this.height = this.naturalHeight"
-						src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/3.jpeg?fit=100%2C100&amp;ssl=1"
-						draggable="false" width="100" height="100">
-						<span></span>
-						</li>
-						</ol>
 
-						<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+						<div class="woocommerce-product-gallery__thumbs-carousel">
+
+
+							<div class="swiper-container swiper-container-initialized swiper-container-horizontal" style="opacity: 1;">
+								<ol id="variant-images-list" class="flex-control-nav flex-control-thumbs swiper-wrapper" style="list-style-type:none">
+									@foreach (var image in Model.AllProductImages)
+									{
+
+										<li class="swiper-slide" style="width: 76.6px; margin-right: 15px;">
+											<img onload="this.width = this.naturalWidth; this.height = this.naturalHeight"
+												 src="@image.ImageUrl"
+												 draggable="false"
+												 width="100"
+												 height="100"
+												 data-large="@image.ImageUrl"
+												 onclick="updateMainImage('@image.ImageUrl')">
+										</li>
+									}
+								</ol>
+
+
+								<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+							</div>
+
+
 						</div>
-
-						<span class="motta-svg-icon motta-thumbs-button-next motta-swiper-button swiper-button-disabled swiper-button-lock"
-						tabindex="0" role="button" aria-label="Next slide" aria-disabled="true">
-						<svg viewBox="0 0 19 32">
-						<path d="M5.648 31.28l-2.656-1.76 9.008-13.52-9.008-13.52 2.656-1.76 10.192 15.28z"></path>
-						</svg>
-						</span>
-						</div> *@
 
 					</div>
 
@@ -261,14 +249,19 @@
 																data-value="@image.ImageUrl"
 																data-sale="@image.ProductVariantOption.Sale"
 																data-price="@image.ProductVariantOption.Price"
+																data-variant-option-id="@image.VariantOptionID"
 																tabindex="0"
 																role="button"
-																onclick="updateProductInfo('@image.ImageUrl', @image.ProductVariantOption.Sale, @image.ProductVariantOption.Price)">
+																onclick="updateProductInfo('@image.ImageUrl', @image.ProductVariantOption.Sale, @image.ProductVariantOption.Price, '@image.VariantOptionID')">
 
-																<img src="@image.ImageUrl" alt="Product Image" data-large="@image.ImageUrl">
+																<img src="@image.ImageUrl"
+																	 alt="Product Image"
+																	 data-large="@image.ImageUrl"
+																	 data-variant-option-id="@image.VariantOptionID">
 																<span class="wcboost-variation-swatches__name"></span>
 															</li>
 														}
+
 														@*	<li class="wcboost-variation-swatches__item wcboost-variation-swatches__item-black" style="--wcboost-swatches-item-width: 60px; --wcboost-swatches-item-height: 60px;" aria-label="Black" data-value="black" tabindex="0" role="button">
 													<img src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/1-60x60.jpeg" alt="Black">
 													<span class="wcboost-variation-swatches__name">Black</span>
@@ -461,6 +454,8 @@
 
 </div>
 <script>
+
+
 	document.addEventListener('DOMContentLoaded', function () {
 
 		const thumbnails = document.querySelectorAll('.wcboost-variation-swatches__item img');
@@ -494,38 +489,34 @@
 		});
 	});
 
-	function updateProductInfo(imageUrl, salePercent, originalPrice) {
 
-		var newPrice = originalPrice * (1 - salePercent / 100);
+	function updateProductInfo(imageUrl, salePercent, originalPrice, variantOptionId) {
 
+		const newPrice = originalPrice * (1 - salePercent / 100);
+		const newPriceElement = document.querySelector('.new-price');
+		const originalPriceElement = document.querySelector('.original-price');
+		const saleBadgeElement = document.querySelector('.onsale.woocommerce-badge');
+		const Sym = document.querySelector('.Symbol');
 
-		var newPriceElement = document.querySelector('.new-price');
-		var originalPriceElement = document.querySelector('.original-price');
-		var saleBadgeElement = document.querySelector('.onsale.woocommerce-badge');
-		var currencySymbolElement = document.querySelector('.woocommerce-Price-currencySymbol');
-		var Sym = document.querySelector('.Symbol');
-		if (newPriceElement) {
-			newPriceElement.innerHTML = newPrice.toFixed(2);
-		}
-
-
-		if (originalPriceElement) {
-
-			originalPriceElement.innerHTML = originalPrice.toFixed(2);
-		}
-
-
+		if (newPriceElement) newPriceElement.innerHTML = newPrice.toFixed(2);
+		if (originalPriceElement) originalPriceElement.innerHTML = originalPrice.toFixed(2);
 		if (saleBadgeElement) {
 			saleBadgeElement.style.display = 'inline';
 			saleBadgeElement.innerHTML = `-${salePercent}%`;
 		}
-		if (currencySymbolElement) {
-			currencySymbolElement.style.display = 'inline';
-		}
 		if (Sym) {
 			Sym.style.display = 'inline';
 		}
+
 	}
+
+	function updateMainImage(imageUrl) {
+		const mainImage = document.getElementById('main-image');
+		if (mainImage) mainImage.src = imageUrl;
+	}
+
+
+
 
 
 </script>
