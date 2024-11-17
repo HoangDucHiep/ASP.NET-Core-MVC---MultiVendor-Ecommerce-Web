@@ -33,16 +33,18 @@ namespace MVEcommerce.Models
         [ValidateNever]
         public int? VendorId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Country is required")]
         public string Country { get; set; } = string.Empty;
-        [Required]
+        [Required(ErrorMessage = "City is required")]
         public string City { get; set; } = string.Empty;
-        [Required]
+        [Required(ErrorMessage = "Street is required")]
         public string Street { get; set; } = string.Empty;
-        [Required]
+        [Required(ErrorMessage = "Apartment is required")]
         public string Apartment { get; set; } = string.Empty;
         public string ZipCode { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; } = string.Empty;
     }
 }
