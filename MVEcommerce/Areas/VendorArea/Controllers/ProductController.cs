@@ -34,6 +34,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         }
 
         public IActionResult Index()
+        
         {
             var products = _unitOfWork.Product.GetAll(p => p.Status == ProductStatus.ACTIVE, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
 
@@ -207,9 +208,24 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                     Text = c.Name,
                     Value = c.CategoryId.ToString()
                 }),
-                ProductVariant = product.ProductVariants.FirstOrDefault() ?? new ProductVariant(),
-                ProductVariantOptions = product.ProductVariants.SelectMany(v => v.ProductVariantOptions).ToList() ?? new List<ProductVariantOption>(),
-                NewProductVariantOptions = new List<ProductVariantOption>()
+                ProductVariant = product.ProductVariants!.FirstOrDefault() ?? new ProductVariant(),
+                ProductVariantOptions = product?.ProductVariants?
+                    .SelectMany(v => v.ProductVariantOptions ?? new List<ProductVariantOption>())
+                    .Select(o => new ProductVariantOptionVM
+                    {
+                        OptionId = o.OptionId,
+                        VariantId = o.VariantId,
+                        Value = o.Value,
+                        Price = o.Price,
+                        Sale = o.Sale,
+                        Stock = o.Stock,
+                        SKU = o.SKU,
+                        Status = o.Status,
+                        CreatedAt = o.CreatedAt,
+                        UpdatedAt = o.UpdatedAt,
+                        ProductImages = o.ProductImages?.ToList() ?? new List<ProductImage>()
+                    }).ToList() ?? new List<ProductVariantOptionVM>()
+
             };
 
             return View(vm);
@@ -217,7 +233,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProduct(VendorEditProductVM vm, IFormFile? mainImage, List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages, string? deleteImages, List<ProductVariantOption> deletedProductVariantOptions, ProductVariant deletedProductVariant)
+        public async Task<IActionResult> EditProduct(VendorEditProductVM vm, IFormFile? mainImage, List<IFormFile>? additionalImages, string? deleteImages, string? deletedOptions)
         {
             if (ModelState.IsValid)
             {
@@ -241,7 +257,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         product.Status = vm.Product.Status;
                         product.Description = vm.Product.Description;
                         product.CategoryId = vm.Product.CategoryId;
-
+                        product.HasVariant = vm.ProductVariantOptions.Count > 0 ? true : false;
 
 
                         // Update main image
@@ -304,8 +320,11 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                             else
                             {
                                 vm.ProductVariant.ProductId = product.ProductId;
-                                _unitOfWork.ProductVariant.Add(vm.ProductVariant);
+                                var entry = _dbContext.ProductVariants.Add(vm.ProductVariant);
                                 _unitOfWork.Save();
+
+                                // The ID will be populated in the entity
+                                vm.ProductVariant.VariantId = entry.Entity.VariantId;
                             }
 
                             // Update or add options
@@ -328,35 +347,76 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 else
                                 {
                                     option.VariantId = vm.ProductVariant.VariantId;
-                                    _unitOfWork.ProductVariantOption.Add(option);
+                                    var entry = _dbContext.ProductVariantsOption.Add(option);
+                                    _dbContext.SaveChanges();
+
+                                    // The ID will be populated in the entry's entity
+                                    option.OptionId = entry.Entity.OptionId; // This will have the correct ID
                                 }
 
                                 // Handle option images
-                                if (optionImages != null && optionImages.Count > i)
+                                if (option.OptionImages != null && option.OptionImages.Count > 0)
                                 {
-                                    foreach (var image in optionImages[i])
+                                    foreach (var image in option.OptionImages)
                                     {
                                         string fileName = await SaveImage(image);
                                         _unitOfWork.ProductImage.Add(new ProductImage
                                         {
-                                            ProductId = product.ProductId,
-                                            VariantOptionID = option.OptionId,
+                                            ProductId = vm.Product.ProductId,
+                                            VariantOptionID = option.OptionId, // Now using correct ID from tracked entity
                                             ImageUrl = fileName
                                         });
                                     }
+                                    _unitOfWork.Save();
                                 }
                             }
-
-                            // Remove deleted options
-                            if (deletedProductVariantOptions != null)
+                        }
+                        else
+                        {
+                            // Remove existing variant and its options
+                            var existingVariant = product.ProductVariants.FirstOrDefault();
+                            if (existingVariant != null)
                             {
-                                foreach (var option in deletedProductVariantOptions)
+                                // Remove options and their images
+                                foreach (var option in existingVariant.ProductVariantOptions)
                                 {
-                                    var deletedOption = _unitOfWork.ProductVariantOption.Get(o => o.OptionId == option.OptionId);
-                                    if (deletedOption != null)
+                                    foreach (var image in option.ProductImages)
                                     {
-                                        _unitOfWork.ProductVariantOption.Remove(deletedOption);
+                                        DeleteImage(image.ImageUrl);
+                                        _unitOfWork.ProductImage.Remove(image);
                                     }
+                                    _unitOfWork.ProductVariantOption.Remove(option);
+                                }
+                                _unitOfWork.ProductVariant.Remove(existingVariant);
+                            }
+                        }
+
+                        // Remove deleted options and their images
+                        if (!string.IsNullOrEmpty(deletedOptions))
+                        {
+                            var optionIds = JsonConvert.DeserializeObject<List<int>>(deletedOptions);
+                            foreach (var optionId in optionIds)
+                            {
+                                var deletedOption = _unitOfWork.ProductVariantOption.Get(
+                                    o => o.OptionId == optionId,
+                                    includeProperties: "ProductImages"); // Include related images
+
+                                if (deletedOption != null)
+                                {
+                                    // Remove physical image files first
+                                    if (deletedOption.ProductImages != null)
+                                    {
+                                        foreach (var image in deletedOption.ProductImages)
+                                        {
+                                            // Delete physical file
+                                            DeleteImage(image.ImageUrl);
+                                            // Remove from database
+                                            _unitOfWork.ProductImage.Remove(image);
+                                        }
+                                    }
+
+                                    // Remove the option itself
+                                    _unitOfWork.ProductVariantOption.Remove(deletedOption);
                                 }
                             }
                         }

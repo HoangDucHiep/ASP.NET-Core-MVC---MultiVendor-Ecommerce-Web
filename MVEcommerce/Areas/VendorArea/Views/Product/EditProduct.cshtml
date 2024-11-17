@@ -99,7 +99,7 @@
                             <div id="variant-list" style="display: none;">
                                 @if (Model?.ProductVariantOptions?.Count > 0)
                                 {
-                                    <div class="variant-item mb-4">
+                                    <div class="existed" class="variant-item mb-4">
                                         <div class="mb-4" id="variant">
                                             <label class="form-label">Variant Name</label>
                                             <input type="text" class="form-control" asp-for="ProductVariant.Name" />
@@ -131,9 +131,10 @@
                                                         <div class="col-md-2 mb-2 mb-md-0">
                                                             <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Sale" placeholder="Option Sale" />
                                                         </div>
-                                                    </div>
+                                                        <div class="col-md-2 text-end">
+                                                            <button type="button" class="existed btn btn-danger" onclick="removeOption(this)">Remove</button>
+                                                        </div>
 
-                                                    <div class="row mb-3">
                                                         <div class="col-12">
                                                             <div class="mb-4">
                                                                 <label class="form-label">Option Images</label>
@@ -147,13 +148,15 @@
                                                                         {
                                                                             <div style="position: relative; width: 100px; height: 100px;">
                                                                                 <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
-                                                                                <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 5px; right: 5px; padding: 0 6px;" onclick="">×</button>
+                                                                                <button type="button" class="btn btn-sm btn-danger position-absolute" 
+                                                                                        style="top: 5px; right: 5px; padding: 0 6px;" 
+                                                                                        onclick="RemoveExistOptionImages(this, @image.ImageId)">×</button>
                                                                             </div>
                                                                         }
                                                                     }
                                                                 </div>
 
-                                                                <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, @j)" name="optionImages[@j]" id="optionImages_@j"/>
+                                                                <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, @j)" name="ProductVariantOptions[@j].OptionImages" id="optionImages_@j"/>
 
                                                             </div>
 
@@ -236,7 +239,7 @@
                                 <!-- Image previews will be added here -->
                                 @if (Model.Product.ProductImages != null && Model.Product.ProductImages.Count > 1)
                                 {
-                                    @foreach (var image in Model.Product.ProductImages.Where(i => !i.IsMain))
+                                    @foreach (var image in Model.Product.ProductImages.Where(i => !i.IsMain && i.VariantOptionID == null))
                                     {
                                         <div style="position: relative; width: 100px; height: 100px;">
                                             <img src="@image.ImageUrl" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" />
@@ -388,18 +391,21 @@
             // Show variant input if there are existing variants
             if (@Model.ProductVariantOptions.Count > 0) {
                 document.getElementById('variant-list').style.display = 'block';
+                var toggleButton = document.getElementById('toggleVariantButton').innerText = 'Remove Variant';
+                var productInfor = document.getElementById('product-price-sale-stocks').style.display = 'none';
             }
         });
 
-
-        function showVariantInput() {
-            document.getElementById('variant-list').style.display = 'block';
-        }
-
+        // Create arrays to store deleted IDs
+        let deletedOptionIds = [];
+        
         function toggleVariantInput() {
             var variantList = document.getElementById('variant-list');
             var toggleButton = document.getElementById('toggleVariantButton');
             var productInfor = document.getElementById('product-price-sale-stocks');
+            
+            const existingVariant = variantList.querySelector('.existed');
+        
             if (variantList.style.display === 'none') {
                 variantList.style.display = 'block';
                 productInfor.style.display = 'none';
@@ -408,9 +414,13 @@
                     <div class="variant-item mb-4">
                         <div class="mb-4" id="variant">
                             <label class="form-label">Variant Name</label>
-                            <input type="text" class="form-control" name="ProductVariant.Name" />
-                            <input type="hidden" class="form-control" asp-for="@Model.ProductVariant.ProductId" value="@Model.Product.ProductId"/>
-                            <span class="text-danger variant-name-error"></span>
+                            @if (true)
+                            {
+                                <input type="text" class="form-control" asp-for="ProductVariant.Name" value=""/>
+                                <input type="hidden" asp-for="ProductVariant.VariantId" />
+                                <input type="hidden" asp-for="ProductVariant.ProductId" />
+                                <span asp-validation-for="ProductVariant.Name" class="text-danger variant-name-error"></span>
+                            }
                         </div>
                         <div class="mb-4">
                             <label class="form-label">Options</label>
@@ -421,11 +431,31 @@
                     </div>`;
                 addOption();
             } else {
+                if (existingVariant) {
+                    // Get all option IDs
+                    const optionInputs = existingVariant.querySelectorAll('input[name$=".OptionId"]');
+                    
+                    // Add IDs to deletedOptionIds array
+                    optionInputs.forEach(input => {
+                        const optionId = parseInt(input.value);
+                        if (optionId > 0) {
+                            deletedOptionIds.push(optionId);
+                        }
+                    });
+        
+                    // Create/update hidden input for deleted options
+                    const deletedOptionsInput = document.createElement('input');
+                    deletedOptionsInput.type = 'hidden';
+                    deletedOptionsInput.id = 'deletedOptions';
+                    deletedOptionsInput.name = 'deletedOptions';
+                    deletedOptionsInput.value = JSON.stringify(deletedOptionIds);
+                    document.querySelector('form').appendChild(deletedOptionsInput);
+                }
+                
                 variantList.style.display = 'none';
                 productInfor.style.display = 'block';
                 toggleButton.innerText = 'Add Variant';
-                variantList.innerHTML = ''; // Clear the variant list content
-                // Reinitialize the variant list content
+                variantList.innerHTML = '';
             }
         }
 
@@ -460,15 +490,50 @@
                             <label class="form-label">Option Images</label>
                             <div id="optionImagesPreview_${optionIndex}" class="d-flex flex-wrap gap-2 mb-2">
                             </div>
-                            <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, ${optionIndex})" name="optionImages[${optionIndex}]" id="optionImages_${optionIndex}" />
+                            <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, ${optionIndex})" name="ProductVariantOptions[${optionIndex}].OptionImages" id="optionImages_${optionIndex}" />
                         </div>
                     </div>
                 </div>`;
             document.getElementById('option-list').insertAdjacentHTML('beforeend', optionHtml);
+            updateRemoveButtonVisibility();
         }
 
+        
         function removeOption(button) {
-            button.closest('.option-item').remove();
+            // Check if this is an existing option by looking for the 'existed' class
+            const isExistingOption = button.classList.contains('existed');
+            const optionItem = button.closest('.option-item');
+            
+            if (isExistingOption) {
+                // Get the option ID from the hidden input
+                const optionIdInput = optionItem.querySelector('input[name$=".OptionId"]');
+                const optionId = parseInt(optionIdInput.value);
+                
+                if (optionId > 0) {
+                    // Add to deletedOptionIds array
+                    deletedOptionIds.push(optionId);
+                    
+                    // Update or create hidden input for deleted options
+                    const deletedOptionsInput = document.getElementById('deletedOptions') || document.createElement('input');
+                    deletedOptionsInput.type = 'hidden';
+                    deletedOptionsInput.id = 'deletedOptions';
+                    deletedOptionsInput.name = 'deletedOptions';
+                    deletedOptionsInput.value = JSON.stringify(deletedOptionIds);
+                    
+                    if (!document.getElementById('deletedOptions')) {
+                        document.querySelector('form').appendChild(deletedOptionsInput);
+                    }
+                }
+            }
+            
+            // Remove the option item from UI
+            optionItem.remove();
+            // Remove associated images row if it exists
+            const imagesRow = optionItem.nextElementSibling;
+            if (imagesRow && imagesRow.classList.contains('row')) {
+                imagesRow.remove();
+            }
+            updateRemoveButtonVisibility();
         }
 
     </script>
@@ -697,6 +762,34 @@
             } else {
                 console.error('Cannot find the parent div element.');
             }
+        }
+
+        function RemoveExistOptionImages(button, imageId) {
+            const imageWrapper = button.closest('div');
+            
+            if (imageWrapper) {
+                // Remove from UI
+                imageWrapper.remove();
+
+                // Add to deleteImages array
+                deleteImages.push(imageId);
+
+                // Update hidden input
+                document.getElementById('deleteImages').value = JSON.stringify(deleteImages);
+            }
+        }
+
+        function updateRemoveButtonVisibility() {
+            const optionList = document.getElementById('option-list');
+            const optionItems = optionList.querySelectorAll('.option-item');
+            
+            // Show/hide remove buttons based on number of options
+            optionItems.forEach(item => {
+                const removeButton = item.querySelector('button[onclick="removeOption(this)"]');
+                if (removeButton) {
+                    removeButton.style.display = optionItems.length > 1 ? 'block' : 'none';
+                }
+            });
         }
             
     </script>
