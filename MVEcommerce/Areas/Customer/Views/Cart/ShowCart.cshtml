@@ -28,7 +28,8 @@
 								<tr id="remove_@product.CartId" class="woocommerce-cart-form__cart-item cart_item">
 
 									<td class="product-thumbnail">
-										<a href=""><img loading="lazy" decoding="async" width="300" height="300" src="@product.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="@product.ProductName" sizes="(max-width: 300px) 100vw, 300px"></a>
+										<a href="">
+											<img loading="lazy" decoding="async" width="300" height="300" src="@product.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="@product.ProductName" sizes="(max-width: 300px) 100vw, 300px"></a>
 									</td>
 
 									<td class="product-name" data-title="Product">
@@ -65,12 +66,12 @@
 
 									<td class="product-quantity motta-skin--subtle motta-qty-medium" data-title="Quantity">
 										<div class="quantity ">
-											<span class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease" onclick="updateQuantity(@product.CartId, 'decrease')">
+											<span class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease" onclick="updateQuantity(@product.CartId, 'decrease',@product.VariantOptionID)">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path></svg>
 											</span>
 											<label class="screen-reader-text" for="quantity_@product.ProductId">@product.ProductName</label>
 											<input type="number" id="quantity_@product.CartId" class="input-text qty text" name="cart[@product.CartId][qty]" value="@product.Quantity" aria-label="Product quantity" size="4" min="0" max="@product.Stock" step="1" placeholder="" inputmode="numeric" autocomplete="off">
-											<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase" onclick="updateQuantity(@product.CartId, 'increase')"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
+											<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase" onclick="updateQuantity(@product.CartId, 'increase',@product.VariantOptionID)"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
 										</div>
 									</td>
 
@@ -86,7 +87,7 @@
 									</td>
 
 									<td class="product-remove">
-										<a  class="remove" aria-label="Remove this item" onclick="removeFromCart(@product.CartId)" data-product_id="@product.ProductId" data-product_sku="">
+										<a class="remove" aria-label="Remove this item" onclick="removeFromCart(@product.CartId,@product.VariantOptionID)" data-product_id="@product.ProductId" data-product_sku="">
 											<span class="motta-svg-icon motta-svg-icon--trash">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M23.84 9.6h-15.68c-0.96 0-1.6 0.8-1.6 1.76l1.28 14.56c0.16 1.6 1.6 2.88 3.2 2.88h10.080c1.6 0 3.040-1.28 3.2-2.88l1.28-14.56c0-0.96-0.8-1.76-1.76-1.76zM21.12 25.6h-10.24l-0.96-12.8h12.32l-1.12 12.8z"></path>
@@ -179,7 +180,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 		
-	function updateQuantity(cartId, action) {
+	function updateQuantity(cartId, action, optionId) {
 		var quantity = parseInt($('#quantity_' + cartId).val());
 		
 		var priceElement = document.getElementById('price_' + cartId);
@@ -197,7 +198,7 @@
 		$.ajax({
 			type: 'POST',
 			url: '/api/UpdateQuantity',
-			data: { cartId: cartId, quantity: quantity },
+			data: { cartId: cartId, quantity: quantity, optionId: optionId },
 			success: function (response) {
 				$('#quantity_' + cartId).val(quantity);
 				if (quantity === 0) {
@@ -214,12 +215,12 @@
 		});
 	}
 
-	function removeFromCart(cartId) {
+	function removeFromCart(cartId, optionId ) {
 
 		$.ajax({
 			url: '/api/RemoveFromCart',
 			type: 'POST',
-			data: { cartId: cartId },
+			data: { cartId: cartId, optionId: optionId },
 			success: function (response) {
 				$('#remove_' + cartId).empty();
 				updateCartTotal()
