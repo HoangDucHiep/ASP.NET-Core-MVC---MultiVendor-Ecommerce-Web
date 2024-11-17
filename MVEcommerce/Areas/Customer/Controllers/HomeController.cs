@@ -164,7 +164,11 @@ namespace MVEcommerce.Areas.Customer.Controllers
 				productVariant = product.ProductVariants?.FirstOrDefault(),
 				productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
 				category = product.Category,
-				ProductImages = product.ProductImages?.ToList(),
+				ProductImages = product.ProductImages?
+					.GroupBy(x => x.VariantOptionID)
+					.Select(group => group.FirstOrDefault())
+					.ToList(),
+				AllProductImages = product.ProductImages?.ToList()
 			};
 
 
