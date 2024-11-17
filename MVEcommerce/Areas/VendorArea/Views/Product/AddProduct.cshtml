@@ -307,9 +307,6 @@
     </script>
 
     <script>
-        function showVariantInput() {
-            document.getElementById('variant-list').style.display = 'block';
-        }
 
         function toggleVariantInput() {
             var variantList = document.getElementById('variant-list');
@@ -341,6 +338,7 @@
                 variantList.innerHTML = ''; // Clear the variant list content
                 // Reinitialize the variant list content
             }
+            updateRemoveButtonVisibility();
         }
 
         function addOption() {
@@ -379,12 +377,26 @@
                                     </div>
                                 </div>`;
             document.getElementById('option-list').insertAdjacentHTML('beforeend', optionHtml);
+            updateRemoveButtonVisibility();
         }
 
         function removeOption(button) {
             button.closest('.option-item').remove();
+            updateRemoveButtonVisibility();
         }
 
+        function updateRemoveButtonVisibility() {
+            const optionList = document.getElementById('option-list');
+            const optionItems = optionList.querySelectorAll('.option-item');
+            
+            // Show/hide remove buttons based on number of options
+            optionItems.forEach(item => {
+                const removeButton = item.querySelector('button[onclick="removeOption(this)"]');
+                if (removeButton) {
+                    removeButton.style.display = optionItems.length > 1 ? 'block' : 'none';
+                }
+            });
+        }
     </script>
 
     <script>

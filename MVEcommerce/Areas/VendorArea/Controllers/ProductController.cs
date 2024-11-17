@@ -105,7 +105,18 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         if (vendor != null)
                         {
                             vm.Product.VendorId = vendor.VendorId;
-                            vm.Product.HasVariant = !string.IsNullOrEmpty(vm.ProductVariant.Name);
+                            if (string.IsNullOrEmpty(vm.ProductVariant.Name))
+                            {
+                                vm.Product.HasVariant = false;
+                            }
+                            else
+                            {   
+                                vm.Product.HasVariant = true;
+                                vm.Product.Price = null;
+                                vm.Product.Sale = null;
+                                vm.Product.Stock = null;
+                            }
+                            
                             vm.Product.Slug = _slugHelper.GenerateSlug(vm.Product.Name ?? "");
 
                             // Save product first to get ID
@@ -259,6 +270,12 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         product.CategoryId = vm.Product.CategoryId;
                         product.HasVariant = vm.ProductVariantOptions.Count > 0 ? true : false;
 
+                        if (product.HasVariant)
+                        {
+                            product.Price = null;
+                            product.Sale = null;
+                            product.Stock = null;
+                        }
 
                         // Update main image
                         if (mainImage != null)
@@ -374,7 +391,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         else
                         {
                             // Remove existing variant and its options
-                            var existingVariant = product.ProductVariants.FirstOrDefault();
+                            var existingVariant = _unitOfWork.ProductVariant.Get(u=>u.ProductId == product.ProductId, "ProductVariantOptions.ProductImages");
                             if (existingVariant != null)
                             {
                                 // Remove options and their images
