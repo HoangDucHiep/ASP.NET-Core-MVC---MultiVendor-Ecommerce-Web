@@ -108,123 +108,11 @@
                         <div class="input-group-prepend input-group-text">
                             <i class="bi-search"></i>
                         </div>
-                        <input id="datatableSearch" type="search" class="form-control" placeholder="Search users"
+                        <input id="datatableSearch" type="search" class="form-control" placeholder="Search products"
                                aria-label="Search users">
                     </div>
                     <!-- End Search -->
                 </form>
-            </div>
-
-            <div class="d-grid d-sm-flex gap-2">
-                <button class="btn btn-white" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasEcommerceProductFilter" aria-controls="offcanvasEcommerceProductFilter">
-                    <i class="bi-filter me-1"></i> Filters
-                </button>
-
-                <!-- Dropdown -->
-                <div class="dropdown">
-                    <button type="button" class="btn btn-white w-100" id="showHideDropdown" data-bs-toggle="dropdown"
-                            aria-expanded="false" data-bs-auto-close="outside">
-                        <i class="bi-table me-1"></i> Columns <span class="badge bg-soft-dark text-dark rounded-circle ms-1">6</span>
-                    </button>
-
-                    <div class="dropdown-menu dropdown-menu-end dropdown-card" aria-labelledby="showHideDropdown"
-                         style="width: 15rem;">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <div class="d-grid gap-3">
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_product">
-                                        <span class="col-8 col-sm-9 ms-0">
-                                            <span class="me-2">Product</span>
-                                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                                            <input type="checkbox" class="form-check-input" id="toggleColumn_product"
-                                                   checked>
-                                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_type">
-                                        <span class="col-8 col-sm-9 ms-0">
-                                            <span class="me-2">Type</span>
-                                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                                            <input type="checkbox" class="form-check-input" id="toggleColumn_type"
-                                                   checked>
-                                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_vendor">
-                                        <span class="col-8 col-sm-9 ms-0">
-                                            <span class="me-2">Vendor</span>
-                                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                                            <input type="checkbox" class="form-check-input" id="toggleColumn_vendor">
-                                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_stocks">
-                                        <span class="col-8 col-sm-9 ms-0">
-                                            <span class="me-2">Stocks</span>
-                                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                                            <input type="checkbox" class="form-check-input" id="toggleColumn_stocks"
-                                                   checked>
-                                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_sku">
-                                        <span class="col-8 col-sm-9 ms-0">
-                                            <span class="me-2">SKU</span>
-                                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                                            <input type="checkbox" class="form-check-input" id="toggleColumn_sku"
-                                                   checked>
-                                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_price">
-                                        <span class="col-8 col-sm-9 ms-0">
-                                            <span class="me-2">Price</span>
-                                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                                            <input type="checkbox" class="form-check-input" id="toggleColumn_price"
-                                                   checked>
-                                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_quantity">
-                                        <span class="col-8 col-sm-9 ms-0">
-                                            <span class="me-2">Quantity</span>
-                                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                                            <input type="checkbox" class="form-check-input" id="toggleColumn_quantity">
-                                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                    <!-- Form Switch -->
-                                    <label class="row form-check form-switch" for="toggleColumn_variants">
-                                        <span class="col-8 col-sm-9 ms-0">
-                                            <span class="me-2">Variants</span>
-                                        </span>
-                                        <span class="col-4 col-sm-3 text-end">
-                                            <input type="checkbox" class="form-check-input" id="toggleColumn_variants"
-                                                   checked>
-                                        </span>
-                                    </label>
-                                    <!-- End Form Switch -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Dropdown -->
             </div>
         </div>
         <!-- End Header -->
@@ -284,7 +172,7 @@
                             </td>
                             <td>@product.Slug</td>
                             <td class="table-column-ps-0">
-                                <a class="d-flex align-items-center" href="ecommerce-product-details.html">
+                                <a class="d-flex align-items-center" href="ecommerce-product-details.html" asp-action="EditProduct" asp-route-id="@product.ProductId">
                                     <div class="flex-shrink-0">
                                         <img class="avatar avatar-lg" src="@(product.ProductImages?.Where(x => x.IsMain).FirstOrDefault()?.ImageUrl ?? "")" alt="Image Description">
                                     </div>

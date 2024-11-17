@@ -118,6 +118,8 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                             }
                             
                             vm.Product.Slug = _slugHelper.GenerateSlug(vm.Product.Name ?? "");
+                            //@TODO: fix later
+                            vm.Product.Status = ProductStatus.ACTIVE;
 
                             // Save product first to get ID
                             _unitOfWork.Product.Add(vm.Product);

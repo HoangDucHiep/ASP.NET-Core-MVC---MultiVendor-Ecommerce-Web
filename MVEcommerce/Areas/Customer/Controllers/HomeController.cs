@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MVEcommerce.Models.ViewModels.Account;
 using MVEcommerce.Models.ViewModels.AddToCart;
 using System.Security.Claims;
+using MVEcommerce.Utility;
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -175,7 +176,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 		public IActionResult Index()
         {
 
-            var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;
+            var products = _unitOfWork.Product.GetAll(p => p.Status == ProductStatus.ACTIVE, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;
 
             foreach (var product in products)
             {
