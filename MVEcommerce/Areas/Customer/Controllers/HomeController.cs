@@ -59,7 +59,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
             {
                 Products = products
             };
-            ViewBag.Products = s;
+            
             return View(categoryProduct);
         }
 
