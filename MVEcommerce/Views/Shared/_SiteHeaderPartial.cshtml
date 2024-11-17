@@ -231,7 +231,8 @@
 								</span>
 							</span>
 							<span class="motta-button__text ">Cart</span>
-							<span class="header-counter header-cart__counter hidden">0</span>
+
+							@await Component.InvokeAsync("ProductCount")
 						</a>
 					</div>
 				</div>
