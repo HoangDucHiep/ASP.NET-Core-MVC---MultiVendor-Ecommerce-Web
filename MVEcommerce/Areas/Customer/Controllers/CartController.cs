@@ -82,7 +82,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
 		[HttpPost]
 		[Route("api/UpdateQuantity")]
-        public IActionResult UpdateQuantity(int cartId, int quantity)
+        public IActionResult UpdateQuantity(int cartId, int quantity, int? optionId = null)
         {
             var cartItem = _unitOfWork.ShoppingCart.GetAll(c => c.CartId == cartId).FirstOrDefault();
 
@@ -98,8 +98,9 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 _unitOfWork.ShoppingCart.Remove(cartItem);
             }
 
-            _unitOfWork.Save();
+			cartItem.VariantOptionID = optionId;
 
+            _unitOfWork.Save();
 
             return Json(new
             {
