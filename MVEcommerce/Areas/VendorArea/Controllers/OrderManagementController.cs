@@ -84,5 +84,30 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+        #region API CALLS
+
+        // In OrderManagementController
+        [HttpGet]
+        public IActionResult GetFilteredOrders(string status)
+        {
+            var orders = _unitOfWork.Order.GetAll(filter: o => o.VendorId == currentVendor.VendorId, includeProperties: "User,OrderDetails,OrderDetails.Product.ProductImages");
+
+            if (status.ToLower() != "all")
+            {
+                orders = orders.Where(o => o.Status == status);
+            }
+
+            
+            if (orders == null)
+            {
+                orders = new List<Order>();
+            }
+
+            return PartialView("_VendorOrderIndexAjaxPartial", orders.ToList());
+        }
+
+        #endregion
     }
 }

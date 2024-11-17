@@ -34,9 +34,14 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         }
 
         public IActionResult Index()
-        
         {
-            var products = _unitOfWork.Product.GetAll(p => p.Status == ProductStatus.ACTIVE, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var vendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
+            if (vendor == null)
+            {
+                return NotFound();
+            }
+            var products = _unitOfWork.Product.GetAll(p => p.VendorId == vendor.VendorId, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
 
             foreach (var product in products)
             {
@@ -551,5 +556,48 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             return "/uploads/" + uniqueFileName;
         }
 
+
+
+        #region API
+
+        [HttpGet]
+        public IActionResult GetFilteredProducts(string status)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var vendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
+            var products = _unitOfWork.Product.GetAll(p=>p.VendorId == vendor.VendorId, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
+            
+            products = status?.ToLower() switch
+            {
+                "active" => products.Where(p => p.Status == ProductStatus.ACTIVE),
+                "inactive" => products.Where(p => p.Status == ProductStatus.INACTIVE),
+                "pending" => products.Where(p => p.Status == ProductStatus.PENDING),
+                _ => products
+            };
+
+            foreach (var product in products)
+            {
+                if (product.HasVariant)
+                {
+                    var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+                    var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+                    var totalStock = variantOptions.Sum(vo => vo.Stock);
+
+                    product.Price = lowestPriceOption?.Price ?? product.Price;
+                    product.Stock = totalStock;
+                    product.Sale = lowestPriceOption?.Sale ?? 0;
+                }
+            }
+
+            VendorProductIndexVM vm = new VendorProductIndexVM
+            {
+                Products = products,
+                Options = products.SelectMany(p => p.ProductVariants!).SelectMany(pv => pv.ProductVariantOptions!)
+            };
+        
+            return PartialView("_VendorIndexAjaxPartial", vm);
+        }
+            
+        #endregion
     }
 }
