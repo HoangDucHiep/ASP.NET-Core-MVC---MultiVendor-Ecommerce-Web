@@ -23,7 +23,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, 
+        public ProductController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager,
             ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
@@ -35,8 +35,8 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
         public IActionResult Index()
         {
-            var products = _unitOfWork.Product.GetAll(p=>p.Status == ProductStatus.ACTIVE,includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
-        
+            var products = _unitOfWork.Product.GetAll(p => p.Status == ProductStatus.ACTIVE, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
+
             foreach (var product in products)
             {
                 if (product.HasVariant)
@@ -44,24 +44,24 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                     var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
                     var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
                     var totalStock = variantOptions.Sum(vo => vo.Stock);
-        
+
                     product.Price = lowestPriceOption?.Price ?? product.Price;
                     product.Stock = totalStock;
                     product.Sale = lowestPriceOption?.Sale ?? 0;
                 }
             }
-        
+
             VendorProductIndexVM vm = new VendorProductIndexVM
             {
                 Products = products,
                 Options = products.SelectMany(p => p.ProductVariants!).SelectMany(pv => pv.ProductVariantOptions!)
             };
-        
+
             return View(vm);
         }
 
         public IActionResult AddProduct(VendorAddProductVM? vm)
-        {   
+        {
             if (vm == null)
             {
                 vm = new VendorAddProductVM()
@@ -87,8 +87,8 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProduct(VendorAddProductVM vm, IFormFile? mainImage, 
-            List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages)
+        public async Task<IActionResult> AddProduct(VendorAddProductVM vm, IFormFile? mainImage,
+            List<IFormFile>? additionalImages)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                     try
                     {
                         additionalImages ??= new List<IFormFile>();
-                        optionImages ??= new List<List<IFormFile>>();
 
                         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                         var vendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
@@ -154,9 +153,9 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                     _unitOfWork.Save();
 
                                     // Handle option images
-                                    if (optionImages.Count > i)
+                                    if (option.OptionImages != null && option.OptionImages.Count > 0)
                                     {
-                                        foreach (var image in optionImages[i])
+                                        foreach (var image in option.OptionImages)
                                         {
                                             string fileName = await SaveImage(image);
                                             _unitOfWork.ProductImage.Add(new ProductImage
@@ -199,7 +198,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             {
                 return NotFound();
             }
-        
+
             var vm = new VendorEditProductVM
             {
                 Product = product,
@@ -212,10 +211,10 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                 ProductVariantOptions = product.ProductVariants.SelectMany(v => v.ProductVariantOptions).ToList() ?? new List<ProductVariantOption>(),
                 NewProductVariantOptions = new List<ProductVariantOption>()
             };
-        
+
             return View(vm);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProduct(VendorEditProductVM vm, IFormFile? mainImage, List<IFormFile>? additionalImages, List<List<IFormFile>>? optionImages, string? deleteImages, List<ProductVariantOption> deletedProductVariantOptions, ProductVariant deletedProductVariant)
@@ -227,12 +226,12 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                     try
                     {
                         var product = _unitOfWork.Product.Get(p => p.ProductId == vm.Product.ProductId, includeProperties: "ProductImages,ProductVariants.ProductVariantOptions");
-        
+
                         if (product == null)
                         {
                             return NotFound();
                         }
-        
+
                         // Update product details
                         product.Name = vm.Product.Name;
                         product.SKU = vm.Product.SKU;
@@ -243,8 +242,8 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         product.Description = vm.Product.Description;
                         product.CategoryId = vm.Product.CategoryId;
 
-                        
-        
+
+
                         // Update main image
                         if (mainImage != null)
                         {
@@ -253,7 +252,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                             {
                                 _unitOfWork.ProductImage.Remove(mainImageEntity);
                             }
-        
+
                             var mainImageUrl = await SaveImage(mainImage);
                             product.ProductImages.Add(new ProductImage
                             {
@@ -262,7 +261,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 ProductId = product.ProductId
                             });
                         }
-        
+
                         // Add additional images
                         if (additionalImages != null)
                         {
@@ -277,7 +276,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 });
                             }
                         }
-        
+
                         // Remove images
                         if (!string.IsNullOrEmpty(deleteImages))
                         {
@@ -292,7 +291,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 }
                             }
                         }
-                        
+
                         // Update or add variant
                         if (vm.ProductVariant != null && !string.IsNullOrEmpty(vm.ProductVariant.Name))
                         {
@@ -361,8 +360,8 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 }
                             }
                         }
-    
-        
+
+
                         // Save changes
                         _unitOfWork.Save();
                         transaction.Commit();
@@ -375,7 +374,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                     }
                 }
             }
-        
+
             // If we got this far, something failed, redisplay form
             vm.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
             {
@@ -384,7 +383,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             });
             return View(vm);
         }
-        
+
         [HttpPost]
         public IActionResult DeleteVariant(int variantId)
         {
@@ -427,7 +426,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        
+
         [HttpPost]
         public IActionResult DeleteImage(int imageId)
         {
@@ -442,7 +441,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         }
 
 
-        
+
         private void DeleteImage(string imageUrl)
         {
             if (!string.IsNullOrEmpty(imageUrl))
@@ -454,22 +453,22 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                 }
             }
         }
-        
+
         private async Task<string> SaveImage(IFormFile image)
         {
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
             string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-            
+
             if (!Directory.Exists(uploadsFolder))
                 Directory.CreateDirectory(uploadsFolder);
-                
+
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-            
+
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await image.CopyToAsync(fileStream);
             }
-            
+
             return "/uploads/" + uniqueFileName;
         }
 

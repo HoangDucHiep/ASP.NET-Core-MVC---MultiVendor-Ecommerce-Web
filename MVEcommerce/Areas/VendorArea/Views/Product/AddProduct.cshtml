@@ -94,10 +94,9 @@
                             <h4>Variants</h4>
                             <button type="button" class="btn btn-secondary mb-3" id="toggleVariantButton" onclick="toggleVariantInput()">Add Variant</button>
                             <div id="variant-list" style="display: none;">
-                                
                             </div>
                         </div>
-                    
+
                     </div>
                     <!-- Body -->
                 </div>
@@ -123,7 +122,6 @@
                             <span id="productPriceValidate" class="text-danger" style="display: none;">Price is required.</span>
                         </div>
                         <!-- End Form -->
-
                         <!-- Form -->
                         <div class="mb-4">
                             <label asp-for="Product.Sale" class="form-label">Sale</label>
@@ -152,7 +150,7 @@
                             <div class="main-image-preview" style="margin-bottom: 10px;">
                                 <div id="mainImageContainer" style="display: none; position: relative; width: 200px;">
                                     <img id="mainImagePreview" src="#" alt="Main image preview" style="width: 100%; height: auto;"/>
-                                    <button type="button" class="btn-close" style="position: absolute; top: 5px; right: 5px;" 
+                                    <button type="button" class="btn-close" style="position: absolute; top: 5px; right: 5px;"
                                             onclick="removeMainImage()"></button>
                                 </div>
                             </div>
@@ -322,19 +320,19 @@
                 productInfor.style.display = 'none';
                 toggleButton.innerText = 'Remove Variant';
                 variantList.innerHTML = `
-                    <div class="variant-item mb-4">
-                        <div class="mb-4" id="variant">
-                            <label class="form-label">Variant Name</label>
-                            <input type="text" class="form-control" name="ProductVariant.Name" />
-                            <span class="text-danger variant-name-error"></span>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label">Options</label>
-                            <div id="option-list"></div>
-                            <button type="button" class="btn btn-secondary" onclick="addOption()">Add Option</button>
-                        </div>
-                        <hr />
-                    </div>`;
+                                    <div class="variant-item mb-4">
+                                        <div class="mb-4" id="variant">
+                                            <label class="form-label">Variant Name</label>
+                                            <input type="text" class="form-control" name="ProductVariant.Name" />
+                                            <span class="text-danger variant-name-error"></span>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Options</label>
+                                            <div id="option-list"></div>
+                                            <button type="button" class="btn btn-secondary" onclick="addOption()">Add Option</button>
+                                        </div>
+                                        <hr />
+                                    </div>`;
                 addOption();
             } else {
                 variantList.style.display = 'none';
@@ -351,35 +349,35 @@
             console.log("Option Index: " + optionIndex);
 
             var optionHtml = `
-                <div class="option-item row mb-3">
-                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Price" placeholder="Option Price" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Stock" placeholder="Option Stock" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].SKU" placeholder="Option SKU" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" Value="0"/>
-                    </div>
-                    <div class="col-md-2 text-end">
-                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
-                    </div>
-                    <div class="col-12">
-                        <div class="mb-4">
-                            <label class="form-label">Option Images</label>
-                            <div id="optionImagesPreview_${optionIndex}" class="d-flex flex-wrap gap-2 mb-2">
-                            </div>
-                            <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, ${optionIndex})" name="optionImages[${optionIndex}]" id="optionImages_${optionIndex}" />
-                        </div>
-                    </div>
-                </div>`;
+                                <div class="option-item row mb-3">
+                                    <input type="hidden" name="ProductVariantOptions[${optionIndex}].VariantId" value="@Model.ProductVariant.VariantId" />
+                                    <div class="col-md-2 mb-2 mb-md-0">
+                                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Value" placeholder="Option Value" />
+                                    </div>
+                                    <div class="col-md-2 mb-2 mb-md-0">
+                                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Price" placeholder="Option Price" />
+                                    </div>
+                                    <div class="col-md-2 mb-2 mb-md-0">
+                                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Stock" placeholder="Option Stock" />
+                                    </div>
+                                    <div class="col-md-2 mb-2 mb-md-0">
+                                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].SKU" placeholder="Option SKU" />
+                                    </div>
+                                    <div class="col-md-2 mb-2 mb-md-0">
+                                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" Value="0"/>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">Remove</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-4">
+                                            <label class="form-label">Option Images</label>
+                                            <div id="optionImagesPreview_${optionIndex}" class="d-flex flex-wrap gap-2 mb-2">
+                                            </div>
+                                                    <input type="file" class="form-control" multiple accept="image/*" onchange="previewOptionImages(event, ${optionIndex})" name="ProductVariantOptions[${optionIndex}].OptionImages" id="optionImages_${optionIndex}" />
+                                        </div>
+                                    </div>
+                                </div>`;
             document.getElementById('option-list').insertAdjacentHTML('beforeend', optionHtml);
         }
 
@@ -437,15 +435,15 @@
                         method: 'POST',
                         body: formData
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Giả sử API trả về URL của file đã upload
-                        var fileUrl = data.url;
-                        cb(fileUrl, { title: file.name });
-                    })
-                    .catch(error => {
-                        console.error('Error uploading file:', error);
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            // Giả sử API trả về URL của file đã upload
+                            var fileUrl = data.url;
+                            cb(fileUrl, { title: file.name });
+                        })
+                        .catch(error => {
+                            console.error('Error uploading file:', error);
+                        });
                 };
 
                 input.click();
@@ -465,13 +463,13 @@
                             },
                             body: JSON.stringify({ url: src })
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('File deleted:', data);
-                        })
-                        .catch(error => {
-                            console.error('Error deleting file:', error);
-                        });
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('File deleted:', data);
+                            })
+                            .catch(error => {
+                                console.error('Error deleting file:', error);
+                            });
                     }
                 });
             }
@@ -480,7 +478,7 @@
 
     @* Image *@
     <script>
-        
+
         let selectedAdditionalImages = [];
         let selectedOptionImages = {};
 
@@ -488,7 +486,7 @@
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     document.getElementById('mainImageContainer').style.display = 'block';
                     document.getElementById('mainImagePreview').src = e.target.result;
                 }
@@ -509,7 +507,7 @@
             Array.from(files).forEach(file => {
                 selectedAdditionalImages.push(file);
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const wrapper = document.createElement('div');
                     wrapper.style.position = 'relative';
                     wrapper.style.width = '100px';
@@ -554,7 +552,7 @@
             Array.from(files).forEach(file => {
                 selectedOptionImages[index].push(file);
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const wrapper = document.createElement('div');
                     wrapper.style.position = 'relative';
                     wrapper.style.width = '100px';

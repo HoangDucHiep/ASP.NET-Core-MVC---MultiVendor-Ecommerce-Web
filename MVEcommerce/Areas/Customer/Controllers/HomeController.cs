@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using MVEcommerce.Models.ViewModels.Account;
 using MVEcommerce.Models.ViewModels.AddToCart;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -19,6 +21,20 @@ namespace MVEcommerce.Areas.Customer.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<HomeController> _logger;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly DataAccess.Data.ApplicationDbContext _context;
+
+        private string userId;
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                userId = claim.Value;
+            }
+        }
 
         public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IWebHostEnvironment hostingEnvironment)
         {
@@ -191,6 +207,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 }
             }
 
+
             var lstSaleProducts = new List<Product>();
             foreach (var product in products)
             {
@@ -223,6 +240,52 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
 			
 			return View(lstProduct);
+        }
+
+        public IActionResult FlashDeals()
+        {
+			var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;
+
+			foreach (var product in products)
+			{
+				if (product.HasVariant)
+				{
+					var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+					var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+					var totalStock = variantOptions.Sum(vo => vo.Stock);
+
+					product.Price = lowestPriceOption?.Price ?? product.Price;
+					product.Stock = totalStock;
+					product.Sale = lowestPriceOption?.Sale ?? 0;
+				}
+			}
+
+			var lstSaleProducts = new List<Product>();
+			foreach (var product in products)
+			{
+				if (product.Sale > 0)
+				{
+					lstSaleProducts.Add(product);
+
+				}
+			}
+			return View(lstSaleProducts);
+		}
+
+
+        public IActionResult AccounntOverview()
+        {
+            var user = _context.ApplicationUsers.Where(x => x.Id == userId);
+            return View(user);
+        }
+
+        public IActionResult Addresses()
+        {
+            return View();
+        }
+        public IActionResult AccountDetail()
+        {
+            return View();
         }
 
 

@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "FlashDeals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<MVEcommerce.Models.Product>
+
+	<div data-elementor-type="wp-page" data-elementor-id="15541" class="elementor elementor-15541">
+		<section class="elementor-section elementor-top-section elementor-element elementor-element-18ce64d elementor-section-boxed elementor-section-height-default elementor-section-height-default motta-responsive-column motta-tablet-column--default motta-responsive-column motta-mobile-column--default" data-id="18ce64d" data-element_type="section">
+			<div class="elementor-container elementor-column-gap-default">
+				<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-abc62f0" data-id="abc62f0" data-element_type="column">
+					<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-95ace48 motta-product-deals__type-month elementor-widget elementor-widget-motta-product-deals-grid" data-id="95ace48" data-element_type="widget" data-widget_type="motta-product-deals-grid.default">
+							<div class="elementor-widget-container">
+								<div class="motta-product-deals-grid motta-product-deals">
+									<ul class="products product-card-layout-1 columns-4 mobile-col-2">
+									@foreach (var item in Model)
+									{
+										var discount = item.Price * (1 - item.Sale / 100);
+										<li class="product type-product post-17 status-publish first instock product_cat-electronics product_tag-electric product_tag-electric-10 product_tag-electric-4 product_tag-electric-5 product_tag-laptop product_tag-toys has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
+											<div class="product-inner">
+												<span class="woocommerce-badges"><span class="onsale woocommerce-badge">Sale</span></span><div class="product-thumbnail">
+													<div class="product-thumbnails--slider swiper-container">
+														<div class="swiper-wrapper">
+															@foreach(var image in item.ProductImages)
+															{
+																<a href="https://motta.uix.store/product/11-inch-tablet-pro-2020-space-gray/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+																	<img loading="lazy" decoding="async" width="300" height="300" src="@image.ImageUrl" alt="" srcset="@image.ImageUrl" sizes="(max-width: 300px) 100vw, 300px" />
+																</a>
+
+															}
+															
+														</div>
+														<span class="motta-svg-icon motta-svg-icon--arrow-left-long motta-product-card-swiper-prev motta-product-card-swiper-button"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 19 32"><path d="M13.552 0.72l2.656 1.76-9.008 13.52 9.008 13.52-2.656 1.76-10.192-15.28z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--arrow-right-long motta-product-card-swiper-next motta-product-card-swiper-button"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 19 32"><path d="M5.648 31.28l-2.656-1.76 9.008-13.52-9.008-13.52 2.656-1.76 10.192 15.28z"></path></svg></span></div><div class="product-featured-icons">
+															<a href="https://motta.uix.store/flash-deals/?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="@item.Name" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add &ldquo;@item.Name&rdquo; to the wishlist">
+															<span class="motta-button__icon add-to-wishlist-button__icon wcboost-wishlist-button__icon"><span class="motta-svg-icon motta-svg-icon--wishlist"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M22.736 6.4v0c1.792 0 3.44 1.12 4.128 2.768 0.8 1.92 0.112 4.144-1.856 6.112l-9.024 8.992-9.024-8.976c-1.984-1.984-2.64-4.144-1.824-6.080 0.688-1.68 2.352-2.8 4.144-2.8 1.504 0 3.040 0.752 4.448 2.16l2.256 2.256 2.256-2.256c1.44-1.424 2.992-2.176 4.496-2.176zM22.736 3.2c-2.176 0-4.544 0.912-6.752 3.104-2.192-2.176-4.544-3.088-6.704-3.088-6.368 0-11.040 7.904-4.576 14.336l11.28 11.248 11.28-11.248c6.496-6.448 1.856-14.352-4.528-14.352v0z"></path></svg></span></span>
+															<span class="motta-button__text add-to-wishlist-button__text wcboost-wishlist-button__text" data-add="Add To Wishlist" data-remove="Remove Wishlist" data-view="View Wishlist">Wishlist</span>
+															</a>
+														<a href="https://motta.uix.store/flash-deals/?add_to_compare=17" data-product_id="17" data-product_title="@item.Name" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare &ldquo;@item.Name&rdquo;" role="button">
+															<span class="wcboost-products-compare-button__icon"><span class="motta-svg-icon motta-svg-icon--compare"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M13.136 14.864l-3.68-3.664h16.144v-3.2h-16.144l3.68-3.664-2.272-2.272-7.52 7.536 7.52 7.536z"></path><path d="M21.136 14.864l-2.272 2.272 3.68 3.664h-16.144v3.2h16.144l-3.68 3.664 2.272 2.272 7.52-7.536z"></path></svg></span></span>
+															<span class="wcboost-products-compare-button__text" data-add="Add To Compare" data-remove="Remove Compare" data-view="Browse Compare">Compare</span>
+														</a>
+													</div>
+												</div><div class="product-summary show-vendor">
+													<div class="product-variation-items "><div class="product-variation-items--text"></div></div><div class="meta-wrapper"><div class="meta meta-sku">Sku: <span>woo-polo</span></div></div><h2 class="woocommerce-loop-product__title"><a href="https://motta.uix.store/product/11-inch-tablet-pro-2020-space-gray/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@item.Name</a></h2><div class="motta-rating">
+														<div class="star-rating" role="img" aria-label="Rated 5.00 out of 5"><span class="max-rating rating-stars"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="user-rating rating-stars" style="width:100%"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="screen-reader-text">Rated <strong class="rating">5.00</strong> out of 5</span></div>					<div class="review-count"><span class="average">5.00</span> (<span class="count">3</span><span class="text"> Reviews</span>)</div>
+													</div>
+													<span class="price"><span class="woocs_price_code" data-currency="" data-redraw-id="6721988422c33" data-product-id="17"><del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>@item.Price</bdi></span></del> <span class="screen-reader-text">Original price was: &#036;@item.Price.</span><ins aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>@discount</bdi></span></ins><span class="screen-reader-text">Current price is: &#036;@discount.</span></span></span>
+
+													<div class="sold-by-meta show-attributes">
+														<a href="https://motta.uix.store/store/sanvo/">
+															<img loading="lazy" decoding="async" src="https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/vendor-logo-5.png?fit=96%2C96&amp;ssl=1" width="96" height="96" alt="Sanvo" class="avatar avatar-96 wp-user-avatar wp-user-avatar-96 alignnone photo" />				
+															<span class="vendor-name">@item.Vendor.Name</span>
+														</a>
+													</div>
+
+												</div>
+												<div class="product-actions">
+													<a href="https://motta.uix.store/flash-deals/?add-to-cart=17" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="17" data-product_sku="woo-polo" aria-label="Add to cart: &ldquo;@item.Name&rdquo;" aria-describedby="" rel="nofollow"><span>Add to cart</span></a><a href="https://motta.uix.store/product/11-inch-tablet-pro-2020-space-gray/" class="button motta-button motta-button--quickview motta-button--ghost" data-toggle="modal" data-target="quick-view-modal" data-id="17" data-text="Quick View" rel="nofollow">
+														<span>Quick View</span>
+													</a>
+												</div>
+											</div>
+										</li>
+
+									}
+									
+									</ul>
+								</div><nav class="woocommerce-pagination"></nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+

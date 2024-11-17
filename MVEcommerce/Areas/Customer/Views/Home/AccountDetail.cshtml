@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewData["Title"] = "AccountDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    /* General Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+
+    .container {
+        display: flex;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        flex: 1;
+        background: #fff;
+        border-right: 1px solid #ddd;
+        padding: 20px;
+    }
+
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+            .sidebar h2 span {
+                color: #333;
+                font-weight: bold;
+            }
+
+    .menu ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .menu li {
+        margin-bottom: 15px;
+    }
+
+    .menu a {
+        text-decoration: none;
+        color: #333;
+    }
+
+        .menu a:hover {
+            color: #007BFF;
+        }
+
+    /* Main Content Styles */
+    .main-content {
+        flex: 3;
+        background: #fff;
+        padding: 20px;
+        margin-left: 20px;
+    }
+
+        .main-content h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+    section {
+        margin-bottom: 40px;
+    }
+
+        section h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .save-btn {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .save-btn:hover {
+            background-color: #0056b3;
+        }
+
+  
+   
+</style>
+
+<div class="container123">
+    <!-- Sidebar -->
+    <div class="sidebar123">
+        <div class="profile123">
+            <div class="avatar123"></div>
+            <h3>Hello!</h3>
+            <p>cshbchshc</p>
+        </div>
+        <ul class="menu123">
+            <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+            <li><a href="#"><i class="fa fa-address-book"></i> Addresses</a></li>
+            <li><a href="#"><i class="fa fa-user"></i> Account details</a></li>
+            <li><a href="#"><i class="fa fa-sign-out-alt"></i> Log out</a></li>
+        </ul>
+    </div>
+<div class="main-content">
+    <h1>My Account</h1>
+
+    <!-- Account Details Form -->
+    <section class="account-details">
+        <h2>Account Details</h2>
+        <form id="account-details-form">
+            <div class="form-group">
+                <label for="first-name">First name *</label>
+                <input type="text" id="first-name" required>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last name *</label>
+                <input type="text" id="last-name" required>
+            </div>
+            <div class="form-group">
+                <label for="display-name">Display name *</label>
+                <input type="text" id="display-name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address *</label>
+                <input type="email" id="email" required>
+            </div>
+        </form>
+    </section>
+
+    <!-- Password Change Form -->
+    <section class="password-change">
+        <h2>Password Change</h2>
+        <form id="password-change-form">
+            <div class="form-group">
+                <label for="current-password">Current Password</label>
+                <input type="password" id="current-password">
+            </div>
+            <div class="form-group">
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password">
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm New Password</label>
+                <input type="password" id="confirm-password">
+            </div>
+            <button type="submit" class="save-btn">Save changes</button>
+        </form>
+    </section>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</div>
