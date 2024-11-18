@@ -4,18 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model MVEcommerce.Models.ApplicationUser
+
+
 <style>
-    /* General Styles */
-
-
+    /* General Reset */
+ 
     .container123 {
-        display: flex;
-        flex-wrap: wrap; /* Đảm bảo giao diện responsive */
-        min-height: 100vh;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
     }
 
     /* Sidebar */
@@ -24,300 +21,208 @@
         background: #fff;
         border-right: 1px solid #ddd;
         padding: 20px;
-        box-sizing: border-box;
+        height: 100vh;
     }
 
-        .sidebar123 .profile123 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .sidebar123 .avatar123 {
-            width: 80px;
-            height: 80px;
-            background-color: #ddd;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-        }
-
-        .sidebar123 h3 {
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .sidebar123 p {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .sidebar123 .menu123 {
-            list-style: none;
-            padding: 0;
-        }
-
-            .sidebar123 .menu123 li {
-                margin-bottom: 15px;
-            }
-
-                .sidebar123 .menu123 li a {
-                    text-decoration: none;
-                    color: #333;
-                    font-size: 16px;
-                    display: flex;
-                    align-items: center;
-                }
-
-                    .sidebar123 .menu123 li a i {
-                        margin-right: 10px;
-                    }
-
-    /* Content */
-    .content123 {
-        flex: 1;
-        padding: 40px;
-        background: #fff;
-        box-sizing: border-box;
-    }
-
-        .content123 h1 {
-            font-size: 30px;
-            margin-bottom: 20px;
-        }
-
-        .content123 p {
-            font-size: 16px;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-    .address-box123 {
-        border: 1px solid #ddd;
-        padding: 20px;
-        border-radius: 5px;
-        margin-bottom: 20px;
-        background-color: #f9f9f9;
-    }
-
-        .address-box123 h3 {
-            margin: 0 0 10px;
-            font-size: 18px;
-        }
-
-        .address-box123 p {
-            font-size: 14px;
-            color: #666;
-            margin: 0 0 10px;
-        }
-
-    .btn12345 {
-        background-color: #000;
-        color: #fff;
-        border: none;
-        padding: 30px 0px;
-        width: 60px;
-        height: 20px;
-        border-radius: 5px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-        .btn12345:hover {
-            background-color: #333;
-        }
-
-    /* Responsive Styles */
-    @@media (max-width: 768px) {
-        .sidebar123 {
-            width: 100%;
-            border-right: none;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .content123 {
-            padding: 20px;
-        }
-    }
-
-    @@media (max-width: 480px) {
-        .content123 h1 {
-            font-size: 24px;
-        }
-
-        .sidebar123 .menu123 li a {
-            font-size: 14px;
-        }
-
-        .btn12345 {
-            padding: 8px 16px;
-            font-size: 12px;
-        }
-    }
-
-    .container {
+    .account-wrapper123{
         display: flex;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
     }
 
-    /* Sidebar Styles */
-    .sidebar {
-        flex: 1;
-        background: #fff;
-        border-right: 1px solid #ddd;
-        padding: 20px;
+    .profile123 {
+        text-align: center;
+        margin-bottom: 30px;
     }
 
-        .sidebar h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+    .avatar123 {
+        width: 80px;
+        height: 80px;
+        background: #ccc;
+        border-radius: 50%;
+        margin: 0 auto 10px;
+    }
 
-            .sidebar h2 span {
-                color: #333;
-                font-weight: bold;
-            }
+    h3 {
+        font-size: 16px;
+        margin: 0;
+    }
 
-    .menu ul {
+    .menu123 {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
 
-    .menu li {
+        .menu123 li {
+            margin: 15px 0;
+        }
+
+        .menu123 a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+            .menu123 a:hover {
+                background: #f0f0f0;
+            }
+
+            .menu123 a.active123 {
+                font-weight: bold;
+                background: #ddd;
+            }
+
+    /* Main Content */
+    .main-content123 {
+        flex-grow: 1;
+        padding: 20px;
+        background: #fff;
+        margin-left: 20px;
+        border-radius: 5px;
+    }
+
+    h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .form-group123 {
         margin-bottom: 15px;
     }
 
-    .menu a {
-        text-decoration: none;
-        color: #333;
-    }
-
-        .menu a:hover {
-            color: #007BFF;
-        }
-
-    /* Main Content Styles */
-    .main-content {
-        flex: 3;
-        background: #fff;
-        padding: 20px;
-        margin-left: 20px;
-    }
-
-        .main-content h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-    section {
-        margin-bottom: 40px;
-    }
-
-        section h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
     label {
-        display: block;
         font-size: 14px;
+        display: block;
         margin-bottom: 5px;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
+    input {
         width: 100%;
         padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
         font-size: 14px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
     }
 
-    .save-btn {
-        background-color: #007BFF;
+        input[type="email"],
+        input[type="password"] {
+            color: #333;
+        }
+
+    .hint123 {
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+    }
+
+    .form-actions123 {
+        text-align: right;
+    }
+
+    button {
+        background: #000;
         color: #fff;
-        border: none;
         padding: 10px 20px;
-        font-size: 14px;
-        border-radius: 4px;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
     }
 
-        .save-btn:hover {
-            background-color: #0056b3;
+        button:hover {
+            background: #444;
         }
 
-    
 </style>
 
 
-<div class="container123">
-    <!-- Sidebar -->
-    
-        <div class="sidebar123">
-            <div class="profile123">
-                <div class="avatar123"></div>
-                <h3>Hello!</h3>
-                <p>FullName</p>
-            </div>
-            <ul class="menu123">
-                <li><a asp-controller="Home" asp-action="AccounntOverview"><i class="fa fa-home"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
-                <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
-                <li><a href="#"><i class="fa fa-user"></i> Account details</a></li>
-                <li><a href="#"><i class="fa fa-sign-out-alt"></i> Log out</a></li>
-            </ul>
-        </div>
+    <div class="container123">
+        <div class="account-wrapper123">
+            <!-- Sidebar -->
+            <aside class="sidebar123">
+                <div class="profile123">
+                    <div class="avatar123"></div>
+                    <h3>Hello!</h3>
+                    <p>@Model.UserName</p>
+                </div>
+                <ul class="menu123">
+                `   <li><a asp-controller="Home" asp-action="AccounntOverview" ><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
 
-        <!-- Main Content -->
-        <div class="content123">
-            <h1>My account</h1>
-            <section class="account-details">
+                    <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
+                    <li><a asp-controller="Home" asp-action="AccountDetail" class="active123"><i class="fa fa-user"></i> Account details</a></li>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <form id="logoutForm" class="form-inline account-panel__link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <a class="motta-button motta-button--text">
+                                <button type="submit" style="border: none; background: transparent; color: black; margin: 0; padding: 0; min-width: auto !important;">
+                                    <span class="motta-button__icon" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; text-align: left;">
+                                        <span class="motta-svg-icon motta-svg-icon--sign-out" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; min-width: auto !important;">
+                                            <svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32" style="min-width: auto !important;">
+                                                <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                                <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    <span class="motta-button__text" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle;">
+                                        Sign Out
+                                    </span>
+                                </button>
+                            </a>
+                        </form>
+                    </li>
+                }
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content123">
                 <h2>Account Details</h2>
-                <form id="account-details-form">
-                    
-                    <div class="form-group">
-                        <label for="full-name">Full name *</label>
-                        <input type="text" id="full-name" value="@Model.FullName" required>
+                <form method="post" asp-action="AccountDetail" class="account-form123">
+                    <input hidden asp-for="@Model.Id" >
+                    <div class="form-group123">
+                        <label asp-for="FullName">Full name <span class="required123">*</span></label>
+                        <input type="text" asp-for="FullName" value="@Model.FullName" required>
                     </div>
-                    <div class="form-group">
-                        <label for="gender">Gender *</label>
-                        <input type="text" id="gender" value="@Model.Gender" required>
+                    <div class="form-group123">
+                        <label asp-for="UserName">Username <span class="required123">*</span></label>
+                        <input type="text" asp-for="UserName" value="@Model.UserName" required>
+                        <p class="hint123">This will be how your name will be displayed in the account section and in reviews</p>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email address *</label>
-                        <input type="email" id="email" value="@Model.Email" required>
+                    <div class="form-group123">
+                        <label asp-for="Email">Email address <span class="required123">*</span></label>
+                        <input type="email" asp-for="Email" value="@Model.Email" required>
+                    </div>
+                    <div class="form-actions123">
+                        <button type="submit">Save changes</button>
                     </div>
                 </form>
-            </section>
 
-            <!-- Password Change Form -->
-            <section class="password-change">
                 <h2>Password Change</h2>
-                <form id="password-change-form">
-                    <div class="form-group">
+                <form class="password-form123">
+                    <div class="form-group123">
                         <label for="current-password">Current Password</label>
-                        <input type="password" id="current-password">
+                        <input type="password" id="current-password" name="current-password" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group123">
                         <label for="new-password">New Password</label>
-                        <input type="password" id="new-password">
+                        <input type="password" id="new-password" name="new-password" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group123">
                         <label for="confirm-password">Confirm New Password</label>
-                        <input type="password" id="confirm-password">
+                        <input type="password" id="confirm-password" name="confirm-password" required>
                     </div>
-                    <button type="submit" class="save-btn">Save changes</button>
+                    <div class="form-actions123">
+                        <button type="submit">Save changes</button>
+                    </div>
                 </form>
-            </section>
+            </main>
         </div>
-    
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</div>
 
+    </div>
+
+  

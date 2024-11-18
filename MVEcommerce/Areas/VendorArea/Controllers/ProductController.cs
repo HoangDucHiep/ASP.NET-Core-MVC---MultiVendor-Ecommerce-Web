@@ -41,7 +41,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             {
                 return NotFound();
             }
-            var products = _unitOfWork.Product.GetAll(p => p.VendorId == vendor.VendorId, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
+            var products = _unitOfWork.Product.GetAll(p => p.VendorId == vendor.VendorId && p.Status != ProductStatus.DELETED, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
 
             foreach (var product in products)
             {
@@ -469,6 +469,36 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteProduct(int id)
+        {
+            var product = _unitOfWork.Product.Get(p => p.ProductId == id, includeProperties: "ProductVariants.ProductVariantOptions,ProductImages");
+            if (product == null)
+            {
+                return NotFound();
+            }
+        
+            // Delete all product images
+            foreach (var image in product.ProductImages!)
+            {
+                DeleteImage(image.ImageId);
+            }
+        
+            // Delete all product variant options
+            foreach (var variant in product.ProductVariants!)
+            {
+                DeleteVariant(variant.VariantId);
+            }
+        
+            // Update product status to Deleted
+            product.Status = ProductStatus.DELETED;
+            _unitOfWork.Product.Update(product);
+        
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
         public IActionResult DeleteVariant(int variantId)
         {
             var variant = _unitOfWork.ProductVariant.Get(v => v.VariantId == variantId, includeProperties: "ProductVariantOptions.ProductImages");
@@ -524,6 +554,43 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult PublishProduct(int id)
+        {
+            var product = _unitOfWork.Product.Get(p => p.ProductId == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            if (product.Status != ProductStatus.INACTIVE)
+            {
+                return BadRequest();
+            }
+
+            product.Status = ProductStatus.ACTIVE;
+            _unitOfWork.Product.Update(product);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult UnpublishProduct(int id)
+        {
+            var product = _unitOfWork.Product.Get(p => p.ProductId == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            if (product.Status != ProductStatus.ACTIVE)
+            {
+                return BadRequest();
+            }
+
+            product.Status = ProductStatus.INACTIVE;
+            _unitOfWork.Product.Update(product);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
 
 
         private void DeleteImage(string imageUrl)
@@ -565,7 +632,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var vendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
-            var products = _unitOfWork.Product.GetAll(p=>p.VendorId == vendor.VendorId, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
+            var products = _unitOfWork.Product.GetAll(p=>p.VendorId == vendor.VendorId && p.Status != ProductStatus.DELETED, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
             
             products = status?.ToLower() switch
             {

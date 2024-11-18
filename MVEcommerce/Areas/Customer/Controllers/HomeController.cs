@@ -91,8 +91,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             var products = _unitOfWork.Product.GetAll(
                 p => p.CategoryId == category.CategoryId,
-                includeProperties: "Category,ProductImages"
-            );
+                includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor"
+			);
 
             var categoryProduct = new CategoryProduct
             {
@@ -285,11 +285,36 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(user);
         }
 
+        
+        [HttpGet]
         public IActionResult Addresses()
         {
-            var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
-            return View(user);
+            var adr = _unitOfWork.Address.Get(x => x.UserId == userId);
+            if (adr == null)
+            {
+                var email = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId).Email;
+                var phoneNumber = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId).PhoneNumber;
+                adr = new Address(email,phoneNumber);
+              
+            }
+            ViewBag.UserName = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId).UserName;
+            return View(adr);
         }
+        
+        [HttpPost]
+        public IActionResult Addresses(Address adr)
+        {
+            if (ModelState.IsValid)
+            {
+                adr.UserId = userId;
+
+                _context.Entry(adr).State=EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(adr);
+        }
+        
         public IActionResult AccountDetail()
         {
             var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);

@@ -5,177 +5,132 @@
 }
 @model  MVEcommerce.Models.ApplicationUser
 
-<style>
-    /* General Styles */
 
-
-    .container123 {
-        display: flex;
-        flex-wrap: wrap; /* Đảm bảo sidebar và content xuống hàng trên màn hình nhỏ */
-        min-height: 100vh;
+    <style>
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
-    }
-
-    /* Sidebar */
-    .sidebar123 {
-        width: 250px;
-        background: #fff;
-        border-right: 1px solid #ddd;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-    .sidebar123 .profile123 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .sidebar123 .avatar123 {
-        width: 80px;
-        height: 80px;
-        background-color: #ddd;
-        border-radius: 50%;
-        margin: 0 auto 10px;
-    }
-
-    .sidebar123 h3 {
-        margin: 0;
-        font-size: 20px;
-    }
-
-    .sidebar123 p {
-        font-size: 14px;
-        color: #666;
-    }
-
-    .sidebar123 .menu123 {
-        list-style: none;
-        padding: 0;
-    }
-
-    .sidebar123 .menu123 li {
-        margin-bottom: 15px;
-    }
-
-    .sidebar123 .menu123 li a {
-        text-decoration: none;
-        color: #333;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-    }
-
-    .sidebar123 .menu123 li a i {
-        margin-right: 10px;
-    }
-
-    /* Content */
-    .content123 {
-        flex: 1;
-        padding: 40px;
-        background: #fff;
-        box-sizing: border-box;
-    }
-
-    .content123 h1 {
-        font-size: 30px;
-        margin-bottom: 20px;
-    }
-
-    .content123 h3 {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .content123 a {
-        color: #ff5722;
-        text-decoration: none;
-    }
-
-    .content123 .vendor-box123 {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 20px;
-        margin-top: 20px;
-        background-color: #f9f9f9;
-    }
-
-    .content123 .vendor-text123 h4 {
-        margin: 0 0 5px;
-    }
-
-    .content123 .vendor-text123 p {
-        margin: 0;
-        font-size: 14px;
-        color: #666;
-    }
-
-    .content123 .button123 {
-        padding: 10px 20px;
-        background-color: #ff5722;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 14px;
-    }
-
-    /* Responsive Styles */
-    @@media (max-width: 768px) {
-        .sidebar123 {
-            width: 100%; /* Sidebar chiếm toàn bộ chiều rộng */
-            border-right: none;
-            border-bottom: 1px solid #ddd;
+            background-color: #f5f5f5;
         }
 
-        .content123 {
+        .container123 {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
 
-        .content123 .vendor-box123 {
-            flex-direction: column; /* Sắp xếp theo cột */
-            text-align: center;
+        .account-wrapper123 {
+            display: flex;
         }
 
-        .content123 .vendor-text123 {
-            margin-bottom: 10px;
-        }
-    }
-
-    @@media (max-width: 480px) {
-        .content123 h1 {
-            font-size: 24px;
+        .sidebar123 {
+            width: 250px;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            height: 100vh;
         }
 
-        .sidebar123 .menu123 li a {
-            font-size: 14px;
+            .sidebar123 h3 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .sidebar123 ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .sidebar123 ul li {
+                    margin-bottom: 10px;
+                }
+
+                    .sidebar123 ul li a {
+                        text-decoration: none;
+                        color: #333;
+                        display: block;
+                        padding: 10px;
+                        border-radius: 4px;
+                        transition: background 0.3s;
+                    }
+
+                        .sidebar123 ul li a:hover {
+                            background-color: #ddd;
+                        }
+
+        .main-content123 {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            margin-left: 20px;
+            border-radius: 4px;
         }
-    }
 
-</style>
+            .main-content123 h2 {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
 
-<div class="container123">
-    <!-- Sidebar -->
- 
+            .main-content123 p {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+
+            .main-content123 a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .main-content123 a:hover {
+                    text-decoration: underline;
+                }
+
+        .vendor-section123 {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+            .vendor-section123 h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .vendor-section123 .vendor-button123 {
+                display: inline-block;
+                background-color: #000;
+                color: #fff;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+                .vendor-section123 .vendor-button123:hover {
+                    background-color: #333;
+                }
+    </style>
+
+    <div class="container123">
+        <div class="account-wrapper123">
+            <!-- Sidebar -->
         <div class="sidebar123">
             <div class="profile123">
                 <div class="avatar123"></div>
                 <h3>Hello!</h3>
-                <p>@Model.FullName</p>
+                <p>@Model.UserName</p>
             </div>
             <ul class="menu123">
-                <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a asp-controller="Home" asp-action="AccounntOverview" ><i class="fa fa-home"></i> Dashboard</a></li>
                 <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
                 <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
                 <li><a asp-controller="Home" asp-action="AccountDetail"><i class="fa fa-user"></i> Account details</a></li>
                 @if (User.Identity != null && User.Identity.IsAuthenticated)
                 {
-                    <li >
+                    <li>
                         <form id="logoutForm" class="form-inline account-panel__link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                             <a class="motta-button motta-button--text">
                                 <button type="submit" style="border: none; background: transparent; color: black; margin: 0; padding: 0; min-width: auto !important;">
@@ -198,26 +153,22 @@
             </ul>
         </div>
 
-        <!-- Main Content -->
-        <div class="content123">
-            <h1>My account</h1>
-            <h3>Account overview</h3>
-            <p>From your account dashboard you can view your <a href="#">Recent orders</a>.</p>
-            <p>Manage your <a href="#">Shipping Address</a>.</p>
-            <p>Edit your <a href="#">Password</a> and <a href="#">Account details</a>.</p>
-            <div class="vendor-box123">
-                <div class="vendor-text123">
-                    <h4>Become a Vendor</h4>
+
+            <!-- Main Content -->
+            <div class="main-content123">
+                <h2>Account overview</h2>
+                <p>From your account dashboard you can view your <a href="#">Recent orders</a>.</p>
+                <p>Manage your <a asp-controller="Home" asp-action="Addresses" >Shipping Address</a> </p>
+                <p>Edit your <a asp-controller="Home" asp-action="AccountDetail">Account details</a>.</p>
+
+                <div class="vendor-section123">
+                    <h3>Become a Vendor</h3>
                     <p>Vendors can sell products and manage a store with a vendor dashboard.</p>
-                </div>
-                <div class="vendor-action123">
-                    <a href="#" class="button123">Become a Vendor</a>
+                    <a href="#" class="vendor-button123">Become a Vendor</a>
                 </div>
             </div>
         </div>
-    
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</div>
 
+    </div>
 
