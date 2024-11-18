@@ -261,13 +261,36 @@
 
 							</div>
 
-							<nav role="navigation" id="nav-below" class="site-navigation paging-navigation">
+							<nav role="navigation" id="nav-below" class="dokan-pagination-container site-navigation paging-navigation">
+								<ul class="pager dokan-pagination">
+									@if (ViewBag.CurrentPage > 1)
+									{
+										<li class="previous">
+											<a href="@Url.Action("VendorPage", new { vendorId = ViewBag.Vendor.VendorId, page = ViewBag.CurrentPage - 1 })">&larr; Previous</a>
+										</li>
+									}
 
-								<ul class="pager">
+									@for (int i = 1; i <= ViewBag.TotalPages; i++)
+									{
+										if (i == 1 || i == ViewBag.TotalPages || (i >= ViewBag.CurrentPage - 2 && i <= ViewBag.CurrentPage + 2))
+										{
+											<li class="@(i == ViewBag.CurrentPage ? "active" : "")">
+												<a href="@Url.Action("VendorPage", new { vendorId = ViewBag.Vendor.VendorId, page = i })">@i</a>
+											</li>
+										}
+										else if (i == ViewBag.CurrentPage - 3 || i == ViewBag.CurrentPage + 3)
+										{
+											<li><span>...</span></li>
+										}
+									}
+
+									@if (ViewBag.CurrentPage < ViewBag.TotalPages)
+									{
+										<li class="next">
+											<a href="@Url.Action("VendorPage", new { vendorId = ViewBag.Vendor.VendorId, page = ViewBag.CurrentPage + 1 })">Next &rarr;</a>
+										</li>
+									}
 								</ul>
-
-
-								<div class="dokan-pagination-container"><ul class="dokan-pagination"><li class="disabled"><a href="#">&larr; Previous</a></li><li class="active"><a href="#">1</a></li><li><a href="https://motta.uix.store/store/borda/page/2/">2</a></li><li><a href="https://motta.uix.store/store/borda/page/3/">3</a></li><li class=""><a href="https://motta.uix.store/store/borda/page/2/">Next &rarr;</a></li><li class="next"><a href="https://motta.uix.store/store/borda/page/3/" title="Last">&raquo;</a></li></ul></div>
 							</nav>
 
 						</div>

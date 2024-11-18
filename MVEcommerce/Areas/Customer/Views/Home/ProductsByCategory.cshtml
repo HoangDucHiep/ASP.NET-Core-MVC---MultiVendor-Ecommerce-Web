@@ -113,17 +113,14 @@
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
@@ -140,17 +137,14 @@
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
@@ -247,6 +241,38 @@
 				}
 				}
 			</ul>
+
+			<nav role="navigation" id="nav-below" class="dokan-pagination-container site-navigation paging-navigation">
+                <ul class="pager dokan-pagination">
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <li class="previous">
+                            <a href="@Url.RouteUrl(new { area = "Customer", controller = "Home", action = "ProductsByCategory", slug = ViewBag.CategorySlug, page = ViewBag.CurrentPage - 1 })">&larr; Previous</a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        if (i == 1 || i == ViewBag.TotalPages || (i >= ViewBag.CurrentPage - 2 && i <= ViewBag.CurrentPage + 2))
+                        {
+                            <li class="@(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a href="@Url.RouteUrl(new { area = "Customer", controller = "Home", action = "ProductsByCategory", slug = ViewBag.CategorySlug, page = i })">@i</a>
+                            </li>
+                        }
+                        else if (i == ViewBag.CurrentPage - 3 || i == ViewBag.CurrentPage + 3)
+                        {
+                            <li><span>...</span></li>
+                        }
+                    }
+
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <li class="next">
+                            <a href="@Url.RouteUrl(new { area = "Customer", controller = "Home", action = "ProductsByCategory", slug = ViewBag.CategorySlug, page = ViewBag.CurrentPage + 1 })">Next &rarr;</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
 
 		</main>
 	</div>

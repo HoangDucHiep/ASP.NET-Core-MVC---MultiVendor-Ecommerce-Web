@@ -16,6 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
     <PackageReference Include="Slugify.Core" Version="4.0.1" />
   </ItemGroup>
 
