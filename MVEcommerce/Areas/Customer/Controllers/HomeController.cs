@@ -209,16 +209,9 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 }
             }
 
-            var lstSaleProducts = new List<Product>();
-            foreach (var product in products)
-            {
-                if (product.Sale > 0)
-                {
-                    lstSaleProducts.Add(product);
+            products = products.Where(p=>p.Sale > 0).Take(20).ToList();
 
-                }
-            }
-            return View(lstSaleProducts);
+            return View(products);
         }
 
         public IActionResult VendorPage(int vendorId)
