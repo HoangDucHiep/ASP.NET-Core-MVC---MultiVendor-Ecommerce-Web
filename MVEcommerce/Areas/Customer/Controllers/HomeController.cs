@@ -378,17 +378,18 @@ namespace MVEcommerce.Areas.Customer.Controllers
             {
                 adr.UserId = userId;
 
-                var exist = _unitOfWork.Address.Get(a=>a.AddressId == adr.AddressId);
-
-                if (exist == null)
+                if (adr.AddressId == 0)
                 {
-                    _unitOfWork.Address.Add(adr);
+                    // Add new address
+                    _context.Add(adr);
                 }
                 else
                 {
-                    _unitOfWork.Address.Update(adr);
+                    // Update existing address
+                    _context.Entry(adr).State = EntityState.Modified;
                 }
 
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(adr);
@@ -400,8 +401,28 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(user);
         }
 
+        [HttpPost]
+        public IActionResult AccountDetail(ApplicationUser aUser)
+        {
+            if (ModelState.IsValid)
+            {
 
-		public IActionResult Privacy()
+                ApplicationUser user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
+                user.FullName = aUser.FullName;
+                user.Email = aUser.Email;
+                user.PhoneNumber = aUser.PhoneNumber;
+                user.UserName = aUser.UserName;
+
+                // Update existing address
+                _context.Entry(user).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+
+        public IActionResult Privacy()
         {
             return View();
         }

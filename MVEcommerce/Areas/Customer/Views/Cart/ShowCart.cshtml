@@ -29,7 +29,7 @@
 
 									<td class="product-thumbnail">
 										<a href="">
-											<img loading="lazy" decoding="async" width="300" height="300" src="@product.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="@product.ProductName" sizes="(max-width: 300px) 100vw, 300px"></a>
+											<img style="max-height: 8rem;" loading="lazy" decoding="async" src="@product.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="@product.ProductName" sizes="(max-width: 300px) 100vw, 300px"></a>
 									</td>
 
 									<td class="product-name" data-title="Product">
@@ -101,20 +101,6 @@
 							}
 
 
-							<tr>
-								<td colspan="6" class="actions">
-
-									<div class="coupon">
-										<label for="coupon_code" class="screen-reader-text">Coupon:</label> <input type="text" name="coupon_code" class="input-text motta-input--medium" id="coupon_code" value="" placeholder="Coupon code"> <button type="submit" class="button motta-button motta-button--base motta-button--medium motta-button--bg-color-black" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-									</div>
-
-									<button type="submit" class="button button-update-cart motta-button motta-button--subtle motta-button--color-black" name="update_cart" value="Update cart" disabled="">Update cart</button>
-
-									<button type="submit" class="button button-empty-cart motta-button motta-button--subtle motta-button--color-black" name="empty_cart" value="Clear cart">Clear Cart</button>
-
-									<input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="553b8eca09"><input type="hidden" name="_wp_http_referer" value="/cart/">
-								</td>
-							</tr>
 
 						</tbody>
 					</table>
@@ -161,7 +147,7 @@
 
 						<div class="wc-proceed-to-checkout">
 
-							<a href="https://motta.uix.store/checkout/" class="checkout-button button alt wc-forward">
+							<a asp-controller="Order" asp-action="Index" class="checkout-button button alt wc-forward">
 								Proceed to checkout
 							</a>
 						</div>
