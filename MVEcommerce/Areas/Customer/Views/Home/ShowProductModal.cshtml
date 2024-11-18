@@ -11,7 +11,7 @@
         <div class="woocommerce-mini-cart-item__thumbnail">
             @*detail*@
             <a>
-                <img width="100" height="100" src="@Model.ProductImages!.Where(x => x. IsMain).FirstOrDefault()!.ImageUrl;ssl=1" class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail" alt="">
+                <img width="100" height="100" src="@Model.ProductImages!.Where(x => x. IsMain).FirstOrDefault()!.ImageUrl" class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail" alt="">
             </a>
         </div>
         <div class="woocommerce-mini-cart-item__summary">
@@ -33,7 +33,7 @@
                         <bdi><span class="woocs_special_price_code"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>@finalPrice</bdi></span></span></bdi>
                     </span>
                     <span class="woocommerce-mini-cart-item__qty--text hidden">
-                        QTY:									7
+                        QTY: @ViewBag.Quantity
                     </span>
                 </span>
 
@@ -46,16 +46,16 @@
 
 <div class="widget_shopping_cart_footer">
     <p class="woocommerce-mini-cart__total total">
-        <span class="widget_shopping_cart_subtotal">Subtotal (COUNT items) </span>
+        <span class="widget_shopping_cart_subtotal">Subtotal (@ViewBag.TotalItem item(s)): </span>
         <span class="woocs_special_price_code">
             <span class="woocommerce-Price-amount amount">
-                <bdi><span class="woocommerce-Price-currencySymbol">$</span>Count cart</bdi>
+                <bdi><span class="woocommerce-Price-currencySymbol">$</span>@ViewBag.TotalAmount</bdi>
             </span>
         </span>
     </p>
     <p class="woocommerce-mini-cart__buttons buttons">
         @*aaaaaaa*@
-        <a href="https://motta.uix.store/checkout/" class="motta-button checkout wc-forward motta-button--large">Checkout</a>
+        <a asp-controller="Order" asp-action="Index" class="motta-button checkout wc-forward motta-button--large">Checkout</a>
         <a asp-controller="Cart" asp-action="ShowCart" class="motta-button view-cart wc-forward motta-button--subtle">View cart</a>
     </p>
 

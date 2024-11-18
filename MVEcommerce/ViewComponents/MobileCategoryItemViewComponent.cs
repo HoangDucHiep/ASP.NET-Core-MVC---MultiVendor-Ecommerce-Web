@@ -3,11 +3,11 @@ using MVEcommerce.DataAccess.Repositoies.IRepositories;
 
 namespace MVEcommerce.ViewComponents
 {
-    public class MobileCategoryItemViewComponent : ViewComponent
+    public class CategoryItemViewComponent:ViewComponent
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public MobileCategoryItemViewComponent(ICategoryRepository categoryRepository)
+        public CategoryItemViewComponent(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }

@@ -5,7 +5,9 @@
 
 @if (Model?.Products == null || !Model.Products.Any())
 {
-    <p>Không tìm thấy sản phẩm nào.+ViewBag.Products</p>
+    <div class="search-list result-list-found">
+        <p>&emsp; &emsp; &emsp; &emsp; Không tìm thấy sản phẩm nào.</p>
+    </div>
 }
 else
 {
@@ -15,12 +17,12 @@ else
             var price = product.Sale > 0 ? product.Price * (1 - product.Sale / 100) : product.Price;
 
             <div class="list-item">
-                <a class="image-item" href="">
+                <a class="image-item" asp-action="ProductDetail" asp-route-slug="@product.Slug">
                     <img width="1400" height="1400" src="@product.ProductImages!.Where(x => x. IsMain).FirstOrDefault()!.ImageUrl" class="attachment-shop_catalog size-shop_catalog" alt="" decoding="async" sizes="(max-width: 1400px) 100vw, 1400px">
                 </a>
                 <div class="content-item">
                     @*asp *@
-                    <a class="title-item" href="">@product.Name</a>
+                    <a class="title-item" asp-action="ProductDetail" asp-route-slug="@product.Slug">@product.Name</a>
                     <div class="price-item">
                         <span class="woocs_price_code" data-currency="" data-redraw-id="6738a7834012c" data-product-id="@product.ProductId">
                             @if (@product.Sale > 0)
