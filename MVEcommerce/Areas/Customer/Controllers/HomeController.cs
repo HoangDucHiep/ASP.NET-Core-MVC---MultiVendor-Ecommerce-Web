@@ -91,8 +91,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             var products = _unitOfWork.Product.GetAll(
                 p => p.CategoryId == category.CategoryId,
-                includeProperties: "Category,ProductImages"
-            );
+                includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor"
+			);
 
             var categoryProduct = new CategoryProduct
             {

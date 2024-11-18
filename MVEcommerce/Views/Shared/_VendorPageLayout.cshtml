@@ -145,6 +145,19 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
+  <style>
+    .arrow-icon {
+      transition: transform 0.3s;
+    }
+
+    .nav-link[aria-expanded="true"] .arrow-icon {
+      transform: rotate(90deg);
+    }
+
+    .btn[aria-expanded="true"] .arrow-icon {
+      transform: rotate(90deg);
+    }
+  </style>
 </head>
 
 <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl   footer-offset">
@@ -174,25 +187,6 @@
         </button>
 
 
-      </div>
-
-      <div class="navbar-nav-wrap-content-end">
-        <!-- Navbar -->
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <!-- Account -->
-            <div class="dropdown">
-              <a class="navbar-dropdown-account-wrapper" href="javascript:;" id="accountNavbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" data-bs-dropdown-animation>
-                <div class="avatar avatar-sm avatar-circle">
-                  <img class="avatar-img" src="~/assets/img/160x160/img6.jpg" alt="Image Description">
-                  <span class="avatar-status avatar-sm-status avatar-status-success"></span>
-                </div>
-              </a>
-            </div>
-            <!-- End Account -->
-          </li>
-        </ul>
-        <!-- End Navbar -->
       </div>
     </div>
   </header>
@@ -239,20 +233,24 @@
             <div id="navbarVerticalMenuPagesMenu">
               @* List start here *@
               <div class="nav-item">
-                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalMenuPagesEcommerceProductsMenu" aria-expanded="false" aria-controls="navbarVerticalMenuPagesEcommerceProductsMenu">
-                  <i class="bi bi-bag-x-fill"></i>  <span>    Products</span>
+                <a class="nav-link d-flex justify-content-between align-items-center" role="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalMenuPagesEcommerceProductsMenu" aria-expanded="false" aria-controls="navbarVerticalMenuPagesEcommerceProductsMenu">
+                  <span>
+                    <i class="bi bi-bag-x-fill"></i>&#9;&#9;&#9;&#9;&#9;&#9;&#9;<span>Products</span>
+                  </span>
+                  <i class="bi bi-chevron-right arrow-icon"></i>
                 </a>
                 <div id="navbarVerticalMenuPagesEcommerceProductsMenu" class="nav-collapse collapse " data-bs-parent="#navbarVerticalMenuPagesMenuEcommerce">
                   <a class="nav-link " asp-area="VendorArea" asp-controller="Product" asp-action="Index" >Products</a>
                   <a class="nav-link " asp-area="VendorArea" asp-controller="Product" asp-action="AddProduct">Add Product</a>
                 </div>
               </div>
+              <a class="nav-link" asp-area="VendorArea" asp-controller="OrderManagement" asp-action="Index" role="button" data-bs-target="#navbarVerticalMenuPagesEcommerceProductsMenu" aria-expanded="false" aria-controls="navbarVerticalMenuPagesEcommerceProductsMenu">
+                <i class="bi bi-cart-check-fill"></i>&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;<span>Orders</span>
+              </a>
+              <a class="nav-link" asp-area="VendorArea" asp-controller="Dashboard" asp-action="EditShop" role="button" data-bs-target="#navbarVerticalMenuPagesEcommerceProductsMenu" aria-expanded="false" aria-controls="navbarVerticalMenuPagesEcommerceProductsMenu">
+                <i class="bi bi-file-earmark-person"></i>&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;<span>Edit Shop Detail</span>
+              </a>
 
-                <a class="nav-link" asp-area="VendorArea" asp-controller="OrderManagement" asp-action="Index" role="button" data-bs-target="#navbarVerticalMenuPagesEcommerceProductsMenu" aria-expanded="false" aria-controls="navbarVerticalMenuPagesEcommerceProductsMenu">
-                  <i class="bi bi-cart-check-fill"></i>   <span>    Orders</span>
-                </a>
-
-              
           </div>
 
         </div>
@@ -1992,8 +1990,8 @@
       },
       language: {
         zeroRecords: `<div class="text-center p-4">
-              <img class="mb-3" src="./~/assets/svg/illustrations/oc-error.svg" alt="Image Description" style="width: 10rem;" data-hs-theme-appearance="default">
-              <img class="mb-3" src="./~/assets/svg/illustrations-light/oc-error.svg" alt="Image Description" style="width: 10rem;" data-hs-theme-appearance="dark">
+              <img class="mb-3" src="/assets/svg/illustrations/oc-error.svg" alt="Image Description" style="width: 10rem;" data-hs-theme-appearance="default">
+              <img class="mb-3" src="/assets/svg/illustrations-light/oc-error.svg" alt="Image Description" style="width: 10rem;" data-hs-theme-appearance="dark">
             <p class="mb-0">No data to show</p>
             </div>`
       }
@@ -2211,3 +2209,4 @@
 
 @RenderSection("Scripts", required: false)
 <partial name="_ValidationScriptsPartial" />
+    
