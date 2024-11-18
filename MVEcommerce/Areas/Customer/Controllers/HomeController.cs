@@ -378,8 +378,17 @@ namespace MVEcommerce.Areas.Customer.Controllers
             {
                 adr.UserId = userId;
 
-                _context.Entry(adr).State=EntityState.Modified;
-                _context.SaveChanges();
+                var exist = _unitOfWork.Address.Get(a=>a.AddressId == adr.AddressId);
+
+                if (exist == null)
+                {
+                    _unitOfWork.Address.Add(adr);
+                }
+                else
+                {
+                    _unitOfWork.Address.Update(adr);
+                }
+
                 return RedirectToAction("Index");
             }
             return View(adr);
