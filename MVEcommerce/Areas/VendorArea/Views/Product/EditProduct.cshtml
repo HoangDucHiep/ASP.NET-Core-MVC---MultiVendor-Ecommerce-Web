@@ -47,21 +47,15 @@
                     <!-- End Header -->
                     <!-- Body -->
                     <div class="card-body">
-                        <!-- Form -->
-                        <div class="mb-4">
-                            <label asp-for="Product.Name" class="form-label">Name <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Products are the goods or services you sell."></i></label>
-                            <input type="text" class="form-control" asp-for="Product.Name" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc.">
-                            <span asp-validation-for="Product.Name" class="text-danger"></span>
-                        </div>
-                        <!-- End Form -->
+
 
                         <div class="row">
                             <div class="col-sm-6">
                                 <!-- Form -->
                                 <div class="mb-4">
-                                    <label asp-for="Product.SKU" class="form-label">SKU</label>
-                                    <input type="text" class="form-control" asp-for="Product.SKU" placeholder="eg. 348121032" aria-label="eg. 348121032">
-                                    <span asp-validation-for="Product.SKU" class="text-danger"></span>
+                                    <label asp-for="Product.Name" class="form-label">Name <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Products are the goods or services you sell."></i></label>
+                                    <input type="text" class="form-control" asp-for="Product.Name" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc.">
+                                    <span asp-validation-for="Product.Name" class="text-danger"></span>
                                 </div>
                                 <!-- End Form -->
                             </div>
@@ -124,9 +118,6 @@
                                                         </div>
                                                         <div class="col-md-2 mb-2 mb-md-0">
                                                             <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Stock" placeholder="Option Stock" />
-                                                        </div>
-                                                        <div class="col-md-2 mb-2 mb-md-0">
-                                                            <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].SKU" placeholder="Option SKU" />
                                                         </div>
                                                         <div class="col-md-2 mb-2 mb-md-0">
                                                             <input type="text" class="form-control" asp-for="ProductVariantOptions[@j].Sale" placeholder="Option Sale" />
@@ -297,7 +288,6 @@
                 const valueInput = option.querySelector('input[name*="Value"]');
                 const priceInput = option.querySelector('input[name*="Price"]');
                 const stockInput = option.querySelector('input[name*="Stock"]');
-                const skuInput = option.querySelector('input[name*="SKU"]');
                 const saleInput = option.querySelector('input[name*="Sale"]');
 
                 if (!valueInput.value.trim()) {
@@ -343,22 +333,6 @@
                 } else {
                     stockInput.classList.remove('is-invalid');
                     const errorSpan = stockInput.nextElementSibling;
-                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
-                        errorSpan.remove();
-                    }
-                }
-
-                if (!skuInput.value.trim()) {
-                    skuInput.classList.add('is-invalid');
-                    const errorSpan = skuInput.nextElementSibling;
-                    if (errorSpan && errorSpan.classList.contains('text-danger')) {
-                        errorSpan.remove();
-                    }
-                    skuInput.insertAdjacentHTML('afterend', '<span class="text-danger">SKU is required.</span>');
-                    isValid = false;
-                } else {
-                    skuInput.classList.remove('is-invalid');
-                    const errorSpan = skuInput.nextElementSibling;
                     if (errorSpan && errorSpan.classList.contains('text-danger')) {
                         errorSpan.remove();
                     }
@@ -477,9 +451,6 @@
                     </div>
                     <div class="col-md-2 mb-2 mb-md-0">
                         <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Stock" placeholder="Option Stock" />
-                    </div>
-                    <div class="col-md-2 mb-2 mb-md-0">
-                        <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].SKU" placeholder="Option SKU" />
                     </div>
                     <div class="col-md-2 mb-2 mb-md-0">
                         <input type="text" class="form-control" name="ProductVariantOptions[${optionIndex}].Sale" placeholder="Option Sale" Value="0"/>
