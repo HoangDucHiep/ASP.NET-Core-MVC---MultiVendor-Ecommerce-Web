@@ -260,7 +260,7 @@
 																data-variant-option-id="@image?.VariantOptionID"
 																tabindex="0"
 																role="button"
-																onclick="updateProductInfo('@image.ImageUrl', @(image?.ProductVariantOption?.Sale ?? 0), @(image?.ProductVariantOption?.Price ?? 0), '@image?.VariantOptionID'),
+																onclick="updateProductInfo('@image.ImageUrl', @(image?.ProductVariantOption?.Sale ?? 0), @(image?.ProductVariantOption?.Price ?? 0), '@image?.VariantOptionID', @image!.ProductVariantOption.Stock),
 																selectVariantOption('@image.ImageUrl', @image?.VariantOptionID)
 																">
 																
@@ -311,8 +311,8 @@
 									<div class="woocommerce-variation-add-to-cart variations_button woocommerce-variation-add-to-cart-disabled">
 										<input class="motta_product_id" type="hidden" data-title="@Model.product.Name" value="18">
 										<div class="quantity ">
-											<span class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path></svg></span>	<label class="screen-reader-text" for="quantity_67219833bb0e5">Apple - iPhone 11 64GB quantity</label>
-											<input type="number" id="quantity_" class="input-text qty text" width="15" height="10" name="quantity" value="1" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off " style="text-align: center;">
+											<span class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path></svg></span>	<label class="screen-reader-text" for="quantity_">Apple - iPhone 11 64GB quantity</label>
+											<input disabled type="number" id="quantity_" class="input-text qty text" width="15" height="10" name="quantity" value="1" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off " style="text-align: center;">
 											<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
 										</div>
 										<br />
@@ -341,8 +341,8 @@
 											<path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path>
 										</svg>
 									</span>
-									<label class="screen-reader-text" for="quantity_67219a9b99fce">@Model.product.Name</label>
-									<input type="number" id="quantity_67219a9b99fce" class="input-text qty text" name="quantity" value="1" width="15" height="10" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off" style="text-align: center;">
+									<label class="screen-reader-text" for="quantity_">@Model.product.Name</label>
+									<input disabled type="number" id="quantity_" class="input-text qty text" name="quantity" value="1" width="15" height="10" aria-label="Product quantity" size="4" min="1" max="@Model.product.Stock" step="1" placeholder="" inputmode="numeric" autocomplete="off" style="text-align: center;">
 									<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
 								</div>
 								<br />
@@ -501,7 +501,7 @@
 	});
 
 
-	function updateProductInfo(imageUrl, salePercent, originalPrice, variantOptionId) {
+	function updateProductInfo(imageUrl, salePercent, originalPrice, variantOptionId, stock) {
 
 		const newPrice = originalPrice * (1 - salePercent / 100);
 		const newPriceElement = document.querySelector('.new-price');
@@ -523,6 +523,10 @@
 			Sym.style.display = 'inline';
 		}
 		const allImagesData = document.querySelector('#variant-images-list').dataset.allImages;
+
+		const input = document.getElementById('quantity_');
+		input.max = stock;
+		input.value = 1;
 
 		if (allImagesData) {
 	

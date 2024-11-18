@@ -122,7 +122,8 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 vm.Product.Stock = null;
                             }
                             
-                            vm.Product.Slug = _slugHelper.GenerateSlug(vm.Product.Name ?? "");
+
+                            vm.Product.Slug = _slugHelper.GenerateSlug(vm.Product.Name + "-" + DateTime.Now.ToString("ddMMyyyyHHmmss"));
                             //@TODO: fix later
                             vm.Product.Status = ProductStatus.ACTIVE;
 
