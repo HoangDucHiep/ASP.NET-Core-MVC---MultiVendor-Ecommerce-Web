@@ -115,7 +115,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 vm.Product.HasVariant = false;
                             }
                             else
-                            {   
+                            {
                                 vm.Product.HasVariant = true;
                                 vm.Product.Price = null;
                                 vm.Product.Sale = null;
@@ -125,7 +125,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
                             vm.Product.Slug = _slugHelper.GenerateSlug(vm.Product.Name + "-" + DateTime.Now.ToString("ddMMyyyyHHmmss"));
                             //@TODO: fix later
-                            vm.Product.Status = ProductStatus.ACTIVE;
+                            vm.Product.Status = ProductStatus.PENDING;
 
                             // Save product first to get ID
                             _unitOfWork.Product.Add(vm.Product);
@@ -169,6 +169,9 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                 {
                                     var option = vm.ProductVariantOptions[i];
                                     option.VariantId = vm.ProductVariant.VariantId;
+
+                                    option.Status = ProductStatus.ACTIVE;
+
                                     _unitOfWork.ProductVariantOption.Add(option);
                                     _unitOfWork.Save();
 
@@ -282,6 +285,17 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                             product.Sale = null;
                             product.Stock = null;
                         }
+                        else
+                        {
+                            if (product.Stock > 0)
+                            {
+                                product.Status = ProductStatus.ACTIVE;
+                            }
+                            else
+                            {
+                                product.Status = ProductStatus.INACTIVE;
+                            }
+                        }
 
                         // Update main image
                         if (mainImage != null)
@@ -363,6 +377,16 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                         existingOption.Price = option.Price;
                                         existingOption.Stock = option.Stock;
                                         existingOption.Sale = option.Sale;
+
+                                        if (option.Stock > 0)
+                                        {
+                                            existingOption.Status = ProductStatus.ACTIVE;
+                                        }
+                                        else
+                                        {
+                                            existingOption.Status = ProductStatus.INACTIVE;
+                                        }
+
                                         _unitOfWork.ProductVariantOption.Update(existingOption);
                                     }
                                 }

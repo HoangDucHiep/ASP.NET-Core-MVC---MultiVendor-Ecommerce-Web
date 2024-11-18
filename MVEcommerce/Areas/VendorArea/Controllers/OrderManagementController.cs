@@ -73,13 +73,52 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         [HttpPost]
         public IActionResult UpdateOrderStatus(Order updateOrder)
         {
-            var order = _unitOfWork.Order.Get(filter: o => o.OrderId == updateOrder.OrderId && o.VendorId == currentVendor.VendorId);
+            var order = _unitOfWork.Order.Get(filter: o => o.OrderId == updateOrder.OrderId && o.VendorId == currentVendor.VendorId, "OrderDetails.Product");
             if (order == null)
             {
                 return NotFound();
             }
 
             order.Status = updateOrder.Status;
+
+            if (updateOrder.Status == OrderStatus.APPROVED)
+            {
+                foreach (var orderDetail in order.OrderDetails)
+                {
+                    if (orderDetail.OptionId.HasValue)
+                    {
+                        // Update stock for ProductVariantOption
+                        var productVariantOption = _unitOfWork.ProductVariantOption.Get(pvo => pvo.OptionId == orderDetail.OptionId.Value);
+                        if (productVariantOption != null)
+                        {
+                            productVariantOption.Stock -= orderDetail.Quantity;
+                            if (productVariantOption.Stock < 0)
+                            {
+                                productVariantOption.Stock = 0;
+                                productVariantOption.Status = ProductStatus.INACTIVE;
+                            }
+                            _unitOfWork.ProductVariantOption.Update(productVariantOption);
+                        }
+                    }
+                    else
+                    {
+                        // Update stock for Product
+                        var product = _unitOfWork.Product.Get(p => p.ProductId == orderDetail.ProductId);
+                        if (product != null)
+                        {
+                            product.Stock -= orderDetail.Quantity;
+                            if (product.Stock < 0)
+                            {
+                                product.Stock = 0;
+                                product.Status = ProductStatus.INACTIVE;
+                            }
+                            _unitOfWork.Product.Update(product);
+                        }
+                    }
+                }
+            }
+
+
             _unitOfWork.Save();
 
             return RedirectToAction(nameof(Index));
@@ -90,7 +129,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
         // In OrderManagementController
         [HttpGet]
-        public IActionResult GetFilteredOrders(string status)
+        public IActionResult GetFilteredOrders(string status, string? other = null)
         {
             var orders = _unitOfWork.Order.GetAll(filter: o => o.VendorId == currentVendor.VendorId, includeProperties: "User,OrderDetails,OrderDetails.Product.ProductImages");
 

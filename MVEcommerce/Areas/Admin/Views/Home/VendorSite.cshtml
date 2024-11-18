@@ -1,12 +1,11 @@
 ﻿@using MVEcommerce.Models
 @using MVEcommerce.Utility
-@model IEnumerable<Order>
+@model List<Vendor>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    Layout = "_VendorPageLayout";
+    Layout = "~/Views/Shared/_AdminPageLayout.cshtml";
 }
-
 
 <div class="content container-fluid">
     <!-- Page Header -->
@@ -14,10 +13,9 @@
         <div class="row align-items-center mb-3">
             <div class="col-sm mb-2 mb-sm-0">
                 <h1 class="page-header-title">
-                    Orders Management
+                    Vendors
                 </h1>
             </div>
-            <!-- End Col -->
         </div>
         <!-- End Row -->
         <!-- Nav Scroller -->
@@ -38,41 +36,37 @@
             <ul class="nav nav-tabs page-header-tabs" id="pageHeaderTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" href="javascript:void(0)" 
-                    onclick="loadOrders('all')">All Order</a>
+                    onclick="loadProducts('all')">All Vendors</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" 
-                    onclick="loadOrders('Pending')">Pending</a>
+                    onclick="loadProducts('@VendorStatus.PENDING')">Pending</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" 
-                    onclick="loadOrders('Approved')">Approved</a>
+                    onclick="loadProducts('@VendorStatus.ACTIVE')">Active</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" 
-                    onclick="loadOrders('Completed')">Completed</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)" 
-                    onclick="loadOrders('Cancelled', 'Rejected')">Cancelled</a>
+                    onclick="loadProducts('@VendorStatus.INACTIVE')">Inactive</a>
                 </li>
             </ul>
             <!-- End Nav -->
         </div>
         <!-- End Nav Scroller -->
     </div>
-    <!-- End Page Header -->
+    <!-- End Page Header -
     <!-- End Row -->
     <!-- Card -->
-    <div class="card" id="ordersContainer">
-        @await Html.PartialAsync("_VendorOrderIndexAjaxPartial", Model)
+    <div class="card" id="productsContainer">
+        @await Html.PartialAsync("_AdminVendorAjaxPartial", Model)
     </div>
     <!-- End Card -->
 </div>
 
 
 <script>
-function loadOrders(status) {
+function loadProducts(status) {
     // Update active tab
     document.querySelectorAll('#pageHeaderTab .nav-link').forEach(link => {
         link.classList.remove('active');
@@ -81,11 +75,11 @@ function loadOrders(status) {
 
     // Make AJAX call
     $.ajax({
-        url: '@Url.Action("GetFilteredOrders", "OrderManagement")',
+        url: '@Url.Action("GetFilteredVendor", "Home")',
         type: 'GET',
         data: { status: status },
         success: function(response) {
-            $('#ordersContainer').html(response);
+            $('#productsContainer').html(response);
         },
         error: function(error) {
             console.log(error);

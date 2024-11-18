@@ -210,7 +210,9 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 Quantity = cartItem.Quantity,
                 Price = (decimal)(cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Price : cartItem.Product.Price)!,
                 Sale = cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Sale : cartItem.Product.Sale!,
-                OptionName = cartItem.ProductVariantOption?.Value ?? null
+                OptionName = cartItem.ProductVariantOption?.Value ?? null,
+                OptionId = cartItem.VariantOptionID.HasValue ? cartItem.VariantOptionID : null
+
             };
         }
     }

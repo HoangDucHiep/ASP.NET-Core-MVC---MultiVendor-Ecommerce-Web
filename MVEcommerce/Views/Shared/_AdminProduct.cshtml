@@ -1,8 +1,19 @@
-@using MVEcommerce.Models.ViewModels.Account
+
+@using MVEcommerce.Models.ViewModels.Admin
 @using MVEcommerce.Utility
-@model VendorProductIndexVM
+@model AdminProductVM
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-   
+
+
+<style>
+    .dropdown-menu {
+        position: absolute;
+        z-index: 1050 !; /* Ensure it is above other elements */
+    }
+</style>
+
+
+
 <!-- Header -->
         <div class="card-header card-header-content-md-between">
             <div class="mb-2 mb-md-0">
@@ -21,8 +32,8 @@
         </div>
         <!-- End Header -->
         <!-- Table -->
-        <div class="table-responsive datatable-custom">
-            <table id="datatable"
+        <div style="z-index: 0 !important;" class="table-responsive datatable-custom">
+            <table style="z-index: 0 !important;" id="datatable"
                    class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
                    data-hs-datatables-options='{
             "columnDefs": [{
@@ -96,39 +107,44 @@
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a class="btn btn-white btn-sm" asp-action="EditProduct" asp-route-id="@product.ProductId">
-                                        <i class="bi-pencil-fill me-1"></i> Edit
-                                    </a>
-
                                     <!-- Button Group -->
                                     <div class="btn-group">
                                         <button type="button"
                                                 class="btn btn-white btn-icon btn-sm dropdown-toggle-empty"
                                                 id="productsEditDropdown1" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="bi bi-chevron-right arrow-icon" data-bs-auto-close="outside"></i></button>
-                                        <div class="dropdown-menu dropdown-menu-end mt-1"
-                                             aria-labelledby="productsEditDropdown1">
-                                            @if (product.Status == ProductStatus.INACTIVE)
+                                                aria-expanded="false" data-bs-auto-close="outside"><i class="bi bi-chevron-right arrow-icon"></i></button>
+                                        <div style="z-index: 99 !important;" class="dropdown-menu dropdown-menu-end mt-1"
+                                            aria-labelledby="productsEditDropdown1">
+                                            @if (product.Status == ProductStatus.PENDING)
                                             {
-                                                <form asp-action="PublishProduct" asp-route-id="@product.ProductId" method="post">
+                                                <form asp-action="UpdateProductStatus" asp-controller="Home" asp-area="Admin" method="post">
+                                                    <input type="hidden" name="id" value="@product.ProductId" />
+                                                    <input type="hidden" name="status" value="@ProductStatus.ACTIVE" />
                                                     <button type="submit" class="dropdown-item" data-product-id="@product.ProductId">
-                                                        <i class="bi-upload dropdown-item-icon"></i> Publish
+                                                        <i class="bi-upload dropdown-item-icon"></i> Approve
                                                     </button>
                                                 </form>
                                             }
-                                            @if (product.Status == ProductStatus.ACTIVE)
+                                            @if (product.Status == ProductStatus.ACTIVE || product.Status == ProductStatus.INACTIVE)
                                             {
-                                                <form asp-action="UnpublishProduct" asp-route-id="@product.ProductId" method="post">
+                                                <form asp-action="UpdateProductStatus" asp-controller="Home" asp-area="Admin" method="post">
+                                                    <input type="hidden" name="id" value="@product.ProductId" />
+                                                    <input type="hidden" name="status" value="@ProductStatus.LOCKED" />
                                                     <button type="submit" class="dropdown-item" data-product-id="@product.ProductId">
-                                                        <i class="bi-upload dropdown-item-icon"></i> Unpublish
+                                                        <i class="bi-upload dropdown-item-icon"></i> Lock
                                                     </button>
                                                 </form>
                                             }
-                                            <form asp-action="DeleteProduct" asp-route-id="@product.ProductId" method="post">
-                                                <button type="submit" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-product-id="@product.ProductId">
-                                                    <i class="bi-archive dropdown-item-icon"></i> Delete
-                                                </button>
-                                            </form>
+                                            @if (product.Status == ProductStatus.LOCKED)
+                                            {
+                                                <form asp-action="UpdateProductStatus" asp-controller="Home" asp-area="Admin" method="post">
+                                                    <input type="hidden" name="id" value="@product.ProductId" />
+                                                    <input type="hidden" name="status" value="@ProductStatus.ACTIVE" />
+                                                    <button type="submit" class="dropdown-item" data-product-id="@product.ProductId">
+                                                        <i class="bi-upload dropdown-item-icon"></i> Activate
+                                                    </button>
+                                                </form>
+                                            }
                                         </div>
                                     </div>
                                     <!-- End Button Group -->
@@ -144,43 +160,42 @@
 
         <!-- Footer -->
         <div class="card-footer">
-            <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
-                <div class="col-sm mb-2 mb-sm-0">
-                    <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
-                        <span class="me-2">Showing:</span>
+          <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
+            <div class="col-sm mb-2 mb-sm-0">
+              <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
+                <span class="me-2">Showing:</span>
 
-                        <!-- Select -->
-                        <div class="tom-select-custom">
-                            <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto"
-                                    autocomplete="off" data-hs-tom-select-options='{
+                <!-- Select -->
+                <div class="tom-select-custom">
+                  <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto" autocomplete="off" data-hs-tom-select-options='{
                             "searchInDropdown": false,
                             "hideSearch": true
                           }'>
-                                <option value="12">12</option>
-                                <option value="14" selected>14</option>
-                                <option value="16">16</option>
-                                <option value="18">18</option>
-                            </select>
-                        </div>
-                        <!-- End Select -->
-
-                        <span class="text-secondary me-2">of</span>
-
-                        <!-- Pagination Quantity -->
-                        <span id="datatableWithPaginationInfoTotalQty">@Model.Products.Count()</span>
-                    </div>
+                    <option value="12">12</option>
+                    <option value="14" selected>14</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                  </select>
                 </div>
-                <!-- End Col -->
+                <!-- End Select -->
 
-                <div class="col-sm-auto">
-                    <div class="d-flex justify-content-center justify-content-sm-end">
-                        <!-- Pagination -->
-                        <nav id="datatablePagination" aria-label="Activity pagination"></nav>
-                    </div>
-                </div>
-                <!-- End Col -->
+                <span class="text-secondary me-2">of</span>
+
+                <!-- Pagination Quantity -->
+                <span id="datatableWithPaginationInfoTotalQty"></span>
+              </div>
             </div>
-            <!-- End Row -->
+            <!-- End Col -->
+
+            <div class="col-sm-auto">
+              <div class="d-flex justify-content-center justify-content-sm-end">
+                <!-- Pagination -->
+                <nav id="datatablePagination" aria-label="Activity pagination"></nav>
+              </div>
+            </div>
+            <!-- End Col -->
+          </div>
+          <!-- End Row -->
         </div>
         <!-- End Footer -->
-        
+        <!-- End Footer -->

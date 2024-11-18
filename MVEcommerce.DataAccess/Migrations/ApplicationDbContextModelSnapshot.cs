@@ -261,6 +261,9 @@ namespace MVEcommerce.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("OptionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("OptionName")
                         .HasColumnType("nvarchar(max)");
 
@@ -975,7 +978,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
                             NormalizedUserName = "TRUFFLES_VENDOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC7miI0T7WwRFa940aJ4WcEN4xwoFW8kLN7icVWQgBkhBfchbAp9NMdnTEh37b7Rog==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOh0rMePErj0/kpjmnvOSQ7OMLAjDDIU0WNukR3QB93OW/n82wVEJSncPFTTCZAD7A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

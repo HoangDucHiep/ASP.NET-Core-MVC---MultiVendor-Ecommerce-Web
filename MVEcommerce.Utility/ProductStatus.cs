@@ -12,5 +12,6 @@ namespace MVEcommerce.Utility
 		public const string PENDING = "pending";
 		public const string INACTIVE = "inactive";
         public const string DELETED = "deleted";
+		public const string LOCKED = "locked";
     }
 }

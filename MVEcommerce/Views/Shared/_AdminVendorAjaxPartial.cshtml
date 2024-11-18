@@ -1,6 +1,6 @@
-@using MVEcommerce.Models.ViewModels.Account
+@using MVEcommerce.Models
 @using MVEcommerce.Utility
-@model VendorProductIndexVM
+@model List<Vendor>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
    
 <!-- Header -->
@@ -50,22 +50,17 @@
                                 </label>
                             </div>
                         </th>
-                        <th>Slug</th>
-                        <th>Status</th>
-                        <th class="table-column-ps-0">Product</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Sale</th>
-                        <th>Stocks</th>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th class="table-column-ps-0">Status</th>
                         <th>Created At</th>
-                        <th>Variants</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @* Product Item *@
-                    @foreach (var product in Model.Products)
+                    @foreach (var vendor in Model)
                     {
                         <tr>
                             <td class="table-column-pe-0">
@@ -74,32 +69,12 @@
                                     <label class="form-check-label" for="datatableCheckAll1"></label>
                                 </div>
                             </td>
-                            <td>@product.Slug</td>
-                            <td class="table-column-ps-0">
-                                <a class="d-flex align-items-center" asp-action="EditProduct" asp-route-id="@product.ProductId">
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="text-inherit mb-0">@product.Name</h5>
-                                    </div>
-                                </a>
-                            </td>
-                            <td class="@(product.Status==ProductStatus.ACTIVE ? "text-success" : "text-warning")">@product.Status</td>
-                            <td>@product.Category!.Name</td>
-                            <td>@product.Price</td>
-                            <td>@product.Sale</td>
-                            <td>@product.Stock</td>
-                            <td>@product.CreatedAt.ToString("g")</td>
-                            <td>
-                                @{
-                                    var numberOfOptions = product.ProductVariants?.SelectMany(v => v.ProductVariantOptions!).Count() ?? 0;
-                                }
-                                @numberOfOptions
-                            </td>
+                            <td>@vendor.VendorId</td>
+                            <td>@vendor.Name</td>
+                            <td class="@(vendor.Status==VendorStatus.ACTIVE ? "text-success" : "text-warning")">@vendor.Status</td>
+                            <td>@vendor.CreatedAt.ToString()</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a class="btn btn-white btn-sm" asp-action="EditProduct" asp-route-id="@product.ProductId">
-                                        <i class="bi-pencil-fill me-1"></i> Edit
-                                    </a>
-
                                     <!-- Button Group -->
                                     <div class="btn-group">
                                         <button type="button"
@@ -107,28 +82,37 @@
                                                 id="productsEditDropdown1" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="bi bi-chevron-right arrow-icon" data-bs-auto-close="outside"></i></button>
                                         <div class="dropdown-menu dropdown-menu-end mt-1"
-                                             aria-labelledby="productsEditDropdown1">
-                                            @if (product.Status == ProductStatus.INACTIVE)
+                                             aria-labelledby="productsEditDropdown1" >
+                                            @if (vendor.Status == VendorStatus.PENDING)
                                             {
-                                                <form asp-action="PublishProduct" asp-route-id="@product.ProductId" method="post">
-                                                    <button type="submit" class="dropdown-item" data-product-id="@product.ProductId">
-                                                        <i class="bi-upload dropdown-item-icon"></i> Publish
+                                                <form method="post" action="@Url.Action("UpdateVendorStatus", "Home", new { area = "Admin" })">
+                                                    <input type="hidden" name="id" value="@vendor.VendorId" />
+                                                    <input type="hidden" name="status" value="@VendorStatus.ACTIVE" />
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="bi-upload dropdown-item-icon"></i> Approve
                                                     </button>
                                                 </form>
                                             }
-                                            @if (product.Status == ProductStatus.ACTIVE)
+                                            @if (vendor.Status == VendorStatus.ACTIVE)
                                             {
-                                                <form asp-action="UnpublishProduct" asp-route-id="@product.ProductId" method="post">
-                                                    <button type="submit" class="dropdown-item" data-product-id="@product.ProductId">
-                                                        <i class="bi-upload dropdown-item-icon"></i> Unpublish
+                                                <form method="post" action="@Url.Action("UpdateVendorStatus", "Home", new { area = "Admin" })">
+                                                    <input type="hidden" name="id" value="@vendor.VendorId" />
+                                                    <input type="hidden" name="status" value="@VendorStatus.INACTIVE" />
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="bi-upload dropdown-item-icon"></i> Deactivate
                                                     </button>
                                                 </form>
                                             }
-                                            <form asp-action="DeleteProduct" asp-route-id="@product.ProductId" method="post">
-                                                <button type="submit" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-product-id="@product.ProductId">
-                                                    <i class="bi-archive dropdown-item-icon"></i> Delete
-                                                </button>
-                                            </form>
+                                            @if (vendor.Status == VendorStatus.INACTIVE)
+                                            {
+                                                <form method="post" action="@Url.Action("UpdateVendorStatus", "Home", new { area = "Admin" })">
+                                                    <input type="hidden" name="id" value="@vendor.VendorId" />
+                                                    <input type="hidden" name="status" value="@VendorStatus.ACTIVE" />
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="bi-upload dropdown-item-icon"></i> Activate
+                                                    </button>
+                                                </form>
+                                            }
                                         </div>
                                     </div>
                                     <!-- End Button Group -->
@@ -167,7 +151,7 @@
                         <span class="text-secondary me-2">of</span>
 
                         <!-- Pagination Quantity -->
-                        <span id="datatableWithPaginationInfoTotalQty">@Model.Products.Count()</span>
+                        <span id="datatableWithPaginationInfoTotalQty">@Model.Count()</span>
                     </div>
                 </div>
                 <!-- End Col -->
