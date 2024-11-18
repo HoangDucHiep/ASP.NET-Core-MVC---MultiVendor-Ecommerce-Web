@@ -223,21 +223,21 @@ namespace MVEcommerce.Areas.Customer.Controllers
 				return NotFound();
 			}
 
-			var viewModel = new ProductDetailViewModel
-			{
-				product = product,
-				ProductImage = product.ProductImages?.FirstOrDefault(),
-				productVariant = product.ProductVariants?.FirstOrDefault(),
-				productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
-				category = product.Category,
-				ProductImages = product.ProductImages?
-					.GroupBy(x => x.VariantOptionID)
-					.Select(group => group.FirstOrDefault())
-					.ToList(),
-				AllProductImages = product.ProductImages?.ToList()
-			};
+            var viewModel = new ProductDetailViewModel
+            {
+                product = product,
+                ProductImage = product.ProductImages?.FirstOrDefault(),
+                productVariant = product.ProductVariants?.FirstOrDefault(),
+                productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
+                category = product.Category,
+                ProductImages = product.ProductImages?
+                    .GroupBy(x => x.VariantOptionID)
+                    .Select(group => group.FirstOrDefault())
+                    .ToList(),
+                AllProductImages = product.ProductImages?.ToList(),
+                Vendor = product.Vendor
 
-
+            };
 			return View(viewModel);
 		}
 
