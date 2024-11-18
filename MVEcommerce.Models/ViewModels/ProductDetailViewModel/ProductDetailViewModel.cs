@@ -17,5 +17,7 @@ namespace MVEcommerce.Models.ViewModels.ProductDetailViewModel
 		public List<ProductImage> ProductImages { get; set; }
 
 		public List<ProductImage> AllProductImages { get; set; }
+
+		public Vendor Vendor { get; set; }
 	}
 }
