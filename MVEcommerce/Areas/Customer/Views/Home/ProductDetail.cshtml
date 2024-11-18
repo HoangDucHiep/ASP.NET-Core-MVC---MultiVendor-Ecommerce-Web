@@ -6,15 +6,15 @@
 <style>
 
 	.onsale.woocommerce-badge {
-		display: none;
+	display: none;
 	}
 
-	.woocommerce-Price-currencySymbol {
-		display: none;
+	.Symbol1{
+	display: none;
 	}
 
 	.Symbol {
-		display: none;
+	display: none;
 	}
 </style>
 <div class="container clearfix ">
@@ -98,18 +98,23 @@
 
 
 							<div class="swiper-container swiper-container-initialized swiper-container-horizontal" style="opacity: 1;">
-								<ol id="variant-images-list" class="flex-control-nav flex-control-thumbs swiper-wrapper" style="list-style-type:none">
-									@foreach (var image in Model.AllProductImages)
+								<ol id="variant-images-list" class="flex-control-nav flex-control-thumbs swiper-wrapper" style="list-style-type:none"
+									data-all-images='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AllProductImages.Select(img => new
+									{
+										imageUrl = img.ImageUrl,
+										variantOptionId = img.VariantOptionID
+									})))'>
+									@foreach (var image in Model.AllProductImages.Where(img => img.VariantOptionID == Model.ProductImages.First().VariantOptionID))
 									{
 
 										<li class="swiper-slide" style="width: 76.6px; margin-right: 15px;">
 											<img onload="this.width = this.naturalWidth; this.height = this.naturalHeight"
-												 src="@image.ImageUrl"
-												 draggable="false"
-												 width="100"
-												 height="100"
-												 data-large="@image.ImageUrl"
-												 onclick="updateMainImage('@image.ImageUrl')">
+											src="@image.ImageUrl"
+											draggable="false"
+											width="100"
+											height="100"
+											data-large="@image.ImageUrl"
+											onclick="updateMainImage('@image.ImageUrl')">
 										</li>
 									}
 								</ol>
@@ -124,7 +129,7 @@
 					</div>
 
 
-					<div class="summary entry-summary">
+					<div class="summary entry-summary" style="margin-left: 250px;">
 						@*	@if (Model.product.Sale > 0 || Model.product.Price == null)
 						{
 						<span class="onsale woocommerce-badge">-@Model.product.Sale%</span>
@@ -132,7 +137,6 @@
 						<h1 class="product_title entry-title">@Model.product.Name</h1>
 						<div class="product-meta-wrapper">
 							<div class="meta meta-cat">in <a href="#">@Model.category?.Name</a></div>
-							<div class="meta meta-sku">Sku: <span class="sku">@Model.product.SKU</span></div>
 							<div class="woocommerce-product-rating">
 								<div class="star-rating" role="img" aria-label="Rated 4.50 out of 5"><span class="max-rating rating-stars"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="user-rating rating-stars" style="width:90%"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="screen-reader-text">Rated <strong class="rating">4.50</strong> out of 5 based on <span class="rating">2</span> customer ratings</span></div>								<a href="#reviews" class="woocommerce-review-link" rel="nofollow">4.50 (<span class="count">2</span><span> Reviews</span>)</a>
 							</div>
@@ -196,7 +200,7 @@
 										<ins>
 											<span class="woocommerce-Price-amount amount">
 												<bdi>
-													<span class="woocommerce-Price-currencySymbol">$</span><span class="new-price">@Model.product.Price</span>
+													<span class="Symbol1">$</span><span class="new-price">@Model.product.Price</span>
 												</bdi>
 											</span>
 										</ins>
@@ -243,23 +247,27 @@
 
 														@foreach (var image in Model.ProductImages)
 														{
+															@if (image.ProductVariantOption == null || image.VariantOptionID == null)
+															{
+																continue;
+															}
 															<li class="wcboost-variation-swatches__item"
 																style="--wcboost-swatches-item-width: 60px; --wcboost-swatches-item-height: 60px;"
-																aria-label="@image.ProductVariantOption.Value"
+																aria-label="@(image?.ProductVariantOption?.Value ?? "")"
 																data-value="@image.ImageUrl"
-																data-sale="@image.ProductVariantOption.Sale"
-																data-price="@image.ProductVariantOption.Price"
-																data-variant-option-id="@image.VariantOptionID"
+																data-sale="@(image?.ProductVariantOption?.Sale ?? 0)"
+																data-price="@(image?.ProductVariantOption.Price ?? 0)"
+																data-variant-option-id="@image?.VariantOptionID"
 																tabindex="0"
 																role="button"
-																onclick="updateProductInfo('@image.ImageUrl', @image.ProductVariantOption.Sale, @image.ProductVariantOption.Price, '@image.VariantOptionID'),
-																selectVariantOption('@image.ImageUrl', @image.VariantOptionID)
+																onclick="updateProductInfo('@image.ImageUrl', @(image?.ProductVariantOption?.Sale ?? 0), @(image?.ProductVariantOption?.Price ?? 0), '@image?.VariantOptionID'),
+																selectVariantOption('@image.ImageUrl', @image?.VariantOptionID)
 																">
 																
 																<img src="@image.ImageUrl"
 																	 alt="Product Image"
 																	 data-large="@image.ImageUrl"
-																	 data-variant-option-id="@image.VariantOptionID">
+																	 data-variant-option-id="@image?.VariantOptionID">
 																<span class="wcboost-variation-swatches__name"></span>
 															</li>
 														}
@@ -355,14 +363,14 @@
 						<span class="motta-button__text add-to-wishlist-button__text wcboost-wishlist-button__text" data-add="Add To Wishlist" data-remove="Remove Wishlist" data-view="View Wishlist">Wishlist</span>
 						</a>
 						</div> *@
-						@*<div class="product_meta">
+						<div class="product_meta">
 						<div class="dokan-vendor-info-wrap">
 						<div class="dokan-vendor-image">
-						<img src="https://motta.uix.store/wp-content/uploads/2023/02/vendor-logo-5.png" alt="Sanvo">
+						<img src="@Model.Vendor.Avartar" alt="">
 						</div>
 						<div class="dokan-vendor-info">
 						<div class="dokan-vendor-name">
-						<a href="#"><h5>Sanvo</h5></a>
+						<a href="#"><h5>@Model.Vendor.Name</h5></a>
 						<span class="vendor-text">Store</span>
 						</div>
 						<div class="dokan-vendor-rating product">
@@ -401,7 +409,7 @@
 						</div>
 						</div>
 						</section>
-						</div> *@
+						</div> 
 					</div>
 
 				</div>
@@ -500,6 +508,7 @@
 		const originalPriceElement = document.querySelector('.original-price');
 		const saleBadgeElement = document.querySelector('.onsale.woocommerce-badge');
 		const Sym = document.querySelector('.Symbol');
+		const Sym1 = document.querySelector('.Symbol1');
 
 		if (newPriceElement) newPriceElement.innerHTML = newPrice.toFixed(2);
 		if (originalPriceElement) originalPriceElement.innerHTML = originalPrice.toFixed(2);
@@ -507,8 +516,47 @@
 			saleBadgeElement.style.display = 'inline';
 			saleBadgeElement.innerHTML = `-${salePercent}%`;
 		}
+		if (Sym1) {
+			Sym1.style.display = 'inline';
+		}
 		if (Sym) {
 			Sym.style.display = 'inline';
+		}
+		const allImagesData = document.querySelector('#variant-images-list').dataset.allImages;
+
+		if (allImagesData) {
+	
+			const allImages = JSON.parse(allImagesData);
+
+		
+			const filteredImages = allImages.filter(img => img.variantOptionId == variantOptionId);
+
+
+			const imagesList = document.querySelector('#variant-images-list');
+			imagesList.innerHTML = '';
+
+			
+			filteredImages.forEach(img => {
+				const li = document.createElement('li');
+				li.className = 'swiper-slide';
+				li.style.width = '76.6px';
+				li.style.marginRight = '15px';
+
+				const imgElement = document.createElement('img');
+				imgElement.onload = function () {
+					this.width = this.naturalWidth;
+					this.height = this.naturalHeight;
+				};
+				imgElement.src = img.imageUrl;
+				imgElement.draggable = false;
+				imgElement.width = 100;
+				imgElement.height = 100;
+				imgElement.setAttribute('data-large', img.imageUrl);
+				imgElement.onclick = () => updateMainImage(img.imageUrl);
+
+				li.appendChild(imgElement);
+				imagesList.appendChild(li);
+			});
 		}
 
 	}

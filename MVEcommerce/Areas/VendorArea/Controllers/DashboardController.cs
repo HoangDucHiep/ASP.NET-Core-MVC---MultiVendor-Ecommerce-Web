@@ -63,12 +63,8 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                     try
                     {
                         var vendor = _unitOfWork.Vendor.Get(v => v.VendorId == vendorDetailVM.Vendor.VendorId);
-                        var address = _unitOfWork.Address.Get(a => a.AddressId == vendorDetailVM.Address.AddressId);
+                        var address = _unitOfWork.Address.Get(a => a.AddressId == vendorDetailVM.Address.AddressId) ?? new();
 
-                        if (vendor == null || address == null)
-                        {
-                            return NotFound();
-                        }
 
                         // Handle avatar file upload
                         if (avatarFile != null)

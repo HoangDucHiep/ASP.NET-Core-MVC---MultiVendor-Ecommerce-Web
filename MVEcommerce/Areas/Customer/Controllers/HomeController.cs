@@ -54,7 +54,22 @@ namespace MVEcommerce.Areas.Customer.Controllers
 			var products = _unitOfWork.Product.GetAll(
 				p => p.Name.Contains(query) || p.Description.Contains(query),
 				includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
-			var categoryProduct = new CategoryProduct
+
+            foreach (var product in products)
+            {
+                if (product.HasVariant)
+                {
+                    var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+                    var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+                    var totalStock = variantOptions.Sum(vo => vo.Stock);
+                    product.Price = lowestPriceOption?.Price ?? product.Price;
+                    product.Stock = totalStock;
+                    product.Sale = lowestPriceOption?.Sale ?? 0;
+                }
+            }
+
+
+            var categoryProduct = new CategoryProduct
 			{
 				Products = products
 			};
@@ -94,20 +109,35 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor"
 			);
 
+            foreach (var product in products)
+            {
+                if (product.HasVariant)
+                {
+                    var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+                    var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+                    var totalStock = variantOptions.Sum(vo => vo.Stock);
+                    product.Price = lowestPriceOption?.Price ?? product.Price;
+                    product.Stock = totalStock;
+                    product.Sale = lowestPriceOption?.Sale ?? 0;
+                }
+            }
+
             var categoryProduct = new CategoryProduct
             {
-                Products = products
+                Products = products,
+                CategoryName = category.Name
             };
 
             return View(categoryProduct);
         }
 
 		[HttpGet]
-		public IActionResult ShowProductModal(int productId)
+		public IActionResult ShowProductModal(int productId, int? optionId)
 		{
 			var product = _unitOfWork.Product.GetAll(
 				p => p.ProductId == productId,
 				includeProperties: "Category,ProductImages,ProductVariants").FirstOrDefault();
+
 
 			if (product == null)
 			{
@@ -115,8 +145,44 @@ namespace MVEcommerce.Areas.Customer.Controllers
 				return NotFound("Product not found.");
 			}
 
+            if (optionId != null)
+            {
+                var option = _unitOfWork.ProductVariantOption.Get(o => o.OptionId == optionId);
+                product.Price = option.Price;
+                product.Sale = option.Sale;
+                product.Stock = 0; // dummy
+            }
 
-			return PartialView("ShowProductModal", product);
+            if (User.Identity is not ClaimsIdentity claimsIdentity)
+            {
+                return Unauthorized(new { success = false, message = "Bạn chưa đăng nhập!" });
+            }
+
+            var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { success = false, message = "Không tìm thấy thông tin người dùng!" });
+            }
+
+            var userId = userIdClaim.Value;
+
+            var existingCartItem = _unitOfWork.ShoppingCart.GetAll(c => c.UserId == userId, "Product,ProductVariantOption");
+
+            decimal totalAmount = 0;
+
+            foreach (var cartItem in existingCartItem)
+            {
+                decimal Price = (decimal)(cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Price : cartItem.Product.Price)!;
+                decimal Sale = (decimal)(cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Sale : cartItem.Product.Sale!)!;
+                totalAmount += (Price * (1 - Sale / 100)) * cartItem.Quantity;
+            }
+
+            ViewBag.TotalAmount = totalAmount;
+            ViewBag.Quantity = existingCartItem.Where(c=>c.ProductId==productId && c.VariantOptionID==optionId).Sum(c => c.Quantity);
+            ViewBag.TotalItem = existingCartItem.Sum(c => c.Quantity);
+
+            return PartialView("ShowProductModal", product);
 		}
 
 		[HttpPost]
@@ -174,21 +240,21 @@ namespace MVEcommerce.Areas.Customer.Controllers
 				return NotFound();
 			}
 
-			var viewModel = new ProductDetailViewModel
-			{
-				product = product,
-				ProductImage = product.ProductImages?.FirstOrDefault(),
-				productVariant = product.ProductVariants?.FirstOrDefault(),
-				productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
-				category = product.Category,
-				ProductImages = product.ProductImages?
-					.GroupBy(x => x.VariantOptionID)
-					.Select(group => group.FirstOrDefault())
-					.ToList(),
-				AllProductImages = product.ProductImages?.ToList()
-			};
+            var viewModel = new ProductDetailViewModel
+            {
+                product = product,
+                ProductImage = product.ProductImages?.FirstOrDefault(),
+                productVariant = product.ProductVariants?.FirstOrDefault(),
+                productVariantOption = product.ProductVariants?.FirstOrDefault()?.ProductVariantOptions?.FirstOrDefault(),
+                category = product.Category,
+                ProductImages = product.ProductImages?
+                    .GroupBy(x => x.VariantOptionID)
+                    .Select(group => group.FirstOrDefault())
+                    .ToList(),
+                AllProductImages = product.ProductImages?.ToList(),
+                Vendor = product.Vendor
 
-
+            };
 			return View(viewModel);
 		}
 
@@ -213,22 +279,14 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 }
             }
 
+            products = products.Where(p=>p.Sale > 0).Take(20).ToList();
 
-            var lstSaleProducts = new List<Product>();
-            foreach (var product in products)
-            {
-                if (product.Sale > 0)
-                {
-                    lstSaleProducts.Add(product);
-
-                }
-            }
-            return View(lstSaleProducts);
+            return View(products);
         }
 
         public IActionResult VendorPage(int vendorId)
         {
-            ViewBag.VendorName = _unitOfWork.Vendor.Get(p => p.VendorId == vendorId).Name;
+            ViewBag.Vendor = _unitOfWork.Vendor.Get(p => p.VendorId == vendorId, "Addresses");
             var lstProduct= _unitOfWork.Product.GetAll(p=>p.Vendor.VendorId==vendorId,includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor,ProductImages").ToList();
 			foreach (var product in lstProduct)
 			{

@@ -237,7 +237,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         Price = o.Price,
                         Sale = o.Sale,
                         Stock = o.Stock,
-                        SKU = o.SKU,
                         Status = o.Status,
                         CreatedAt = o.CreatedAt,
                         UpdatedAt = o.UpdatedAt,
@@ -268,7 +267,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
 
                         // Update product details
                         product.Name = vm.Product.Name;
-                        product.SKU = vm.Product.SKU;
                         product.Price = vm.Product.Price;
                         product.Sale = vm.Product.Sale;
                         product.Stock = vm.Product.Stock;
@@ -363,7 +361,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                                         existingOption.Value = option.Value;
                                         existingOption.Price = option.Price;
                                         existingOption.Stock = option.Stock;
-                                        existingOption.SKU = option.SKU;
                                         existingOption.Sale = option.Sale;
                                         _unitOfWork.ProductVariantOption.Update(existingOption);
                                     }

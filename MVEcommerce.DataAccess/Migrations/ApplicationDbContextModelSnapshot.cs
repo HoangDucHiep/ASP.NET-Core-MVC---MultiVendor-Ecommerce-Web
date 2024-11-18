@@ -315,10 +315,6 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("SKU")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal?>("Sale")
                         .HasColumnType("decimal(18,2)");
 
@@ -355,7 +351,6 @@ namespace MVEcommerce.DataAccess.Migrations
                             HasVariant = false,
                             Name = "Batman Death Metal DC Comics Batman Figure",
                             Price = 100m,
-                            SKU = "SKU-1",
                             Sale = 0m,
                             Slug = "batman-figure-metal-1",
                             Status = "active",
@@ -372,7 +367,6 @@ namespace MVEcommerce.DataAccess.Migrations
                             HasVariant = false,
                             Name = "Minions Toy with Buildable Figures (876 Pieces)",
                             Price = 200m,
-                            SKU = "SKU-2",
                             Sale = 0m,
                             Slug = "minions-toy-figures-2",
                             Status = "active",
@@ -389,7 +383,6 @@ namespace MVEcommerce.DataAccess.Migrations
                             HasVariant = false,
                             Name = "Masters of the Universe Origins Skeletor Action Figure",
                             Price = 300m,
-                            SKU = "SKU-3",
                             Sale = 26m,
                             Slug = "skeletor-action-figure-3",
                             Status = "active",
@@ -405,7 +398,6 @@ namespace MVEcommerce.DataAccess.Migrations
                             Description = "Lorem ipsum dolor sit amet-4, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.",
                             HasVariant = true,
                             Name = "Apple – iPhone 11 64GB",
-                            SKU = "SKU-4",
                             Sale = 0m,
                             Slug = "iphone-11-64gb",
                             Status = "active",
@@ -618,10 +610,6 @@ namespace MVEcommerce.DataAccess.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("SKU")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal?>("Sale")
                         .HasColumnType("decimal(18,2)");
 
@@ -653,7 +641,6 @@ namespace MVEcommerce.DataAccess.Migrations
                             OptionId = 1,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Price = 400m,
-                            SKU = "SKU-4-Black",
                             Sale = 20m,
                             Status = "active",
                             Stock = 100,
@@ -666,7 +653,6 @@ namespace MVEcommerce.DataAccess.Migrations
                             OptionId = 2,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Price = 450m,
-                            SKU = "SKU-4-White",
                             Sale = 10m,
                             Status = "active",
                             Stock = 100,
@@ -989,7 +975,7 @@ namespace MVEcommerce.DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
                             NormalizedUserName = "TRUFFLES_VENDOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDTouJmAEsj+oXagEMvmUza6qb84qOMuuxIsBZsW1jW+dKq5MsuNLec+pDKVCi8dlQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC7miI0T7WwRFa940aJ4WcEN4xwoFW8kLN7icVWQgBkhBfchbAp9NMdnTEh37b7Rog==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

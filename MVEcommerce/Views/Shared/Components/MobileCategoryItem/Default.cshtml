@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Category>
+
+<style>
+	.hover123123 :hover {
+		background-color: cornsilk;
+	}
+</style>
+
+@foreach(var item in Model)
+{
+	<li class="hover123123 menu-item menu-item-type-custom menu-item-object-custom">
+		<a asp-action="ProductsByCategory" asp-controller="Home" asp-route-slug="@item.Slug">@item.Name</a>
+	</li>
+}

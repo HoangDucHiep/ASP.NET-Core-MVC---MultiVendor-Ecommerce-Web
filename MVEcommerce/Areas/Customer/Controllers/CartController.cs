@@ -68,8 +68,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 						Stock = variantOption?.Stock ?? product.Stock ?? 0,
 						VendorName = product.Vendor?.Name ?? "Unknown Vendor",
 						CartId = cartItem.CartId,
-						VariantOptionID = variantOption?.VariantId ?? null
-
+						VariantOptionID = variantOption?.OptionId ?? null
 					};
 				})
 				.ToList();
@@ -113,7 +112,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 		[Route("api/RemoveFromCart")]
         public IActionResult RemoveFromCart(int cartId, int? optionId = null)
         {
-            var cartItem = _unitOfWork.ShoppingCart.GetAll(c => c.CartId == cartId&& c.VariantOptionID ==optionId ).FirstOrDefault();
+            var cartItem = _unitOfWork.ShoppingCart.GetAll(c => c.CartId == cartId && c.VariantOptionID == optionId ).FirstOrDefault();
 
             if (cartItem == null)
             {

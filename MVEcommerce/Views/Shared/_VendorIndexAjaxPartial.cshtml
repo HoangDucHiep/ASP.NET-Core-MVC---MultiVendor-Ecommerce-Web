@@ -54,7 +54,6 @@
                         <th>Status</th>
                         <th class="table-column-ps-0">Product</th>
                         <th>Category</th>
-                        <th>SKU</th>
                         <th>Price</th>
                         <th>Sale</th>
                         <th>Stocks</th>
@@ -85,7 +84,6 @@
                             </td>
                             <td class="@(product.Status==ProductStatus.ACTIVE ? "text-success" : "text-warning")">@product.Status</td>
                             <td>@product.Category!.Name</td>
-                            <td>@product.SKU</td>
                             <td>@product.Price</td>
                             <td>@product.Sale</td>
                             <td>@product.Stock</td>

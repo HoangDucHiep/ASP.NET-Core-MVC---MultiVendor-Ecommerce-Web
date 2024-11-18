@@ -9,6 +9,6 @@ namespace MVEcommerce.Models.ViewModels.CategoryProduct
 	public class CategoryProduct
 	{
 		public IEnumerable<Product> Products { get; set; }
-		
-	}
+		public string CategoryName { get; set; }
+    }
 }

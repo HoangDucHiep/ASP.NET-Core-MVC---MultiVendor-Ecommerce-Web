@@ -28,9 +28,6 @@ namespace MVEcommerce.Models
         [Range(1, double.MaxValue, ErrorMessage = "Stock must be greater than 0")]
         public int? Stock { get; set; }
 
-        [Required(ErrorMessage = "SKU is required")]
-        public string? SKU { get; set; }
-
         public string? Status { get; set; } = "active";  // Active, InActive
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; } = DateTime.Now;
