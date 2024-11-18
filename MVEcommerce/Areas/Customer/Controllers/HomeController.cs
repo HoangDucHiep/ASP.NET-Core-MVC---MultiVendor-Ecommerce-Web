@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using MVEcommerce.Models.ViewModels.Account;
 using MVEcommerce.Models.ViewModels.AddToCart;
 using System.Security.Claims;
-using MVEcommerce.Utility;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Filters;
+using MVEcommerce.DataAccess.Data;
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -20,12 +22,27 @@ namespace MVEcommerce.Areas.Customer.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<HomeController> _logger;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly DataAccess.Data.ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IWebHostEnvironment hostingEnvironment)
+        private string userId;
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                userId = claim.Value;
+            }
+        }
+
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IWebHostEnvironment hostingEnvironment, ApplicationDbContext db)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
+            _context = db;
         }
 		[HttpGet]
 		public IActionResult Search(string query)
@@ -246,7 +263,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 		public IActionResult Index()
         {
 
-            var products = _unitOfWork.Product.GetAll(p => p.Status == ProductStatus.ACTIVE, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;
+            var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList();
 
             foreach (var product in products)
             {
@@ -287,6 +304,79 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
 			
 			return View(lstProduct);
+        }
+
+        public IActionResult FlashDeals()
+        {
+			var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;
+
+			foreach (var product in products)
+			{
+				if (product.HasVariant)
+				{
+					var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+					var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+					var totalStock = variantOptions.Sum(vo => vo.Stock);
+
+					product.Price = lowestPriceOption?.Price ?? product.Price;
+					product.Stock = totalStock;
+					product.Sale = lowestPriceOption?.Sale ?? 0;
+				}
+			}
+
+			var lstSaleProducts = new List<Product>();
+			foreach (var product in products)
+			{
+				if (product.Sale > 0)
+				{
+					lstSaleProducts.Add(product);
+
+				}
+			}
+			return View(lstSaleProducts);
+		}
+
+
+        public IActionResult AccounntOverview()
+        {
+            var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
+            return View(user);
+        }
+
+        
+        [HttpGet]
+        public IActionResult Addresses()
+        {
+            var adr = _unitOfWork.Address.Get(x => x.UserId == userId);
+            if (adr == null)
+            {
+                var email = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId).Email;
+                var phoneNumber = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId).PhoneNumber;
+                adr = new Address(email,phoneNumber);
+              
+            }
+            ViewBag.UserName = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId).UserName;
+            return View(adr);
+        }
+        
+        [HttpPost]
+        public IActionResult Addresses(Address adr)
+        {
+            if (ModelState.IsValid)
+            {
+                adr.UserId = userId;
+
+                _context.Entry(adr).State=EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(adr);
+        }
+        
+        public IActionResult AccountDetail()
+        {
+            var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
+            return View(user);
         }
 
 

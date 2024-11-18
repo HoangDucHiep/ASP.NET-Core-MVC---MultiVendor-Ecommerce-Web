@@ -1,0 +1,213 @@
+﻿
+@{
+    ViewData["Title"] = "Addresses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model MVEcommerce.Models.Address
+
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container123 {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .account-wrapper123 {
+            display: flex;
+        }
+
+        .sidebar123 {
+            width: 250px;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            height: 100vh;
+        }
+
+            .sidebar123 h3 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .sidebar123 ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .sidebar123 ul li {
+                    margin-bottom: 10px;
+                }
+
+                    .sidebar123 ul li a {
+                        text-decoration: none;
+                        color: #333;
+                        display: block;
+                        padding: 10px;
+                        border-radius: 4px;
+                        transition: background 0.3s;
+                    }
+
+                        .sidebar123 ul li a:hover {
+                            background-color: #ddd;
+                        }
+
+        .main-content123 {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            margin-left: 20px;
+            border-radius: 4px;
+        }
+
+        .form-group123 {
+            margin-bottom: 15px;
+        }
+
+            .form-group123 label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .form-group123 input,
+            .form-group123 select {
+                width: 100%;
+                padding: 10px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+                .form-group123 input:focus,
+                .form-group123 select:focus {
+                    outline: none;
+                    border-color: #007bff;
+                }
+
+            .form-group123 .optional123 {
+                font-weight: normal;
+                font-size: 12px;
+                color: #999;
+            }
+
+        .form-actions123 {
+            text-align: right;
+        }
+
+            .form-actions123 button {
+                background-color: #000;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+
+                .form-actions123 button:hover {
+                    background-color: #333;
+                }
+    </style>
+
+    <div class="container123">
+        <div class="account-wrapper123">
+            <!-- Sidebar -->
+        <div class="sidebar123">
+            <div class="profile123">
+                <div class="avatar123"></div>
+                <h3>Hello!</h3>
+                <p>@ViewBag.UserName</p>
+            </div>
+            <ul class="menu123">
+                <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
+                <li><a asp-controller="Home" asp-action="AccountDetail"><i class="fa fa-user"></i> Account details</a></li>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <form id="logoutForm" class="form-inline account-panel__link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <a class="motta-button motta-button--text">
+                                <button type="submit" style="border: none; background: transparent; color: black; margin: 0; padding: 0; min-width: auto !important;">
+                                    <span class="motta-button__icon" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; text-align: left;">
+                                        <span class="motta-svg-icon motta-svg-icon--sign-out" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; min-width: auto !important;">
+                                            <svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32" style="min-width: auto !important;">
+                                                <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                                <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    <span class="motta-button__text" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle;">
+                                        Sign Out
+                                    </span>
+                                </button>
+                            </a>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+
+            <!-- Main Content -->
+            <div class="main-content123">
+                <h2>Shipping address</h2>
+                <form method="post" asp-action="Addresses">
+                    
+                    <input hidden asp-for="@Model.AddressId" >
+
+                    <div class="form-group123">
+                        <label  asp-for="Country">Country <span class="required123">*</span></label>
+                        <input asp-for="Country" type="text" value="@Model.Country" required>
+                    </div>
+
+                    <div class="form-group123">
+                        <label asp-for="City">City <span class="required123">*</span></label>
+                        <input type="text" asp-for="City" value="@Model.City" required>
+                    </div>
+
+                    <div class="form-group123">
+                        <label asp-for="Street">Street address <span class="required123">*</span></label>
+                        <input type="text" asp-for="Street" value="@Model.Street" required>
+                   </div>
+
+                    <div class="form-group123">
+                        <label asp-for="Apartment">Apartment <span class="optional123"></span></label>
+                        <input type="text" asp-for="Apartment" value="@Model.Apartment">
+                    </div>
+                    
+
+                    <div class="form-group123">
+                        <label asp-for="ZipCode">ZIP Code <span class="required123">*</span></label>
+                        <input type="text" asp-for="ZipCode" required value="@Model.ZipCode">
+                    </div>
+
+                    <div class="form-group123">
+                        <label asp-for="Email">Email <span class="required123">*</span></label>
+                        <input type="text" asp-for="Email" required value="@Model.Email">
+                    </div>
+                    <div class="form-group123">
+                        <label asp-for="PhoneNumber">PhoneNumber <span class="required123">*</span></label>
+                        <input type="text" asp-for="PhoneNumber" required value="@Model.PhoneNumber">
+                    </div>
+
+                    <div class="form-actions123">
+                        <button type="submit" asp-action="Addresses">Save address</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    </div>
+
+

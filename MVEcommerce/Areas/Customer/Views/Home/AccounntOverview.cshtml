@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewData["Title"] = "AccounntOverview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model  MVEcommerce.Models.ApplicationUser
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container123 {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .account-wrapper123 {
+            display: flex;
+        }
+
+        .sidebar123 {
+            width: 250px;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            height: 100vh;
+        }
+
+            .sidebar123 h3 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .sidebar123 ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .sidebar123 ul li {
+                    margin-bottom: 10px;
+                }
+
+                    .sidebar123 ul li a {
+                        text-decoration: none;
+                        color: #333;
+                        display: block;
+                        padding: 10px;
+                        border-radius: 4px;
+                        transition: background 0.3s;
+                    }
+
+                        .sidebar123 ul li a:hover {
+                            background-color: #ddd;
+                        }
+
+        .main-content123 {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            margin-left: 20px;
+            border-radius: 4px;
+        }
+
+            .main-content123 h2 {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+
+            .main-content123 p {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+
+            .main-content123 a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .main-content123 a:hover {
+                    text-decoration: underline;
+                }
+
+        .vendor-section123 {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+            .vendor-section123 h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .vendor-section123 .vendor-button123 {
+                display: inline-block;
+                background-color: #000;
+                color: #fff;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+                .vendor-section123 .vendor-button123:hover {
+                    background-color: #333;
+                }
+    </style>
+
+    <div class="container123">
+        <div class="account-wrapper123">
+            <!-- Sidebar -->
+        <div class="sidebar123">
+            <div class="profile123">
+                <div class="avatar123"></div>
+                <h3>Hello!</h3>
+                <p>@Model.UserName</p>
+            </div>
+            <ul class="menu123">
+                <li><a asp-controller="Home" asp-action="AccounntOverview" ><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
+                <li><a asp-controller="Home" asp-action="AccountDetail"><i class="fa fa-user"></i> Account details</a></li>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <form id="logoutForm" class="form-inline account-panel__link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <a class="motta-button motta-button--text">
+                                <button type="submit" style="border: none; background: transparent; color: black; margin: 0; padding: 0; min-width: auto !important;">
+                                    <span class="motta-button__icon" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; text-align: left;">
+                                        <span class="motta-svg-icon motta-svg-icon--sign-out" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; min-width: auto !important;">
+                                            <svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32" style="min-width: auto !important;">
+                                                <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                                <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    <span class="motta-button__text" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle;">
+                                        Sign Out
+                                    </span>
+                                </button>
+                            </a>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+
+
+            <!-- Main Content -->
+            <div class="main-content123">
+                <h2>Account overview</h2>
+                <p>From your account dashboard you can view your <a href="#">Recent orders</a>.</p>
+                <p>Manage your <a asp-controller="Home" asp-action="Addresses" >Shipping Address</a> </p>
+                <p>Edit your <a asp-controller="Home" asp-action="AccountDetail">Account details</a>.</p>
+
+                <div class="vendor-section123">
+                    <h3>Become a Vendor</h3>
+                    <p>Vendors can sell products and manage a store with a vendor dashboard.</p>
+                    <a href="#" class="vendor-button123">Become a Vendor</a>
+                </div>
+            </div>
+        </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    </div>
+
