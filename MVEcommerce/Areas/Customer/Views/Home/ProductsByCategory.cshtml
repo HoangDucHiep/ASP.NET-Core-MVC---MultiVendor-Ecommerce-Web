@@ -130,6 +130,8 @@
 			</div>
 
 			<ul class="products product-card-layout-1 columns-2 mobile-col-2 product-list-no-desc-mobile">
+				@if (Model.Products != null)
+				{
 				@foreach (var product in Model.Products)
 				{
 					var gg = product.Price * (1 - product.Sale / 100);
@@ -363,7 +365,7 @@
 						</div>
 					</li>
 				}
-
+				}
 			</ul>
 			<nav class="woocommerce-navigation woocommerce-navigation__catalog next-posts-navigation ajax-navigation ajax-infinite">
 				<a href="page/2/index.html" class="nav-links motta-button motta-button--bg-color-black motta-button--large">Load More Products</a><div class="motta-pagination--loading">

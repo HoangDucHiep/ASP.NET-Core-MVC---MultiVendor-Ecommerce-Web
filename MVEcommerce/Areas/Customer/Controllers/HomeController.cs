@@ -77,6 +77,19 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor"
 			);
 
+            foreach (var product in products)
+            {
+                if (product.HasVariant)
+                {
+                    var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+                    var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+                    var totalStock = variantOptions.Sum(vo => vo.Stock);
+                    product.Price = lowestPriceOption?.Price ?? product.Price;
+                    product.Stock = totalStock;
+                    product.Sale = lowestPriceOption?.Sale ?? 0;
+                }
+            }
+
             var categoryProduct = new CategoryProduct
             {
                 Products = products
@@ -210,7 +223,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
         public IActionResult VendorPage(int vendorId)
         {
-            ViewBag.VendorName = _unitOfWork.Vendor.Get(p => p.VendorId == vendorId).Name;
+            ViewBag.Vendor = _unitOfWork.Vendor.Get(p => p.VendorId == vendorId, "Addresses");
             var lstProduct= _unitOfWork.Product.GetAll(p=>p.Vendor.VendorId==vendorId,includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor,ProductImages").ToList();
 			foreach (var product in lstProduct)
 			{

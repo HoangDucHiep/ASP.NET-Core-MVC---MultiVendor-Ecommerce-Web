@@ -6,15 +6,15 @@
 <style>
 
 	.onsale.woocommerce-badge {
-		display: none;
+	display: none;
 	}
 
 	.woocommerce-Price-currencySymbol {
-		display: none;
+	display: none;
 	}
 
 	.Symbol {
-		display: none;
+	display: none;
 	}
 </style>
 <div class="container clearfix ">
@@ -104,12 +104,12 @@
 
 										<li class="swiper-slide" style="width: 76.6px; margin-right: 15px;">
 											<img onload="this.width = this.naturalWidth; this.height = this.naturalHeight"
-												 src="@image.ImageUrl"
-												 draggable="false"
-												 width="100"
-												 height="100"
-												 data-large="@image.ImageUrl"
-												 onclick="updateMainImage('@image.ImageUrl')">
+											src="@image.ImageUrl"
+											draggable="false"
+											width="100"
+											height="100"
+											data-large="@image.ImageUrl"
+											onclick="updateMainImage('@image.ImageUrl')">
 										</li>
 									}
 								</ol>
@@ -242,23 +242,27 @@
 
 														@foreach (var image in Model.ProductImages)
 														{
+															@if (image.ProductVariantOption == null || image.VariantOptionID == null)
+															{
+																continue;
+															}
 															<li class="wcboost-variation-swatches__item"
 																style="--wcboost-swatches-item-width: 60px; --wcboost-swatches-item-height: 60px;"
-																aria-label="@image.ProductVariantOption.Value"
+																aria-label="@(image?.ProductVariantOption?.Value ?? "")"
 																data-value="@image.ImageUrl"
-																data-sale="@image.ProductVariantOption.Sale"
-																data-price="@image.ProductVariantOption.Price"
-																data-variant-option-id="@image.VariantOptionID"
+																data-sale="@(image?.ProductVariantOption?.Sale ?? 0)"
+																data-price="@(image?.ProductVariantOption.Price ?? 0)"
+																data-variant-option-id="@image?.VariantOptionID"
 																tabindex="0"
 																role="button"
-																onclick="updateProductInfo('@image.ImageUrl', @image.ProductVariantOption.Sale, @image.ProductVariantOption.Price, '@image.VariantOptionID'),
-																selectVariantOption('@image.ImageUrl', @image.VariantOptionID)
+																onclick="updateProductInfo('@image.ImageUrl', @(image?.ProductVariantOption?.Sale ?? 0), @(image?.ProductVariantOption?.Price ?? 0), '@image?.VariantOptionID'),
+																selectVariantOption('@image.ImageUrl', @image?.VariantOptionID)
 																">
 																
 																<img src="@image.ImageUrl"
 																	 alt="Product Image"
 																	 data-large="@image.ImageUrl"
-																	 data-variant-option-id="@image.VariantOptionID">
+																	 data-variant-option-id="@image?.VariantOptionID">
 																<span class="wcboost-variation-swatches__name"></span>
 															</li>
 														}
