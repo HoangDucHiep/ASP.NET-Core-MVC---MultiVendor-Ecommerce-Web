@@ -3,6 +3,16 @@
 @model List<Vendor>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
    
+
+
+
+<style>
+    .dropdown-menu {
+        position: absolute;
+        z-index: 1050 !; /* Ensure it is above other elements */
+    }
+</style>
+
 <!-- Header -->
         <div class="card-header card-header-content-md-between">
             <div class="mb-2 mb-md-0">
@@ -43,10 +53,6 @@
             }'>
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col" class="table-column-pe-0">
-                            <div class="form-check">
-                            </div>
-                        </th>
                         <th>Id</th>
                         <th>Name</th>
                         <th class="table-column-ps-0">Status</th>
@@ -60,8 +66,6 @@
                     @foreach (var vendor in Model)
                     {
                         <tr>
-                            <td class="table-column-pe-0">
-                            </td>
                             <td>@vendor.VendorId</td>
                             <td>@vendor.Name</td>
                             <td class="@(vendor.Status==VendorStatus.ACTIVE ? "text-success" : "text-warning")">@vendor.Status</td>

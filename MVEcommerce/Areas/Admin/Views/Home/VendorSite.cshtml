@@ -1,4 +1,4 @@
-﻿@using MVEcommerce.Models
+@using MVEcommerce.Models
 @using MVEcommerce.Utility
 @model List<Vendor>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -66,37 +66,39 @@
 
 
 <script>
-    function loadProducts(status) {
-        // Update active tab
-        document.querySelectorAll('#pageHeaderTab .nav-link').forEach(link => {
-            link.classList.remove('active');
-        });
-        event.target.classList.add('active');
-
-        // Make AJAX call
-        $.ajax({
-            url: '@Url.Action("GetFilteredVendor", "Home")',
-            type: 'GET',
-            data: { status: status },
-            success: function(response) {
-                $('#productsContainer').html(response);
-                initializePlugins();
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    }
-    $(document).ready(function() {
-        initializePlugins();
+function initializePlugins() {
+    $('#datatable').DataTable({
+        // Các tùy chọn DataTable của bạn
     });
 
-    function initializePlugins() {
-        $('#datatable').DataTable({
-        });
+    $('#datatableSearch').on('input', function() {
+        $('#datatable').DataTable().search($(this).val()).draw();
+    });
+}
 
-        $('#datatableSearch').on('input', function() {
-            $('#datatable').DataTable().search($(this).val()).draw();
-        });
-    }
-    </script>
+$(document).ready(function() {
+    initializePlugins();
+});
+
+function loadProducts(status) {
+    // Update active tab
+    document.querySelectorAll('#pageHeaderTab .nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    // Make AJAX call
+    $.ajax({
+        url: '@Url.Action("GetFilteredProducts", "Home")',
+        type: 'GET',
+        data: { status: status },
+        success: function(response) {
+            $('#productsContainer').html(response);
+            initializePlugins(); // Gọi hàm khởi tạo lại các plugin và sự kiện
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+</script>
