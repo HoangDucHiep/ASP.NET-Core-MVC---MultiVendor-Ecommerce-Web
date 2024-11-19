@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
 using MVEcommerce.Models.ViewModels.ShoopingCart;
@@ -7,6 +8,7 @@ using System.Security.Claims;
 namespace MVEcommerce.Areas.Customer.Controllers
 {
     [Area("Customer")]
+	[Authorize]
     public class CartController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;

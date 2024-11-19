@@ -393,6 +393,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(Order);
         }
         [HttpGet]
+        [Authorize]
         public IActionResult Addresses()
         {
             var adr = _unitOfWork.Address.Get(x => x.UserId == userId);
@@ -408,6 +409,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         }
         
         [HttpPost]
+        [Authorize]
         public IActionResult Addresses(Address adr)
         {
             if (ModelState.IsValid)
@@ -432,6 +434,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         }
 
         [Authorize]
+        
         public IActionResult AccountDetail()
         {
             var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
@@ -439,6 +442,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult AccountDetail(ApplicationUser aUser)
         {
             if (ModelState.IsValid)
@@ -457,7 +461,6 @@ namespace MVEcommerce.Areas.Customer.Controllers
             }
             return View();
         }
-
 
         public IActionResult Privacy()
         {
