@@ -5,133 +5,20 @@
     ViewData["Title"] = "SearchProduct";
 }
 
-<div class="container clearfix  site-content-container">
-	<div id="primary" class="content-area">
+<div style="width: 70% !important;" class="container clearfix  site-content-container">
+	<div  id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 			<div class="woocommerce-notices-wrapper"></div>
 			<div class="catalog-toolbar">
-				<div class="mobile-catalog-toolbar ">
-					<button class="mobile-catalog-toolbar__filter-button motta-button--ghost motta-button--color-black hidden-sm hidden-md hidden-lg" data-toggle="off-canvas" data-target="mobile-filter-sidebar-panel">
-						<span class="motta-svg-icon motta-svg-icon--filter">
-							<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
-								<path d="M8 14.4h3.2v-9.6h-3.2v3.2h-4.8v3.2h4.8z"></path>
-								<path d="M24 17.6h-3.2v9.6h3.2v-3.2h4.8v-3.2h-4.8z"></path>
-								<path d="M14.4 8h14.4v3.2h-14.4v-3.2z"></path>
-								<path d="M3.2 20.8h14.4v3.2h-14.4v-3.2z"></path>
-							</svg>
-						</span>
-						Filter
-						<span class="count">(1)</span>
-					</button>
-					<button class="mobile-catalog-toolbar__sort-button motta-button--color-black hidden-sm hidden-md hidden-lg motta-button--ghost" data-toggle="modal" data-target="mobile-orderby-modal">
-						Sort by :<span class="name">Default</span>
-					</button>
-				</div>
-				<p class="motta-result-count">@ViewBag.CurrentPage – @(ViewBag.CurrentPage + 19) of @Model.Products.Count() Results</p>
-				<div class="catalog-toolbar__toolbar">
-					<button class="tablet-catalog-toolbar__filter-button motta-button--subtle motta-button--color-black hidden-xs hidden-lg" data-toggle="off-canvas" data-target="mobile-filter-sidebar-panel">
-						<span class="motta-svg-icon motta-svg-icon--filter">
-							<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
-								<path d="M8 14.4h3.2v-9.6h-3.2v3.2h-4.8v3.2h4.8z"></path>
-								<path d="M24 17.6h-3.2v9.6h3.2v-3.2h4.8v-3.2h-4.8z"></path>
-								<path d="M14.4 8h14.4v3.2h-14.4v-3.2z"></path>
-								<path d="M3.2 20.8h14.4v3.2h-14.4v-3.2z"></path>
-							</svg>
-						</span>
-
-						Filter
-					</button>
-					<span class="woocommerce-ordering__label">Sort by:</span>
-					<form class="woocommerce-ordering" method="get">
-						<select name="orderby" class="orderby" aria-label="Shop order">
-							<option value="menu_order" selected="selected">Default</option>
-							<option value="popularity">Popularity</option>
-							<option value="rating">Average rating</option>
-							<option value="date">Latest</option>
-							<option value="price">Price: low to high</option>
-							<option value="price-desc">Price: high to low</option>
-						</select>
-						<input type="hidden" name="paged" value="1">
-					</form>
-					<div id="motta-toolbar-view" class="motta-toolbar-view">
-						<a href="#" class="grid-2 " data-view="grid-2" data-type="grid-2">
-							<span class="motta-svg-icon motta-svg-icon--view-large">
-								<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 43 32">
-									<path d="M18.667 6.667v18.667h-12v-18.667h12zM20 5.333h-14.667v21.333h14.667v-21.333z"></path>
-									<path d="M36 6.667v18.667h-12v-18.667h12zM37.333 5.333h-14.667v21.333h14.667v-21.333z"></path>
-								</svg>
-							</span>
-						</a>
-						<a href="#" class="grid-3 " data-view="grid-3" data-type="grid-3">
-							<span class="motta-svg-icon motta-svg-icon--view-medium">
-								<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 43 32">
-									<path d="M13.333 6.667v6.667h-6.667v-6.667h6.667zM14.667 5.333h-9.333v9.333h9.333v-9.333z"></path>
-									<path d="M25.333 6.667v6.667h-6.667v-6.667h6.667zM26.667 5.333h-9.333v9.333h9.333v-9.333z"></path>
-									<path d="M13.333 18.667v6.667h-6.667v-6.667h6.667zM14.667 17.333h-9.333v9.333h9.333v-9.333z"></path>
-									<path d="M25.333 18.667v6.667h-6.667v-6.667h6.667zM26.667 17.333h-9.333v9.333h9.333v-9.333z"></path>
-									<path d="M37.333 6.667v6.667h-6.667v-6.667h6.667zM38.667 5.333h-9.333v9.333h9.333v-9.333z"></path>
-									<path d="M37.333 18.667v6.667h-6.667v-6.667h6.667zM38.667 17.333h-9.333v9.333h9.333v-9.333z"></path>
-								</svg>
-							</span>
-						</a>
-						<a href="#" class="grid-4 " data-view="grid-4" data-type="grid-4">
-							<span class="motta-svg-icon motta-svg-icon--view-small">
-								<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 43 32">
-									<path d="M10.667 6.667v2.667h-2.667v-2.667h2.667zM12 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M10.667 14.667v2.667h-2.667v-2.667h2.667zM12 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M10.667 22.667v2.667h-2.667v-2.667h2.667zM12 21.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M18.667 6.667v2.667h-2.667v-2.667h2.667zM20 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M18.667 14.667v2.667h-2.667v-2.667h2.667zM20 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M18.667 22.667v2.667h-2.667v-2.667h2.667zM20 21.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M26.667 6.667v2.667h-2.667v-2.667h2.667zM28 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M26.667 14.667v2.667h-2.667v-2.667h2.667zM28 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M26.667 22.667v2.667h-2.667v-2.667h2.667zM28 21.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M34.667 6.667v2.667h-2.667v-2.667h2.667zM36 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M34.667 14.667v2.667h-2.667v-2.667h2.667zM36 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M34.667 22.667v2.667h-2.667v-2.667h2.667zM36 21.333h-5.333v5.333h5.333v-5.333z"></path>
-								</svg>
-							</span>
-						</a>
-						<a href="#" class="grid-5 " data-view="grid-5" data-type="grid-5">
-							<span class="motta-svg-icon motta-svg-icon--view-small-extra">
-								<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 43 32">
-									<path d="M6.667 6.667v2.667h-2.667v-2.667h2.667zM8 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M6.667 14.667v2.667h-2.667v-2.667h2.667zM8 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M6.667 22.667v2.667h-2.667v-2.667h2.667zM8 21.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M14.667 6.667v2.667h-2.667v-2.667h2.667zM16 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M14.667 14.667v2.667h-2.667v-2.667h2.667zM16 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M14.667 22.667v2.667h-2.667v-2.667h2.667zM16 21.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M22.667 6.667v2.667h-2.667v-2.667h2.667zM24 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M22.667 14.667v2.667h-2.667v-2.667h2.667zM24 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M22.667 22.667v2.667h-2.667v-2.667h2.667zM24 21.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M30.667 6.667v2.667h-2.667v-2.667h2.667zM32 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M30.667 14.667v2.667h-2.667v-2.667h2.667zM32 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M30.667 22.667v2.667h-2.667v-2.667h2.667zM32 21.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M38.667 6.667v2.667h-2.667v-2.667h2.667zM40 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M38.667 14.667v2.667h-2.667v-2.667h2.667zM40 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M38.667 22.667v2.667h-2.667v-2.667h2.667zM40 21.333h-5.333v5.333h5.333v-5.333z"></path>
-								</svg>
-							</span>
-						</a>
-						<a href="#" class="list " data-view="list" data-type="list">
-							<span class="motta-svg-icon motta-svg-icon--view-list">
-								<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 43 32">
-									<path d="M10.667 6.667v2.667h-2.667v-2.667h2.667zM12 5.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M10.667 14.667v2.667h-2.667v-2.667h2.667zM12 13.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M10.667 22.667v2.667h-2.667v-2.667h2.667zM12 21.333h-5.333v5.333h5.333v-5.333z"></path>
-									<path d="M34.667 6.667v2.667h-18.667v-2.667h18.667zM36 5.333h-21.333v5.333h21.333v-5.333z"></path>
-									<path d="M34.667 14.667v2.667h-18.667v-2.667h18.667zM36 13.333h-21.333v5.333h21.333v-5.333z"></path>
-									<path d="M34.667 22.667v2.667h-18.667v-2.667h18.667zM36 21.333h-21.333v5.333h21.333v-5.333z"></path>
-								</svg>
-							</span>
-						</a>
-					</div>
-				</div>
+				<h3 style="color: dimgrey">Category: @Model.CategoryName</h3>
 			</div>
+
 			<ul class="products product-card-layout-1 columns-2 mobile-col-2 product-list-no-desc-mobile">
+				@if (Model.Products != null)
+				{
 				@foreach (var product in Model.Products)
 				{
-					var gg = product.Price - product.Sale;
+					var gg = product.Price * (1 - product.Sale / 100);
 					<li class="product type-product post-17 status-publish first instock product_cat-electronics product_tag-electric product_tag-electric-10 product_tag-electric-4 product_tag-electric-5 product_tag-laptop product_tag-toys has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
 						<div class="product-inner">
 							<span class="woocommerce-badges">
@@ -142,7 +29,6 @@
 							</span>
 							<div class="product-thumbnail">
 								<div class="product-thumbnails--slider swiper-container swiper-container-initialized swiper-container-horizontal">
-									
 									<div class="swiper-wrapper">
 										<a href="../../product/11-inch-tablet-pro-2020-space-gray/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link swiper-slide swiper-slide-active" style="width: 404px;">
 											<img loading="lazy" width="300" height="300" src="@product.ProductImages!.Where(x => x. IsMain).FirstOrDefault()!.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" decoding="async" sizes="(max-width: 300px) 100vw, 300px">
@@ -160,6 +46,7 @@
 											<path d="M13.552 0.72l2.656 1.76-9.008 13.52 9.008 13.52-2.656 1.76-10.192-15.28z"></path>
 										</svg>
 									</span>
+
 									<span class="motta-svg-icon motta-svg-icon--arrow-right-long motta-product-card-swiper-next motta-product-card-swiper-button" tabindex="0" role="button" aria-label="Next slide" aria-disabled="false">
 										<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 19 32">
 											<path d="M5.648 31.28l-2.656-1.76 9.008-13.52-9.008-13.52 2.656-1.76 10.192 15.28z"></path>
@@ -168,7 +55,7 @@
 									<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
 								</div>
 								<div class="product-featured-icons">
-									<a href="index4551.html?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="11-inch Tablet Pro 2020 Space Gray" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add “11-inch Tablet Pro 2020 Space Gray” to the wishlist">
+									<a href="index4551.html?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="@product.Name" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add “@product.Name” to the wishlist">
 										<span class="motta-button__icon add-to-wishlist-button__icon wcboost-wishlist-button__icon">
 											<span class="motta-svg-icon motta-svg-icon--wishlist">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
@@ -177,12 +64,14 @@
 											</span>
 										</span>
 										<span class="motta-button__text add-to-wishlist-button__text wcboost-wishlist-button__text" data-add="Add To Wishlist" data-remove="Remove Wishlist" data-view="View Wishlist">Wishlist</span>
-									</a><a href="indexcc23.html?add_to_compare=17" data-product_id="17" data-product_title="11-inch Tablet Pro 2020 Space Gray" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare “11-inch Tablet Pro 2020 Space Gray”" role="button">
+									</a>
+									<a href="indexcc23.html?add_to_compare=17" data-product_id="17" data-product_title="@product.Name" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare “@product.Name”" role="button">
 										<span class="wcboost-products-compare-button__icon"><span class="motta-svg-icon motta-svg-icon--compare"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M13.136 14.864l-3.68-3.664h16.144v-3.2h-16.144l3.68-3.664-2.272-2.272-7.52 7.536 7.52 7.536z"></path><path d="M21.136 14.864l-2.272 2.272 3.68 3.664h-16.144v3.2h16.144l-3.68 3.664 2.272 2.272 7.52-7.536z"></path></svg></span></span>
 										<span class="wcboost-products-compare-button__text" data-add="Add To Compare" data-remove="Remove Compare" data-view="Browse Compare">Compare</span>
 									</a>
 								</div>
 							</div>
+
 							<div class="product-summary show-vendor">
 								<div class="short-description">
 									@product.Description
@@ -200,14 +89,18 @@
 										<button class="motta-more__button motta-button--subtle">Show More</button>
 									</div>
 								</div>
+
 								<div class="product-variation-items ">
-									<div class="product-variation-items--text">COLORRRR</div>
+									<div class="product-variation-items--text">@product.ProductVariants?.Count() color</div>
 								</div>
+
 								<div class="meta-wrapper">
 									<div class="meta meta-sku">Sku: <span>woo-polo</span></div>
 								</div>
 
-								<h2 class="woocommerce-loop-product__title"><a asp-contronller="Home" asp-action="ProductDetail" asp-route-slug="@product.Slug" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@product.Name</a></h2>
+								<h2 class="woocommerce-loop-product__title">
+									<a asp-contronller="Home" asp-action="ProductDetail" asp-route-slug="@product.Slug" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@product.Name</a>
+								</h2>
 
 								<div class="motta-rating">
 									<div class="star-rating" role="img" aria-label="Rated 5.00 out of 5">
@@ -220,17 +113,14 @@
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
@@ -247,17 +137,14 @@
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
 													<path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path>
-												</svg>
 											</span>
 											<span class="motta-svg-icon motta-svg-icon--star">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
@@ -298,6 +185,7 @@
 								</div>
 
 							</div>
+							@*engggggggggggggggggggg*@
 							<div class="product-actions">
 								<span class="price">
 									<span class="woocs_price_code" data-currency="" data-redraw-id="672196f7a9c58" data-product-id="17">
@@ -318,16 +206,25 @@
 										<span class="screen-reader-text">Current price is: @gg g</span>
 									</span>
 								</span>
-								<a href="index0ba2.html?add-to-cart=17" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="17" data-product_sku="woo-polo" aria-label="Add to cart: “11-inch Tablet Pro 2020 Space Gray”" aria-describedby="" rel="nofollow">
-									<span>Add to cart</span></a><a href="../../product/11-inch-tablet-pro-2020-space-gray/index.html" class="button motta-button motta-button--quickview motta-button--ghost" data-toggle="modal" data-target="quick-view-modal" data-id="17" data-text="Quick View" rel="nofollow">
-									
-								</a>
+								@*router*@
+								@if (product.HasVariant)
+								{
+									<a asp-action="ProductDetail" asp-route-slug="@product.Slug" data-quantity="1" class="button product_type_variable add_to_cart_button" data-product_id="@product.ProductId" data-product_sku="RF28R755" aria-label="Select options for “@product.Name” Touch Screen”" aria-describedby="This product has multiple variants. The options may be chosen on the product page" rel="nofollow">
+										<span>Select options</span>
+									</a>
+								}
+								else
+								{
+									<a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id=@product.ProductId data-product_sku="woo-polo" aria-label="Add to cart: @product.Name" aria-describedby="" rel="nofollow" onclick="addToCart(@product.ProductId),showProduct(@product.ProductId)">
+                                        <span>Add to cart</span>
+                                    </a>
+								}
 								<div class="product-featured-icons">
-									<a href="indexcc23.html?add_to_compare=17" data-product_id="17" data-product_title="11-inch Tablet Pro 2020 Space Gray" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare “11-inch Tablet Pro 2020 Space Gray”" role="button">
+									<a href="indexcc23.html?add_to_compare=17" data-product_id="17" data-product_title="@product.Name" class="wcboost-products-compare-button wcboost-products-compare-button--ajax motta-button motta-button--text motta-button-compare--view" aria-label="Compare “@product.Name”" role="button">
 										<span class="wcboost-products-compare-button__icon"><span class="motta-svg-icon motta-svg-icon--compare"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M13.136 14.864l-3.68-3.664h16.144v-3.2h-16.144l3.68-3.664-2.272-2.272-7.52 7.536 7.52 7.536z"></path><path d="M21.136 14.864l-2.272 2.272 3.68 3.664h-16.144v3.2h16.144l-3.68 3.664 2.272 2.272 7.52-7.536z"></path></svg></span></span>
 										<span class="wcboost-products-compare-button__text" data-add="Add To Compare" data-remove="Remove Compare" data-view="Browse Compare">Compare</span>
 									</a>
-									<a href="index4551.html?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="11-inch Tablet Pro 2020 Space Gray" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add “11-inch Tablet Pro 2020 Space Gray” to the wishlist">
+									<a href="index4551.html?add-to-wishlist=17" data-quantity="1" data-product_id="17" data-product_title="@product.Name" data-variations="" class="wcboost-wishlist-button wcboost-wishlist-button--theme button wp-element-button wcboost-wishlist-button--ajax motta-button motta-button--text motta-button--wishlist motta-button-wishlist--view" aria-label="Add “@product.Name” to the wishlist">
 										<span class="motta-button__icon add-to-wishlist-button__icon wcboost-wishlist-button__icon">
 											<span class="motta-svg-icon motta-svg-icon--wishlist">
 												<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
@@ -342,15 +239,15 @@
 						</div>
 					</li>
 				}
-
+				}
 			</ul>
-			
+
 			<nav role="navigation" id="nav-below" class="dokan-pagination-container site-navigation paging-navigation">
                 <ul class="pager dokan-pagination">
                     @if (ViewBag.CurrentPage > 1)
                     {
                         <li class="previous">
-                            <a href="@Url.Action("SearchProduct", new { s = ViewBag.SearchQuery, page = ViewBag.CurrentPage - 1 })">&larr; Previous</a>
+                            <a href="@Url.RouteUrl(new { area = "Customer", controller = "Home", action = "ProductsByCategory", slug = ViewBag.CategorySlug, page = ViewBag.CurrentPage - 1 })">&larr; Previous</a>
                         </li>
                     }
 
@@ -359,7 +256,7 @@
                         if (i == 1 || i == ViewBag.TotalPages || (i >= ViewBag.CurrentPage - 2 && i <= ViewBag.CurrentPage + 2))
                         {
                             <li class="@(i == ViewBag.CurrentPage ? "active" : "")">
-                                <a href="@Url.Action("SearchProduct", new { s = ViewBag.SearchQuery, page = i })">@i</a>
+                                <a href="@Url.RouteUrl(new { area = "Customer", controller = "Home", action = "ProductsByCategory", slug = ViewBag.CategorySlug, page = i })">@i</a>
                             </li>
                         }
                         else if (i == ViewBag.CurrentPage - 3 || i == ViewBag.CurrentPage + 3)
@@ -371,142 +268,65 @@
                     @if (ViewBag.CurrentPage < ViewBag.TotalPages)
                     {
                         <li class="next">
-                            <a href="@Url.Action("SearchProduct", new { s = ViewBag.SearchQuery, page = ViewBag.CurrentPage + 1 })">Next &rarr;</a>
+                            <a href="@Url.RouteUrl(new { area = "Customer", controller = "Home", action = "ProductsByCategory", slug = ViewBag.CategorySlug, page = ViewBag.CurrentPage + 1 })">Next &rarr;</a>
                         </li>
                     }
                 </ul>
             </nav>
+
 		</main>
 	</div>
-	@* <aside id="mobile-filter-sidebar-panel" class="widget-area primary-sidebar catalog-sidebar">
-	<div class="sidebar__backdrop"></div>
-	<div class="sidebar__container">
-	<span class="motta-svg-icon motta-svg-icon--close panel__button-close"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M28.336 5.936l-2.272-2.272-10.064 10.080-10.064-10.080-2.272 2.272 10.080 10.064-10.080 10.064 2.272 2.272 10.064-10.080 10.064 10.080 2.272-2.272-10.080-10.064z"></path></svg></span>		<div class="sidebar__header">
-	Filter &amp; Sort
-	</div>
-	<div class="sidebar__content">
-	<section id="motta-products-filter-1" class="widget products-filter-widget woocommerce">
-	<h4 class="widget-title"><span class="motta-svg-icon motta-svg-icon--filter"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M8 14.4h3.2v-9.6h-3.2v3.2h-4.8v3.2h4.8z"></path><path d="M24 17.6h-3.2v9.6h3.2v-3.2h4.8v-3.2h-4.8z"></path><path d="M14.4 8h14.4v3.2h-14.4v-3.2z"></path><path d="M3.2 20.8h14.4v3.2h-14.4v-3.2z"></path></svg></span>Filter</h4><form action="https://motta.uix.store/shop/" method="get" class="ajax-filter instant-filter has-collapse" data-settings="{&quot;ajax&quot;:true,&quot;instant&quot;:true,&quot;change_url&quot;:true}">
-	<div class="products-filter__activated "><div class="products-filter__activated-heading"><h6>Refine by</h6><button type="reset" value="Clear All" class="motta-button--subtle alt reset-button">Clear All</button></div><div class="products-filter__activated-items"><a href="#" class="remove-filtered" data-name="product_cat" data-value="electronics" rel="nofollow" aria-label="Remove filter">Electronics<span class="motta-svg-icon motta-svg-icon--close"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M28.336 5.936l-2.272-2.272-10.064 10.080-10.064-10.080-2.272 2.272 10.080 10.064-10.080 10.064 2.272 2.272 10.064-10.080 10.064 10.080 2.272-2.272-10.080-10.064z"></path></svg></span></a></div></div><div class="products-filter__filters filters">
-	<div class="products-filter__filter filter product_cat product_cat list products-filter--collapsible products-filter--counts products-filter--view-more products-filter--show-children-only">
-	<span class="products-filter__filter-name filter-name">
-	Categories
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<ul class="products-filter__options products-filter--list filter-list"><li class="products-filter__option filter-list-item " data-value="" style="display: list-item;"><span class="products-filter__option-name name">All Categories</span><span class="products-filter__count counter">165</span></li><li class="products-filter__option filter-list-item selected active has-children" data-value="electronics" style="display: list-item;"><span class="products-filter__option-name name">Electronics</span><span class="products-filter__count counter">54</span><span class="products-filter__option-toggler" aria-hidden="true"></span><ul class="children"><li class="products-filter__option filter-list-item " data-value="window-os" style="display: list-item;"><span class="products-filter__option-name name">Window OS</span><span class="products-filter__count counter">2</span></li><li class="products-filter__option filter-list-item " data-value="mac-os" style="display: list-item;"><span class="products-filter__option-name name">Mac OS</span><span class="products-filter__count counter">2</span></li><li class="products-filter__option filter-list-item " data-value="chrome-os" style="display: list-item;"><span class="products-filter__option-name name">Chrome OS</span><span class="products-filter__count counter">3</span></li><li class="products-filter__option filter-list-item " data-value="linux" style="display: list-item;"><span class="products-filter__option-name name">Linux</span><span class="products-filter__count counter">2</span></li><li class="products-filter__option filter-list-item " data-value="accessories-supplies" style="display: list-item;"><span class="products-filter__option-name name">Accessories &amp; Supplies</span><span class="products-filter__count counter">6</span></li><li class="products-filter__option filter-list-item " data-value="camera-photo" style="display: list-item;"><span class="products-filter__option-name name">Camera &amp; Photo</span><span class="products-filter__count counter">1</span></li><li class="products-filter__option filter-list-item " data-value="car-vehicle-electronics"><span class="products-filter__option-name name">Car &amp; Vehicle Electronics</span><span class="products-filter__count counter">2</span></li><li class="products-filter__option filter-list-item " data-value="cell-phones"><span class="products-filter__option-name name">Cell Phones</span><span class="products-filter__count counter">16</span></li><li class="products-filter__option filter-list-item " data-value="computers-accessories"><span class="products-filter__option-name name">Computers &amp; Accessories</span><span class="products-filter__count counter">18</span></li><li class="products-filter__option filter-list-item " data-value="ebook-readers"><span class="products-filter__option-name name">eBook Readers</span><span class="products-filter__count counter">14</span></li><li class="products-filter__option filter-list-item " data-value="gps-navigation"><span class="products-filter__option-name name">GPS &amp; Navigation</span><span class="products-filter__count counter">5</span></li><li class="products-filter__option filter-list-item " data-value="headphones"><span class="products-filter__option-name name">Headphones</span><span class="products-filter__count counter">4</span></li><li class="products-filter__option filter-list-item " data-value="home-audio"><span class="products-filter__option-name name">Home Audio</span><span class="products-filter__count counter">3</span></li><li class="products-filter__option filter-list-item " data-value="office-electronics"><span class="products-filter__option-name name">Office Electronics</span><span class="products-filter__count counter">14</span></li><li class="products-filter__option filter-list-item " data-value="portable-audio-video"><span class="products-filter__option-name name">Portable Audio &amp; Video</span><span class="products-filter__count counter">7</span></li><li class="products-filter__option filter-list-item " data-value="security-surveillance"><span class="products-filter__option-name name">Security &amp; Surveillance</span><span class="products-filter__count counter">6</span></li><li class="products-filter__option filter-list-item " data-value="service-plans"><span class="products-filter__option-name name">Service Plans</span><span class="products-filter__count counter">8</span></li><li class="products-filter__option filter-list-item " data-value="television-video"><span class="products-filter__option-name name">Television &amp; Video</span><span class="products-filter__count counter">6</span></li><li class="products-filter__option filter-list-item " data-value="video-game-consoles-accessories"><span class="products-filter__option-name name">Video Game Consoles &amp; Accessories</span><span class="products-filter__count counter">6</span></li><li class="products-filter__option filter-list-item " data-value="video-projectors"><span class="products-filter__option-name name">Video Projectors</span><span class="products-filter__count counter">5</span></li><li class="products-filter__option filter-list-item " data-value="wearable-technology"><span class="products-filter__option-name name">Wearable Technology</span><span class="products-filter__count counter">4</span></li></ul></li></ul><input type="hidden" name="product_cat" value="electronics"><div class="motta-widget-product-cats-btn btn-children">
-	<span class="show-more" style="display: inline;">See More</span>
-	<span class="show-less">Less More</span>
-	<input type="hidden" class="widget-cat-numbers" value="6">
-	</div>
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter price price ranges">
-	<span class="products-filter__filter-name filter-name">
-	Price
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<ul class="products-filter__options products-filter--ranges products-filter--checkboxes filter-ranges"><li class="products-filter__option filter-ranges__item filter-checkboxes-item " data-value="{&quot;min&quot;:0,&quot;max&quot;:100}"><span class="products-filter__option-name name">0  -  <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>100.00</bdi></span></span></span></li><li class="products-filter__option filter-ranges__item filter-checkboxes-item " data-value="{&quot;min&quot;:100,&quot;max&quot;:200}"><span class="products-filter__option-name name"><span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>100.00</bdi></span></span>  -  <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>200.00</bdi></span></span></span></li><li class="products-filter__option filter-ranges__item filter-checkboxes-item " data-value="{&quot;min&quot;:250,&quot;max&quot;:&quot;&quot;}"><span class="products-filter__option-name name"><span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>250.00</bdi></span></span>+</span></li></ul><div class="product-filter-box"><input type="number" name="min_price" value="" placeholder="Min" class="motta-input--base"><span class="line"></span><input type="number" name="max_price" value="" placeholder="Max" class="motta-input--base"><button type="submit" value="Apply" class="button filter-button motta-button--bg-color-black motta-button-range">Apply</button></div>
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter filter_storage attribute checkboxes storage products-filter--collapsible">
-	<span class="products-filter__filter-name filter-name">
-	Storage Capacity
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<ul class="products-filter__options products-filter--checkboxes filter-checkboxes"><li class="products-filter__option filter-checkboxes-item " data-value="128-gb"><span class="products-filter__option-name name">128 GB</span></li><li class="products-filter__option filter-checkboxes-item " data-value="1tb-ssd-storage"><span class="products-filter__option-name name">1TB SSD Storage</span></li><li class="products-filter__option filter-checkboxes-item " data-value="256-gb"><span class="products-filter__option-name name">256 GB</span></li><li class="products-filter__option filter-checkboxes-item " data-value="64-gb"><span class="products-filter__option-name name">64 GB</span></li></ul><input type="hidden" name="filter_storage" value="" disabled="">
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter filter_processor attribute checkboxes processor products-filter--collapsible products-filter--scrollable">
-	<span class="products-filter__filter-name filter-name">
-	Processor Type
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<ul class="products-filter__options products-filter--checkboxes filter-checkboxes"><li class="products-filter__option filter-checkboxes-item " data-value="amd-ryzen-3"><span class="products-filter__option-name name">AMD Ryzen 3</span></li><li class="products-filter__option filter-checkboxes-item " data-value="amd-ryzen-5"><span class="products-filter__option-name name">AMD Ryzen 5</span></li><li class="products-filter__option filter-checkboxes-item " data-value="amd-ryzen-7"><span class="products-filter__option-name name">AMD Ryzen 7</span></li><li class="products-filter__option filter-checkboxes-item " data-value="apple-m1"><span class="products-filter__option-name name">Apple M1</span></li><li class="products-filter__option filter-checkboxes-item " data-value="intel-core-i3"><span class="products-filter__option-name name">Intel Core i3</span></li><li class="products-filter__option filter-checkboxes-item " data-value="intel-core-i5"><span class="products-filter__option-name name">Intel Core i5</span></li><li class="products-filter__option filter-checkboxes-item " data-value="intel-core-i7"><span class="products-filter__option-name name">Intel Core i7</span></li></ul><input type="hidden" name="filter_processor" value="" disabled="">
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter filter_color attribute auto color">
-	<span class="products-filter__filter-name filter-name">
-	Color
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<div class="products-filter__options products-filter--swatches filter-swatches swatches-color"><span class="products-filter__option swatch swatch-color swatch-black " data-value="black" title="Black"><span class="bg-color" style="background-color:#000000;"></span><span class="name">Black</span></span><span class="products-filter__option swatch swatch-color swatch-blue " data-value="blue" title="Blue"><span class="bg-color" style="background-color:#2e9ce9;"></span><span class="name">Blue</span></span><span class="products-filter__option swatch swatch-color swatch-brown " data-value="brown" title="Brown"><span class="bg-color" style="background-color:#8c6344;"></span><span class="name">Brown</span></span><span class="products-filter__option swatch swatch-color swatch-gold " data-value="gold" title="Gold"><span class="bg-color" style="background-color:#efd29b;"></span><span class="name">Gold</span></span><span class="products-filter__option swatch swatch-color swatch-gray " data-value="gray" title="Gray"><span class="bg-color" style="background-color:#777575;"></span><span class="name">Gray</span></span><span class="products-filter__option swatch swatch-color swatch-green " data-value="green" title="Green"><span class="bg-color" style="background-color:#237f25;"></span><span class="name">Green</span></span><span class="products-filter__option swatch swatch-color swatch-red " data-value="red" title="Red"><span class="bg-color" style="background-color:#f23729;"></span><span class="name">Red</span></span><span class="products-filter__option swatch swatch-color swatch-sliver " data-value="sliver" title="Sliver"><span class="bg-color" style="background-color:#ecebe9;"></span><span class="name">Sliver</span></span><span class="products-filter__option swatch swatch-color swatch-white " data-value="white" title="White"><span class="bg-color" style="background-color:#ececec;"></span><span class="name">White</span></span><span class="products-filter__option swatch swatch-color swatch-yellow " data-value="yellow" title="Yellow"><span class="bg-color" style="background-color:#fec71e;"></span><span class="name">Yellow</span></span></div><input type="hidden" name="filter_color" value="" disabled="">
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter product_brand product_brand checkboxes products-filter--collapsible products-filter--scrollable">
-	<span class="products-filter__filter-name filter-name">
-	Brands
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<input type="text" class="products-filter__search-box motta-input--base" placeholder="Search product brands"><ul class="products-filter__options products-filter--checkboxes filter-checkboxes"><li class="products-filter__option filter-checkboxes-item " data-value="acer"><span class="products-filter__option-name name">Acer</span></li><li class="products-filter__option filter-checkboxes-item " data-value="alisa"><span class="products-filter__option-name name">Alisa</span></li><li class="products-filter__option filter-checkboxes-item " data-value="apple"><span class="products-filter__option-name name">Apple</span></li><li class="products-filter__option filter-checkboxes-item " data-value="asus"><span class="products-filter__option-name name">Asus</span></li><li class="products-filter__option filter-checkboxes-item " data-value="bose"><span class="products-filter__option-name name">Bose</span></li><li class="products-filter__option filter-checkboxes-item " data-value="brandit"><span class="products-filter__option-name name">Brandit</span></li><li class="products-filter__option filter-checkboxes-item " data-value="cisco"><span class="products-filter__option-name name">Cisco</span></li><li class="products-filter__option filter-checkboxes-item " data-value="classic"><span class="products-filter__option-name name">Classic</span></li><li class="products-filter__option filter-checkboxes-item " data-value="dyson"><span class="products-filter__option-name name">Dyson</span></li><li class="products-filter__option filter-checkboxes-item " data-value="electrolux"><span class="products-filter__option-name name">Electrolux</span></li><li class="products-filter__option filter-checkboxes-item " data-value="google"><span class="products-filter__option-name name">Google</span></li><li class="products-filter__option filter-checkboxes-item " data-value="herman-miller"><span class="products-filter__option-name name">Herman Miller</span></li><li class="products-filter__option filter-checkboxes-item " data-value="intel"><span class="products-filter__option-name name">Intel</span></li><li class="products-filter__option filter-checkboxes-item " data-value="lenovo"><span class="products-filter__option-name name">Lenovo</span></li><li class="products-filter__option filter-checkboxes-item " data-value="lg"><span class="products-filter__option-name name">LG</span></li><li class="products-filter__option filter-checkboxes-item " data-value="nvidia"><span class="products-filter__option-name name">Nvidia</span></li><li class="products-filter__option filter-checkboxes-item " data-value="samsung"><span class="products-filter__option-name name">Samsung</span></li><li class="products-filter__option filter-checkboxes-item " data-value="smeg"><span class="products-filter__option-name name">Smeg</span></li><li class="products-filter__option filter-checkboxes-item " data-value="smile"><span class="products-filter__option-name name">Smile</span></li><li class="products-filter__option filter-checkboxes-item " data-value="sony"><span class="products-filter__option-name name">Sony</span></li><li class="products-filter__option filter-checkboxes-item " data-value="westside"><span class="products-filter__option-name name">WestSide</span></li><li class="products-filter__option filter-checkboxes-item " data-value="xbox"><span class="products-filter__option-name name">Xbox</span></li></ul><input type="hidden" name="product_brand" value="" disabled="">
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter rating_filter rating checkboxes products-filter--collapsible">
-	<span class="products-filter__filter-name filter-name">
-	Customer Rating
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<ul class="products-filter__options products-filter--checkboxes filter-checkboxes"><li class="products-filter__option filter-checkboxes-item " data-value="5"><span class="products-filter__option-name name"><span class="star-rating"><span class="max-rating rating-stars"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="user-rating rating-stars" style="width:100%"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="screen-reader-text">Rated <strong class="rating">5</strong> out of 5</span></span></span><span class="number">5</span></li><li class="products-filter__option filter-checkboxes-item " data-value="4"><span class="products-filter__option-name name"><span class="star-rating"><span class="max-rating rating-stars"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="user-rating rating-stars" style="width:80%"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="screen-reader-text">Rated <strong class="rating">4</strong> out of 5</span></span></span><span class="number">4</span><span class="text">&amp; Up</span></li><li class="products-filter__option filter-checkboxes-item " data-value="3"><span class="products-filter__option-name name"><span class="star-rating"><span class="max-rating rating-stars"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="user-rating rating-stars" style="width:60%"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="screen-reader-text">Rated <strong class="rating">3</strong> out of 5</span></span></span><span class="number">3</span><span class="text">&amp; Up</span></li><li class="products-filter__option filter-checkboxes-item " data-value="2"><span class="products-filter__option-name name"><span class="star-rating"><span class="max-rating rating-stars"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="user-rating rating-stars" style="width:40%"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="screen-reader-text">Rated <strong class="rating">2</strong> out of 5</span></span></span><span class="number">2</span><span class="text">&amp; Up</span></li></ul><input type="hidden" name="rating_filter" value="" disabled="">
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter filter_size attribute auto size">
-	<span class="products-filter__filter-name filter-name">
-	Size
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<div class="products-filter__options products-filter--swatches filter-swatches swatches-button"><span class="products-filter__option swatch swatch-button swatch-11 " data-value="11" title="11''">11''</span><span class="products-filter__option swatch swatch-button swatch-12-9 " data-value="12-9" title="12.9''">12.9''</span></div><input type="hidden" name="filter_size" value="" disabled="">
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter product_status product_status checkboxes products-filter--collapsible">
-	<span class="products-filter__filter-name filter-name">
-	Show Only
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<ul class="products-filter__options products-filter--checkboxes filter-checkboxes"><li class="products-filter__option filter-checkboxes-item " data-value="on_sale"><span class="products-filter__option-name name">On sale</span></li><li class="products-filter__option filter-checkboxes-item " data-value="in_stock"><span class="products-filter__option-name name">In stock</span></li><li class="products-filter__option filter-checkboxes-item " data-value="out_of_stock"><span class="products-filter__option-name name">Out of stock</span></li></ul><input type="hidden" name="product_status" value="" disabled="">
-	</div>
-	</div>
-
-
-	<div class="products-filter__filter filter filter_operating attribute auto operating">
-	<span class="products-filter__filter-name filter-name">
-	Operating System
-	</span>
-
-	<div class="products-filter__filter-control filter-control">
-	<div class="products-filter__options products-filter--swatches filter-swatches swatches-button"><span class="products-filter__option swatch swatch-button swatch-android " data-value="android" title="Android">Android</span><span class="products-filter__option swatch swatch-button swatch-ios " data-value="ios" title="IOS">IOS</span><span class="products-filter__option swatch swatch-button swatch-window " data-value="window" title="Window">Window</span></div><input type="hidden" name="filter_operating" value="" disabled="">
-	</div>
-	</div>
-
-	<input type="hidden" name="filter" value="1">
-	</div><div class="products-filter__button"><button type="submit" value="Filter" class="button filter-button motta-button--bg-color-black motta-button--base">Apply</button><button type="reset" value="Reset Filter" class="button alt reset-button motta-button--ghost motta-button--color-black">Clear</button></div><span class="products-loader"><span class="spinner"></span></span>
-	</form>
-	</section>
-	</div>
-	</div>
-	</aside> *@<!-- #primary -->
-
 </div>
+
+
+
+
+<script>
+	function addToCart(productId) {
+		const url = '/api/addToCart';
+
+		const data = {
+			productId: productId,
+			quantity: 1
+		};
+
+		fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(result => {
+				if (result.success) {
+
+				} else {
+					alert(result.message);
+				}
+			})
+			.catch(error => console.error("Error:", error));
+	}
+
+	function showProduct(id, optionId = null) {
+		$.ajax({
+			type: 'GET',
+			url: '@Url.Action("ShowProductModal", "Home")',
+			data: { productId: id, optionId: optionId},
+			success: function (partialView) {
+				$('#motta-popup-add-to-cart').css('display', 'block');
+				$('#opp').css('opacity', '1');
+				$('#show').html(partialView)
+			},
+			Error: function (x) {
+				alert(x.responseText);
+			}
+		})
+		$(document).on('click', '.modal__button-close, .modal__backdrop', function () {
+			$('#motta-popup-add-to-cart').css('display', 'none');
+			$('#opp').css('opacity', '0');
+		});
+
+	}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

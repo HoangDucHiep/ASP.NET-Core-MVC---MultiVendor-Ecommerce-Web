@@ -4,24 +4,24 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-
 	.onsale.woocommerce-badge {
-	display: none;
+		display: none;
 	}
 
-	.Symbol1{
-	display: none;
+	.Symbol1 {
+		display: none;
 	}
 
 	.Symbol {
-	display: none;
+		display: none;
 	}
 </style>
 <div class="container clearfix ">
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 			<div class="woocommerce-notices-wrapper"></div>
-			<div id="product-18" class="has-buy-now product-has-variation-images layout-1 product-add-to-cart-ajax product type-product post-18 status-publish first instock product_cat-cell-phones product_cat-electronics product_cat-gps-navigation product_cat-video-game-consoles-accessories product_tag-device product_tag-electric-5 product_tag-electric-7 has-post-thumbnail shipping-taxable purchasable product-type-variable">
+			<div id="product-18"
+				class="has-buy-now product-has-variation-images layout-1 product-add-to-cart-ajax product type-product post-18 status-publish first instock product_cat-cell-phones product_cat-electronics product_cat-gps-navigation product_cat-video-game-consoles-accessories product_tag-device product_tag-electric-5 product_tag-electric-7 has-post-thumbnail shipping-taxable purchasable product-type-variable">
 
 				@*	<div class="product-header-compact">
 				<div class="product-header-main">
@@ -54,7 +54,8 @@
 				</div>
 				</div>
 				</div> *@
-				<div class="product-gallery-summary product-image-zoom" style="display: flex; justify-content: space-between; align-items: flex-start;">
+				<div class="product-gallery-summary product-image-zoom"
+					style="display: flex; justify-content: space-between; align-items: flex-start;">
 					@*	<div class="motta-product-gallery">
 					<div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-5 images loading" data-columns="5" style="">
 					<a href="#" class="woocommerce-product-gallery__trigger">🔍</a>
@@ -85,8 +86,12 @@
 
 
 						<div class="flex-viewport" style="overflow: hidden; position: relative; height: 480px;">
-							<div class="woocommerce-product-gallery__wrapper" style="width: 600%; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
-								<img loading="lazy" width="450" height="450" src="@Model.ProductImage.ImageUrl" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="@Model.product.Name" decoding="async" sizes="(max-width: 300px) 100vw, 300px" id="main-image">
+							<div class="woocommerce-product-gallery__wrapper"
+								style="width: 600%; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
+								<img loading="lazy" width="450" height="450" src="@Model.ProductImage.ImageUrl"
+									class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+									alt="@Model.product.Name" decoding="async" sizes="(max-width: 300px) 100vw, 300px"
+									id="main-image">
 							</div>
 						</div>
 
@@ -97,24 +102,22 @@
 						<div class="woocommerce-product-gallery__thumbs-carousel">
 
 
-							<div class="swiper-container swiper-container-initialized swiper-container-horizontal" style="opacity: 1;">
-								<ol id="variant-images-list" class="flex-control-nav flex-control-thumbs swiper-wrapper" style="list-style-type:none"
-									data-all-images='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AllProductImages.Select(img => new
+							<div class="swiper-container swiper-container-initialized swiper-container-horizontal"
+								style="opacity: 1;">
+								<ol id="variant-images-list" class="flex-control-nav flex-control-thumbs swiper-wrapper"
+									style="list-style-type:none" data-all-images='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AllProductImages.Select(img => new
 									{
 										imageUrl = img.ImageUrl,
 										variantOptionId = img.VariantOptionID
 									})))'>
-									@foreach (var image in Model.AllProductImages.Where(img => img.VariantOptionID == Model.ProductImages.First().VariantOptionID))
+									@foreach (var image in Model.AllProductImages.Where(img => img.VariantOptionID ==
+																	Model.ProductImages.First().VariantOptionID))
 									{
 
 										<li class="swiper-slide" style="width: 76.6px; margin-right: 15px;">
 											<img onload="this.width = this.naturalWidth; this.height = this.naturalHeight"
-											src="@image.ImageUrl"
-											draggable="false"
-											width="100"
-											height="100"
-											data-large="@image.ImageUrl"
-											onclick="updateMainImage('@image.ImageUrl')">
+												src="@image.ImageUrl" draggable="false" width="100" height="100"
+												data-large="@image.ImageUrl" onclick="updateMainImage('@image.ImageUrl')">
 										</li>
 									}
 								</ol>
@@ -138,7 +141,72 @@
 						<div class="product-meta-wrapper">
 							<div class="meta meta-cat">in <a href="#">@Model.category?.Name</a></div>
 							<div class="woocommerce-product-rating">
-								<div class="star-rating" role="img" aria-label="Rated 4.50 out of 5"><span class="max-rating rating-stars"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="user-rating rating-stars" style="width:90%"><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z"></path></svg></span></span><span class="screen-reader-text">Rated <strong class="rating">4.50</strong> out of 5 based on <span class="rating">2</span> customer ratings</span></div>								<a href="#reviews" class="woocommerce-review-link" rel="nofollow">4.50 (<span class="count">2</span><span> Reviews</span>)</a>
+								<div class="star-rating" role="img" aria-label="Rated 4.50 out of 5"><span
+										class="max-rating rating-stars"><span
+											class="motta-svg-icon motta-svg-icon--star"><svg width="24" height="24"
+												aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span></span><span class="user-rating rating-stars"
+										style="width:90%"><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span><span class="motta-svg-icon motta-svg-icon--star"><svg
+												width="24" height="24" aria-hidden="true" role="img" focusable="false"
+												viewBox="0 0 32 32">
+												<path
+													d="M16 1.333l3.467 11.2h11.2l-9.067 6.933 3.467 11.2-9.067-6.933-9.067 6.933 3.467-11.2-9.067-6.933h11.2z">
+												</path>
+											</svg></span></span><span class="screen-reader-text">Rated <strong
+											class="rating">4.50</strong> out of 5 based on <span class="rating">2</span>
+										customer ratings</span></div> <a href="#reviews" class="woocommerce-review-link"
+									rel="nofollow">4.50 (<span class="count">2</span><span> Reviews</span>)</a>
 							</div>
 
 						</div>
@@ -150,7 +218,8 @@
 								var discountedPrice = Model.product.Price * (1 - Model.product.Sale / 100);
 								<span style="background-color: red ; color: white">-@Model.product.Sale%</span>
 								<p class="price">
-									<span class="woocs_price_code" data-currency="" data-redraw-id="6735f51189978" data-product-id="14603">
+									<span class="woocs_price_code" data-currency="" data-redraw-id="6735f51189978"
+										data-product-id="14603">
 										<ins>
 											<span class="woocommerce-Price-amount amount">
 												<bdi>
@@ -172,7 +241,8 @@
 							}
 							else if (Model.product.Price == null)
 							{
-								var newPrice = Model.productVariantOption.Price * (1 - Model.productVariantOption.Sale / 100);
+								var newPrice = Model.productVariantOption.Price * (1 - Model.productVariantOption.Sale /
+								100);
 								<span class="onsale woocommerce-badge">-@Model.productVariantOption.Sale%</span>
 								@**	<p class="price">
 							<span class="woocs_price_code" data-currency="" data-redraw-id="6735f51189978" data-product-id="14603">
@@ -196,11 +266,13 @@
 							</p> *@
 
 								<p class="price">
-									<span class="woocs_price_code" data-currency="" data-redraw-id="6735f51189978" data-product-id="14603">
+									<span class="woocs_price_code" data-currency="" data-redraw-id="6735f51189978"
+										data-product-id="14603">
 										<ins>
 											<span class="woocommerce-Price-amount amount">
 												<bdi>
-													<span class="Symbol1">$</span><span class="new-price">@Model.product.Price</span>
+													<span class="Symbol1">$</span><span
+														class="new-price">@Model.product.Price</span>
 												</bdi>
 											</span>
 										</ins>
@@ -208,7 +280,8 @@
 										<del aria-hidden="true">
 											<span class="woocommerce-Price-amount amount">
 												<bdi>
-													<span class="Symbol">$</span><span class="original-price">@Model.product.Price</span>
+													<span class="Symbol">$</span><span
+														class="original-price">@Model.product.Price</span>
 												</bdi>
 											</span>
 										</del>
@@ -220,7 +293,8 @@
 							{
 
 								<p class="price">
-									<span class="woocs_price_code" data-currency="" data-redraw-id="67219833afb8b" data-product-id="18">
+									<span class="woocs_price_code" data-currency="" data-redraw-id="67219833afb8b"
+										data-product-id="18">
 										<span class="woocommerce-Price-amount amount">
 											<bdi><span>$</span>@Model.product.Price</bdi>
 										</span>
@@ -234,20 +308,37 @@
 
 						@if (Model.product.HasVariant)
 						{
-							<form class="variations_form cart swatches-support" action="#" method="post" enctype="multipart/form-data" data-product_id="18" data-product_variations="[{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;black&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:7711,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19192,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;},{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;green&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:19194,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19193,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;},{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;red&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:19201,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19200,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;},{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;white&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:19205,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19204,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;},{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;yellow&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:19209,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19208,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;}]" current-image="">
+							<form class="variations_form cart swatches-support" action="#" method="post"
+								enctype="multipart/form-data" data-product_id="18"
+								data-product_variations="[{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;black&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2019\/01\/1.jpeg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:7711,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19192,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;},{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;green&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1.jpg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:19194,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19193,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;},{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;red&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-1.jpg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:19201,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19200,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;},{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;white&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-2.jpg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:19205,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19204,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;},{&quot;attributes&quot;:{&quot;attribute_pa_color&quot;:&quot;yellow&quot;},&quot;availability_html&quot;:&quot;<p class=\&quot;stock in-stock\&quot;>Available in stock<\/p>\n&quot;,&quot;backorders_allowed&quot;:false,&quot;dimensions&quot;:{&quot;length&quot;:&quot;&quot;,&quot;width&quot;:&quot;&quot;,&quot;height&quot;:&quot;&quot;},&quot;dimensions_html&quot;:&quot;N\/A&quot;,&quot;display_price&quot;:299,&quot;display_regular_price&quot;:299,&quot;image&quot;:{&quot;title&quot;:&quot;1&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;https:\/\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg&quot;,&quot;alt&quot;:&quot;1&quot;,&quot;src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?fit=600%2C600&amp;ssl=1&quot;,&quot;srcset&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?w=1400&amp;ssl=1 1400w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=300%2C300&amp;ssl=1 300w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=1024%2C1024&amp;ssl=1 1024w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=150%2C150&amp;ssl=1 150w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=768%2C768&amp;ssl=1 768w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=600%2C600&amp;ssl=1 600w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=100%2C100&amp;ssl=1 100w, https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?w=1280&amp;ssl=1 1280w&quot;,&quot;sizes&quot;:&quot;(max-width: 600px) 100vw, 600px&quot;,&quot;full_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?fit=1400%2C1400&amp;ssl=1&quot;,&quot;full_src_w&quot;:1400,&quot;full_src_h&quot;:1400,&quot;gallery_thumbnail_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?fit=100%2C100&amp;ssl=1&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https:\/\/i0.wp.com\/motta.uix.store\/wp-content\/uploads\/2023\/02\/1-3.jpg?resize=300%2C300&amp;ssl=1&quot;,&quot;thumb_src_w&quot;:300,&quot;thumb_src_h&quot;:300,&quot;src_w&quot;:600,&quot;src_h&quot;:600},&quot;image_id&quot;:19209,&quot;is_downloadable&quot;:false,&quot;is_in_stock&quot;:true,&quot;is_purchasable&quot;:true,&quot;is_sold_individually&quot;:&quot;no&quot;,&quot;is_virtual&quot;:false,&quot;max_qty&quot;:&quot;&quot;,&quot;min_qty&quot;:1,&quot;price_html&quot;:&quot;&quot;,&quot;sku&quot;:&quot;woo-album&quot;,&quot;variation_description&quot;:&quot;&quot;,&quot;variation_id&quot;:19208,&quot;variation_is_active&quot;:true,&quot;variation_is_visible&quot;:true,&quot;weight&quot;:&quot;&quot;,&quot;weight_html&quot;:&quot;N\/A&quot;}]"
+								current-image="">
 
 								<table class="variations" cellspacing="0" role="presentation">
 									<tbody>
 										<tr>
-											<th class="label"><label for="pa_color"><span class="wcboost-variation-swatches__selected-label" style="display: none;"></span></label></th>
+											<th class="label"><label for="pa_color"><span
+														class="wcboost-variation-swatches__selected-label"
+														style="display: none;"></span></label></th>
 											<td class="value">
-												<div class="wcboost-variation-swatches wcboost-variation-swatches--image wcboost-variation-swatches--rounded wcboost-variation-swatches--has-tooltip">
-													<select id="pa_color" class="" name="attribute_pa_color" data-attribute_name="attribute_pa_color" data-show_option_none="yes"><option value="">Choose an option</option><option value="black" class="attached enabled">Black</option><option value="green" class="attached enabled">Green</option><option value="red" class="attached enabled">Red</option><option value="white" class="attached enabled">White</option><option value="yellow" class="attached enabled">Yellow</option></select>
-													<ul class="wcboost-variation-swatches__wrapper" data-attribute_name="attribute_pa_color">
+												<div
+													class="wcboost-variation-swatches wcboost-variation-swatches--image wcboost-variation-swatches--rounded wcboost-variation-swatches--has-tooltip">
+													<select id="pa_color" class="" name="attribute_pa_color"
+														data-attribute_name="attribute_pa_color"
+														data-show_option_none="yes">
+														<option value="">Choose an option</option>
+														<option value="black" class="attached enabled">Black</option>
+														<option value="green" class="attached enabled">Green</option>
+														<option value="red" class="attached enabled">Red</option>
+														<option value="white" class="attached enabled">White</option>
+														<option value="yellow" class="attached enabled">Yellow</option>
+													</select>
+													<ul class="wcboost-variation-swatches__wrapper"
+														data-attribute_name="attribute_pa_color">
 
 														@foreach (var image in Model.ProductImages)
 														{
-															@if (image.ProductVariantOption == null || image.VariantOptionID == null)
+															@if (image.ProductVariantOption == null || image.VariantOptionID ==
+																										null)
 															{
 																continue;
 															}
@@ -257,17 +348,14 @@
 																data-value="@image.ImageUrl"
 																data-sale="@(image?.ProductVariantOption?.Sale ?? 0)"
 																data-price="@(image?.ProductVariantOption.Price ?? 0)"
-																data-variant-option-id="@image?.VariantOptionID"
-																tabindex="0"
-																role="button"
-																onclick="updateProductInfo('@image.ImageUrl', @(image?.ProductVariantOption?.Sale ?? 0), @(image?.ProductVariantOption?.Price ?? 0), '@image?.VariantOptionID', @image!.ProductVariantOption.Stock),
+																data-variant-option-id="@image?.VariantOptionID" tabindex="0"
+																role="button" onclick="updateProductInfo('@image.ImageUrl', @(image?.ProductVariantOption?.Sale ?? 0), @(image?.ProductVariantOption?.Price ?? 0), '@image?.VariantOptionID', @image!.ProductVariantOption.Stock),
 																selectVariantOption('@image.ImageUrl', @image?.VariantOptionID)
-																">
-																
-																<img src="@image.ImageUrl"
-																	 alt="Product Image"
-																	 data-large="@image.ImageUrl"
-																	 data-variant-option-id="@image?.VariantOptionID">
+																		">
+
+																<img src="@image.ImageUrl" alt="Product Image"
+																	data-large="@image.ImageUrl"
+																	data-variant-option-id="@image?.VariantOptionID">
 																<span class="wcboost-variation-swatches__name"></span>
 															</li>
 														}
@@ -293,7 +381,8 @@
 													<span class="wcboost-variation-swatches__name">Yellow</span>
 													</li> *@
 													</ul>
-												</div><a class="reset_variations" href="#" style="visibility: hidden;">Clear</a>
+												</div><a class="reset_variations" href="#"
+													style="visibility: hidden;">Clear</a>
 											</td>
 										</tr>
 									</tbody>
@@ -308,20 +397,50 @@
 										</div>
 									</div>
 									<div class="motta-date-onsale-to"></div>
-									<div class="woocommerce-variation-add-to-cart variations_button woocommerce-variation-add-to-cart-disabled">
-										<input class="motta_product_id" type="hidden" data-title="@Model.product.Name" value="18">
+									<div
+										class="woocommerce-variation-add-to-cart variations_button woocommerce-variation-add-to-cart-disabled">
+										<input class="motta_product_id" type="hidden" data-title="@Model.product.Name"
+											value="18">
 										<div class="quantity ">
-											<span class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path></svg></span>	<label class="screen-reader-text" for="quantity_">Apple - iPhone 11 64GB quantity</label>
-											<input disabled type="number" id="quantity_" class="input-text qty text" width="15" height="10" name="quantity" value="1" aria-label="Product quantity" size="4" min="1" max="" step="1" placeholder="" inputmode="numeric" autocomplete="off " style="text-align: center;">
-											<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
+											<span
+												class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease"><svg
+													width="24" height="24" aria-hidden="true" role="img" focusable="false"
+													viewBox="0 0 32 32">
+													<path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path>
+												</svg></span> <label class="screen-reader-text" for="quantity_">Apple -
+												iPhone 11 64GB quantity</label>
+											<input disabled type="number" id="quantity_" class="input-text qty text"
+												width="15" height="10" name="quantity" value="1"
+												aria-label="Product quantity" size="4" min="1" max="" step="1"
+												placeholder="" inputmode="numeric" autocomplete="off "
+												style="text-align: center;">
+											<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg
+													width="24" height="24" aria-hidden="true" role="img" focusable="false"
+													viewBox="0 0 32 32">
+													<path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path>
+												</svg></span>
 										</div>
 										<br />
-										<button type="submit" id="addToCartButton" class="single_add_to_cart_button button alt disabled wc-variation-selection-needed" onclick="addToCart(@Model.product.ProductId), showProduct(@Model.product.ProductId)" disabled>
-											<span class="motta-svg-icon motta-svg-icon--cart-trolley single_add_to_cart_button--icon"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M25.248 22.4l3.552-14.4h-18.528l-0.96-4.8h-6.112v3.2h3.488l3.2 16h15.36zM24.704 11.2l-1.968 8h-10.24l-1.6-8h13.808z"></path><path d="M25.6 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path><path d="M14.4 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path></svg></span>		
+										<button type="submit" id="addToCartButton"
+											class="single_add_to_cart_button button alt disabled wc-variation-selection-needed"
+											onclick="addToCart(@Model.product.ProductId), showProduct(@Model.product.ProductId)"
+											disabled>
+											<span
+												class="motta-svg-icon motta-svg-icon--cart-trolley single_add_to_cart_button--icon"><svg
+													width="24" height="24" aria-hidden="true" role="img" focusable="false"
+													viewBox="0 0 32 32">
+													<path
+														d="M25.248 22.4l3.552-14.4h-18.528l-0.96-4.8h-6.112v3.2h3.488l3.2 16h15.36zM24.704 11.2l-1.968 8h-10.24l-1.6-8h13.808z">
+													</path>
+													<path
+														d="M25.6 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z">
+													</path>
+													<path
+														d="M14.4 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z">
+													</path>
+												</svg></span>
 											<span class="single_add_to_cart_button--text">Add to cart</span>
 										</button>
-
-										<button type="submit" class="motta-buy-now-button motta-button motta-button--ghost disabled wc-variation-selection-needed">Buy Now</button>
 										<input type="hidden" name="add-to-cart" value="18">
 										<input type="hidden" name="product_id" value="18">
 										<input type="hidden" name="variation_id" class="variation_id" value="">
@@ -334,23 +453,45 @@
 						else
 						{
 							<form class="cart" action="#" method="post" enctype="multipart/form-data">
-								<input class="motta_product_id" type="hidden" data-title="@Model.product.Name" value="14603">
+								<input class="motta_product_id" type="hidden" data-title="@Model.product.Name"
+									value="14603">
 								<div class="quantity ">
 									<span class="motta-svg-icon motta-svg-icon--minus motta-qty-button decrease">
-										<svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32">
+										<svg width="24" height="24" aria-hidden="true" role="img" focusable="false"
+											viewBox="0 0 32 32">
 											<path d="M26.667 13.333v5.333h-21.333v-5.333h21.333z"></path>
 										</svg>
 									</span>
 									<label class="screen-reader-text" for="quantity_">@Model.product.Name</label>
-									<input disabled type="number" id="quantity_" class="input-text qty text" name="quantity" value="1" width="15" height="10" aria-label="Product quantity" size="4" min="1" max="@Model.product.Stock" step="1" placeholder="" inputmode="numeric" autocomplete="off" style="text-align: center;">
-									<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path></svg></span>
+									<input disabled type="number" id="quantity_" class="input-text qty text" name="quantity"
+										value="1" width="15" height="10" aria-label="Product quantity" size="4" min="1"
+										max="@Model.product.Stock" step="1" placeholder="" inputmode="numeric"
+										autocomplete="off" style="text-align: center;">
+									<span class="motta-svg-icon motta-svg-icon--plus motta-qty-button increase"><svg
+											width="24" height="24" aria-hidden="true" role="img" focusable="false"
+											viewBox="0 0 32 32">
+											<path d="M26.667 13.333h-8v-8h-5.333v8h-8v5.333h8v8h5.333v-8h8z"></path>
+										</svg></span>
 								</div>
 								<br />
-								<button type="submit" name="add-to-cart" value="14603" class="single_add_to_cart_button button alt">
-									<span class="motta-svg-icon motta-svg-icon--cart-trolley single_add_to_cart_button--icon"><svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32"><path d="M25.248 22.4l3.552-14.4h-18.528l-0.96-4.8h-6.112v3.2h3.488l3.2 16h15.36zM24.704 11.2l-1.968 8h-10.24l-1.6-8h13.808z"></path><path d="M25.6 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path><path d="M14.4 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z"></path></svg></span>			<span class="single_add_to_cart_button--text">Add to cart</span>
+								<button type="submit" name="add-to-cart" value="14603"
+									class="single_add_to_cart_button button alt"
+									onclick="addToCart(@Model.product.ProductId), showProduct(@Model.product.ProductId, null)">
+									<span
+										class="motta-svg-icon motta-svg-icon--cart-trolley single_add_to_cart_button--icon"><svg
+											width="24" height="24" aria-hidden="true" role="img" focusable="false"
+											viewBox="0 0 32 32">
+											<path
+												d="M25.248 22.4l3.552-14.4h-18.528l-0.96-4.8h-6.112v3.2h3.488l3.2 16h15.36zM24.704 11.2l-1.968 8h-10.24l-1.6-8h13.808z">
+											</path>
+											<path
+												d="M25.6 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z">
+											</path>
+											<path
+												d="M14.4 26.4c0 1.325-1.075 2.4-2.4 2.4s-2.4-1.075-2.4-2.4c0-1.325 1.075-2.4 2.4-2.4s2.4 1.075 2.4 2.4z">
+											</path>
+										</svg></span> <span class="single_add_to_cart_button--text">Add to cart</span>
 								</button>
-
-								<button type="submit" class="motta-buy-now-button motta-button motta-button--ghost">Buy Now</button>
 							</form>
 						}
 
@@ -364,52 +505,71 @@
 						</a>
 						</div> *@
 						<div class="product_meta">
-						<div class="dokan-vendor-info-wrap">
-						<div class="dokan-vendor-image">
-						<img src="@Model.Vendor.Avartar" alt="">
-						</div>
-						<div class="dokan-vendor-info">
-						<div class="dokan-vendor-name">
-						<a href="#"><h5>@Model.Vendor.Name</h5></a>
-						<span class="vendor-text">Store</span>
-						</div>
-						<div class="dokan-vendor-rating product">
-						<i class="dashicons dashicons-star-filled"></i><i class="dashicons dashicons-star-filled"></i><i class="dashicons dashicons-star-filled"></i><i class="dashicons dashicons-star-filled"></i><i class="dashicons dashicons-star-half"></i>                                            <p class="dokan-ratings-count">4.77 (31 Reviews)</p>
-						</div>
-						</div>
-						</div>
+							<div class="dokan-vendor-info-wrap">
+								<div class="dokan-vendor-image">
+									<img src="@Model.Vendor.Avartar" alt="">
+								</div>
+								<div class="dokan-vendor-info">
+									<div class="dokan-vendor-name">
+										<a href="#">
+											<h5>@Model.Vendor.Name</h5>
+										</a>
+										<span class="vendor-text">Store</span>
+									</div>
+									<div class="dokan-vendor-rating product">
+										<i class="dashicons dashicons-star-filled"></i><i
+											class="dashicons dashicons-star-filled"></i><i
+											class="dashicons dashicons-star-filled"></i><i
+											class="dashicons dashicons-star-filled"></i><i
+											class="dashicons dashicons-star-half"></i>
+										<p class="dokan-ratings-count">4.77 (31 Reviews)</p>
+									</div>
+								</div>
+							</div>
 
 						</div>
 						<div class="single-product-extra-content">
-						<section id="motta-icon-box-3" class="widget icon-box-widget">
-						<div class="motta-icon-box-widget">
-						<div class="motta-icon-box-widget__item">
-						<span class="motta-icon-box-widget__icon motta-svg-icon">
-						<svg viewBox="0 0 32 32">
-						<path d="M32 19.429c0-2.331-1.417-4.343-3.429-5.234v-2.011l-4-5.326h-4v-2.286h-18.286v2.286h16v9.143h8c1.897 0 3.429 1.531 3.429 3.429v3.429h-3.589c-0.503-1.966-2.286-3.429-4.411-3.429s-3.909 1.463-4.411 3.429h-7.177c-0.503-1.966-2.286-3.429-4.411-3.429-2.514 0-4.571 2.057-4.571 4.571s2.057 4.571 4.571 4.571c2.126 0 3.909-1.463 4.411-3.429h7.177c0.503 1.966 2.286 3.429 4.411 3.429s3.909-1.463 4.411-3.429h5.874v-5.714zM23.040 13.714h-2.469v-4.571h2.857l2.857 3.817v0.754h-3.246zM5.714 26.286c-1.257 0-2.286-1.029-2.286-2.286s1.029-2.286 2.286-2.286 2.286 1.029 2.286 2.286-1.029 2.286-2.286 2.286zM21.714 26.286c-1.257 0-2.286-1.029-2.286-2.286s1.029-2.286 2.286-2.286 2.286 1.029 2.286 2.286-1.029 2.286-2.286 2.286z"></path>
-						<path d="M0 9.143h9.143v2.286h-9.143v-2.286z"></path>
-						<path d="M4.571 13.714h9.143v2.263h-9.143v-2.263z"></path>
-						</svg>
-						</span>
+							<section id="motta-icon-box-3" class="widget icon-box-widget">
+								<div class="motta-icon-box-widget">
+									<div class="motta-icon-box-widget__item">
+										<span class="motta-icon-box-widget__icon motta-svg-icon">
+											<svg viewBox="0 0 32 32">
+												<path
+													d="M32 19.429c0-2.331-1.417-4.343-3.429-5.234v-2.011l-4-5.326h-4v-2.286h-18.286v2.286h16v9.143h8c1.897 0 3.429 1.531 3.429 3.429v3.429h-3.589c-0.503-1.966-2.286-3.429-4.411-3.429s-3.909 1.463-4.411 3.429h-7.177c-0.503-1.966-2.286-3.429-4.411-3.429-2.514 0-4.571 2.057-4.571 4.571s2.057 4.571 4.571 4.571c2.126 0 3.909-1.463 4.411-3.429h7.177c0.503 1.966 2.286 3.429 4.411 3.429s3.909-1.463 4.411-3.429h5.874v-5.714zM23.040 13.714h-2.469v-4.571h2.857l2.857 3.817v0.754h-3.246zM5.714 26.286c-1.257 0-2.286-1.029-2.286-2.286s1.029-2.286 2.286-2.286 2.286 1.029 2.286 2.286-1.029 2.286-2.286 2.286zM21.714 26.286c-1.257 0-2.286-1.029-2.286-2.286s1.029-2.286 2.286-2.286 2.286 1.029 2.286 2.286-1.029 2.286-2.286 2.286z">
+												</path>
+												<path d="M0 9.143h9.143v2.286h-9.143v-2.286z"></path>
+												<path d="M4.571 13.714h9.143v2.263h-9.143v-2.263z"></path>
+											</svg>
+										</span>
 
-						<a href="#tab-shipping-returns" class="motta-icon-box-widget__text motta-button motta-button--text">Free Shipping &amp; Returns on this item</a>
+										<a href="#tab-shipping-returns"
+											class="motta-icon-box-widget__text motta-button motta-button--text">Free
+											Shipping &amp; Returns on this item</a>
 
-						<a href="#tab-shipping-returns" class="motta-icon-box-widget__button motta-button motta-button--text">See Details</a>
+										<a href="#tab-shipping-returns"
+											class="motta-icon-box-widget__button motta-button motta-button--text">See
+											Details</a>
+									</div>
+									<div class="motta-icon-box-widget__item">
+										<span class="motta-icon-box-widget__icon motta-svg-icon">
+											<svg viewBox="0 0 32 32">
+												<path
+													d="M25.531 2.286h-16.777l-4.183 8.8v18.629h25.143v-18.629l-4.183-8.8zM26.72 11.2h-8.206v-6.171h5.28l2.926 6.171zM10.491 5.029h5.28v6.171h-8.206l2.926-6.171zM7.314 26.971v-13.029h8.457v4.343h2.743v-4.343h8.457v13.029h-19.657z">
+												</path>
+											</svg>
+										</span>
+
+										<a href="#tab-shipping-returns"
+											class="motta-icon-box-widget__text motta-button motta-button--text">Delivery
+											within 3-5 working days</a>
+
+										<a href="#tab-shipping-returns"
+											class="motta-icon-box-widget__button motta-button motta-button--text">See
+											Details</a>
+									</div>
+								</div>
+							</section>
 						</div>
-						<div class="motta-icon-box-widget__item">
-						<span class="motta-icon-box-widget__icon motta-svg-icon">
-						<svg viewBox="0 0 32 32">
-						<path d="M25.531 2.286h-16.777l-4.183 8.8v18.629h25.143v-18.629l-4.183-8.8zM26.72 11.2h-8.206v-6.171h5.28l2.926 6.171zM10.491 5.029h5.28v6.171h-8.206l2.926-6.171zM7.314 26.971v-13.029h8.457v4.343h2.743v-4.343h8.457v13.029h-19.657z"></path>
-						</svg>
-						</span>
-
-						<a href="#tab-shipping-returns" class="motta-icon-box-widget__text motta-button motta-button--text">Delivery within 3-5 working days</a>
-
-						<a href="#tab-shipping-returns" class="motta-icon-box-widget__button motta-button motta-button--text">See Details</a>
-						</div>
-						</div>
-						</section>
-						</div> 
 					</div>
 
 				</div>
@@ -421,14 +581,21 @@
 							<h3>Description</h3>
 						</a>
 					</div>
-					<div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab" id="tab-description" role="tabpanel" aria-labelledby="tab-title-description" style="">
+					<div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab"
+						id="tab-description" role="tabpanel" aria-labelledby="tab-title-description" style="">
 						<div class="motta-dropdown__content">
-							<div data-elementor-type="wp-post" data-elementor-id="15087" class="elementor elementor-15087">
-								<section class="elementor-section elementor-top-section elementor-element elementor-element-0f277df elementor-section-boxed elementor-section-height-default elementor-section-height-default motta-responsive-column motta-tablet-column--default motta-responsive-column motta-mobile-column--default" data-id="0f277df" data-element_type="section">
+							<div data-elementor-type="wp-post" data-elementor-id="15087"
+								class="elementor elementor-15087">
+								<section
+									class="elementor-section elementor-top-section elementor-element elementor-element-0f277df elementor-section-boxed elementor-section-height-default elementor-section-height-default motta-responsive-column motta-tablet-column--default motta-responsive-column motta-mobile-column--default"
+									data-id="0f277df" data-element_type="section">
 									<div class="elementor-container elementor-column-gap-default">
-										<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-e62cd21" data-id="e62cd21" data-element_type="column">
+										<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-e62cd21"
+											data-id="e62cd21" data-element_type="column">
 											<div class="elementor-widget-wrap elementor-element-populated">
-												<div class="elementor-element elementor-element-86c74cd elementor-widget elementor-widget-text-editor" data-id="86c74cd" data-element_type="widget" data-widget_type="text-editor.default">
+												<div class="elementor-element elementor-element-86c74cd elementor-widget elementor-widget-text-editor"
+													data-id="86c74cd" data-element_type="widget"
+													data-widget_type="text-editor.default">
 													<div class="elementor-widget-container">
 														@Html.Raw(Model.product.Description)
 													</div>
@@ -529,17 +696,17 @@
 		input.value = 1;
 
 		if (allImagesData) {
-	
+
 			const allImages = JSON.parse(allImagesData);
 
-		
+
 			const filteredImages = allImages.filter(img => img.variantOptionId == variantOptionId);
 
 
 			const imagesList = document.querySelector('#variant-images-list');
 			imagesList.innerHTML = '';
 
-			
+
 			filteredImages.forEach(img => {
 				const li = document.createElement('li');
 				li.className = 'swiper-slide';
@@ -581,17 +748,13 @@
 
 	function addToCart(productId) {
 		var quantity = parseInt($('#quantity_').val());
-		if (!selectedVariantOptionID) {
-			alert("Please select a product option before adding to cart!");
-			return;
-		}
-	
+
 		const data = {
 			productId: productId,
 			variantOptionId: selectedVariantOptionID,
 			quantity: quantity
 		};
-	
+
 		fetch('/api/addToCart', {
 			method: "POST",
 			headers: {
@@ -601,7 +764,7 @@
 		})
 			.then(response => response.json())
 			.then(result => {
-				if (!result.success) {					
+				if (!result.success) {
 					alert(result.message || "Failed to add product to cart.");
 				}
 			})
@@ -611,23 +774,23 @@
 	}
 
 	function showProduct(id, optionId = selectedVariantOptionID) {
-	$.ajax({
-		type: 'GET',
-		url: '@Url.Action("ShowProductModal", "Home")',
-		data: { productId: id, optionId: optionId},
-		success: function (partialView) {
-			$('#motta-popup-add-to-cart').css('display', 'block');
-			$('#opp').css('opacity', '1');
-			$('#show').html(partialView)
-		},
-		Error: function (x) {
-			alert(x.responseText);
-		}
-	})
-	$(document).on('click', '.modal__button-close, .modal__backdrop', function () {
-		$('#motta-popup-add-to-cart').css('display', 'none');
-		$('#opp').css('opacity', '0');
-	});
+		$.ajax({
+			type: 'GET',
+			url: '@Url.Action("ShowProductModal", "Home")',
+			data: { productId: id, optionId: optionId },
+			success: function (partialView) {
+				$('#motta-popup-add-to-cart').css('display', 'block');
+				$('#opp').css('opacity', '1');
+				$('#show').html(partialView)
+			},
+			Error: function (x) {
+				alert(x.responseText);
+			}
+		})
+		$(document).on('click', '.modal__button-close, .modal__backdrop', function () {
+			$('#motta-popup-add-to-cart').css('display', 'none');
+			$('#opp').css('opacity', '0');
+		});
 
 	}
 

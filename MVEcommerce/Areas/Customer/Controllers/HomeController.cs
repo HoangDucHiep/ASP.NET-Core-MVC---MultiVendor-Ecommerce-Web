@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using MVEcommerce.DataAccess.Data;
 using PagedList;
 using Microsoft.AspNetCore.Authorization;
+using MVEcommerce.Utility;
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -86,7 +87,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                 return View(new CategoryProduct { Products = new List<Product>() });
             }
 
-            var products = _unitOfWork.Product.GetAll(p => p.Name.Contains(s) && p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor")
+            var products = _unitOfWork.Product.GetAll(p => p.Name.Contains(s) && p.Status == ProductStatus.ACTIVE, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor")
                 .OrderByDescending(p => p.Sale)
                 .ToList();
 
@@ -123,7 +124,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
             }
 
             var products = _unitOfWork.Product.GetAll(
-                p => p.CategoryId == category.CategoryId,
+                p => p.CategoryId == category.CategoryId && p.Status == ProductStatus.ACTIVE,
                 includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor"
             );
 
@@ -312,7 +313,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
         public IActionResult VendorPage(int vendorId, int page = 1, int pageSize = 20)
         {
-            ViewBag.Vendor = _unitOfWork.Vendor.Get(p => p.VendorId == vendorId, "Addresses");
+            ViewBag.Vendor = _unitOfWork.Vendor.Get(p => p.VendorId == vendorId && p.Status == ProductStatus.ACTIVE, "Addresses");
             var lstProduct = _unitOfWork.Product.GetAll(p => p.Vendor.VendorId == vendorId, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor,ProductImages")
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -387,7 +388,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         [Authorize]
         public IActionResult OrderDetail(string orderId)
         {
-            var Order = _unitOfWork.Order.GetAll(p => p.OrderId==Guid.Parse(orderId), includeProperties: "OrderDetails.Product.ProductImages,SubOrders.OrderDetails.Product.Vendor,ParentOrder,OrderDetails.Product.Vendor").OrderBy(c=>c.OrderDate).ToList();
+            var Order = _unitOfWork.Order.Get(p => p.OrderId==Guid.Parse(orderId), includeProperties: "OrderDetails.Product.ProductImages,SubOrders.OrderDetails.Product.Vendor,ParentOrder,OrderDetails.Product.Vendor");
             ViewBag.add=_unitOfWork.Address.Get(p=>p.UserId==userId);    
             return View(Order);
         }

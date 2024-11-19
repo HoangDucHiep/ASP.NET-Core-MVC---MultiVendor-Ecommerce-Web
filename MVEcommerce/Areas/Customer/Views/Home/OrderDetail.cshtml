@@ -4,7 +4,8 @@
     ViewData["Title"] = "OrderDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model List<MVEcommerce.Models.Order>
+@model Order
+
 <style>
     body {
     font-family: Arial, sans-serif;
@@ -297,24 +298,41 @@
         <!-- Main Content -->
         <div class="main-content123">
 
-            @foreach (var item in Model)
-            {
                 <div class="order-header">
                     <p>Order 
                         <span class="order-number">
-                            @item.OrderId
-                        </span> 
-                        was placed on @item.OrderDate.ToShortDateString()  and is currently
-                        <span class="@(item.Status==OrderStatus.PENDING ? "order-status-pending" : (item.Status==OrderStatus.APPROVED || item.Status==OrderStatus.COMPLETED) ? "order-status-approved" : "order-status-rejected" )">
-                            @item.Status
+                            @Model.OrderId
+                        </span>
+                    was placed on @Model.OrderDate.ToShortDateString()  and is currently
+                    <span class="@(Model.Status==OrderStatus.PENDING ? "order-status-pending" : (Model.Status==OrderStatus.APPROVED || Model.Status==OrderStatus.COMPLETED) ? "order-status-approved" : "order-status-rejected" )">
+                        @Model.Status
                         </span>
                     </p>
                 </div>
                 <div class="order-details">
                     <h2>Order details</h2>
                     <table class="product-table">
-                        @if(item.ParentOrder==null){
-                            @foreach (var pro in item.SubOrders)
+                    @if (Model.SubOrders == null || Model.SubOrders.Count() == 0)
+                    {
+
+                        @foreach (var p in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>
+
+                                    @p.Product.Name
+
+                                    <div class="vendor-info">Vendor:   @p.Product.Vendor.Name </div>
+                                </td>
+                                <td>$@p.Order.TotalAmount</td>
+                            </tr>
+                        }
+
+                        }
+                else
+                {
+                    
+                        @foreach (var pro in Model.SubOrders)
                             {
                                 @foreach (var p in pro.OrderDetails)
                                 {
@@ -329,37 +347,23 @@
                                     </tr>
                                 }
                             }
-                        }
-                        else
-                        {
-                            @foreach (var p in item.OrderDetails)
-                            {
-                                <tr>
-                                    <td>
 
-                                        @p.Product.Name
-
-                                        <div class="vendor-info">Vendor:   @p.Product.Vendor.Name </div>
-                                    </td>
-                                    <td>$@p.Order.TotalAmount</td>
-                                </tr>
-                            }
-
-                        }
+                }
 
 
                         <tr>
                             <td>Subtotal:</td>
-                            <td>$@item.TotalAmount</td>
+                        <td>$@Model.TotalAmount</td>
                         </tr>
 
 
                         <tr>
                             <td><strong>Total:</strong></td>
-                            <td><strong>$@item.TotalAmount</strong></td>
+                        <td><strong>$@Model.TotalAmount</strong></td>
                         </tr>
                     </table>
-                    @if(item.ParentOrder==null){
+                @if (!(Model.SubOrders == null || Model.SubOrders.Count() == 0))
+                {
                         <h2>Sub Orders</h2>
                         <div class="info-box">
                             <span class="info-icon">i</span>
@@ -377,7 +381,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(var order in item.SubOrders){
+                            @foreach (var order in Model.SubOrders)
+                            {
                                     <tr>
                                         <td>@order.OrderId</td>
                                         <td>@order.OrderDate.ToShortDateString()</td>
@@ -407,26 +412,22 @@
 
                     
                 </div>
-            }
-            @{
-                var orderOD = Model.Where(x=>x.SubOrders != null).FirstOrDefault();
-            }
 
-            @if (orderOD != null)
+            @if (Model.SubOrders == null || Model.SubOrders.Count() == 0)
             {
-                @if (orderOD.Status == OrderStatus.PENDING)
+                @if (Model.Status == OrderStatus.PENDING)
                 {
                     <form asp-controller="Order" asp-action="UpdateOrderStatus" method="post" style="display:inline;">
-                        <input type="hidden" name="orderId" value="@orderOD.OrderId" />
+                        <input type="hidden" name="orderId" value="@Model.OrderId" />
                         <input type="hidden" name="status" value="@OrderStatus.CANCELLED" />
                         <button type="submit" class="btn" style="background-color: #dc3545 !important;">Cancelle</button>
                     </form>
                 }
 
-                @if (orderOD.Status == OrderStatus.APPROVED)
+                @if (Model.Status == OrderStatus.APPROVED)
                 {
                     <form asp-controller="Order" asp-action="UpdateOrderStatus" method="post" style="display:inline;">
-                        <input type="hidden" name="orderId" value="@orderOD.OrderId" />
+                        <input type="hidden" name="orderId" value="@Model.OrderId" />
                         <input type="hidden" name="status" value="@OrderStatus.COMPLETED" />
                         <button type="submit" class="btn btn-success">Completed</button>
                     </form>
