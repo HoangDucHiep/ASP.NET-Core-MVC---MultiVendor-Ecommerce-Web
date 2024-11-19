@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVEcommerce.DataAccess.Repositoies;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
@@ -11,6 +12,7 @@ using System.Security.Claims;
 namespace MVEcommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = ApplicationRole.ADMIN)]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

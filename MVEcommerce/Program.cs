@@ -64,14 +64,18 @@ app.MapControllerRoute(
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 
-//seeding data
-// Seeding roles
+// Seeding roles and admin user
 using (var scope = app.Services.CreateScope())
 {
-	// Get the UserManager from the service provider
-	var services = scope.ServiceProvider;
-	var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-	await ApplicationRole.SeedRoles(roleManager);
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+    // Seed roles
+    await ApplicationRole.SeedRoles(roleManager);
+
+    // Seed admin user
+    await ApplicationDbContext.SeedAdminUser(services);
 }
 
 app.Run();

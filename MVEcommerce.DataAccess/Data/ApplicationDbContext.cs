@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using MVEcommerce.DataAccess.Repositoies.IRepositories;
 using MVEcommerce.Models;
 using MVEcommerce.Utility;
@@ -91,79 +92,33 @@ namespace MVEcommerce.DataAccess.Data
 				new Category { CategoryId = 11, Name = "Tools & Home Improvement", Slug = "tools-home-improvement-11", BannerImage = "https://motta.uix.store/wp-content/uploads/2022/07/shop_header.jpg", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
 			);
 
-			var userId = "bc3ed980-19bd-4ba1-96f2-b72fed4ec54a";
-			var user = new ApplicationUser
-			{
-				Id = userId,
-				UserName = "truffles_vendor",
-				NormalizedUserName = "TRUFFLES_VENDOR",
-				Email = "truffles@example.com",
-				NormalizedEmail = "TRUFFLES@EXAMPLE.COM",
-				EmailConfirmed = true,
-				PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(null, "Password123!"),
-				SecurityStamp = string.Empty,
-				ConcurrencyStamp = string.Empty,
-				FullName = "Truffles Vendor",
-
-			};
-
-			modelBuilder.Entity<ApplicationUser>().HasData(user);
-
-			// Seed Vendor
-			modelBuilder.Entity<Vendor>().HasData(
-				new Vendor
-				{
-					VendorId = 1,
-					Name = "Truffles",
-					Status = VendorStatus.ACTIVE,
-					CreatedAt = new DateTime(2024, 1, 1),
-					UpdatedAt = new DateTime(2024, 1, 1),
-					UserId = userId
-				}
-			);
-
-			// Seed Product
-			modelBuilder.Entity<Product>().HasData(
-				new Product() { ProductId = 1, VendorId = 1, CategoryId = 8, Name = "Batman Death Metal DC Comics Batman Figure", Slug = "batman-figure-metal-1", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = 100, Stock = 100, Sale = 0, HasVariant = false, Status = ProductStatus.ACTIVE, CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
-				new Product() { ProductId = 2, VendorId = 1, CategoryId = 8, Name = "Minions Toy with Buildable Figures (876 Pieces)", Slug = "minions-toy-figures-2", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = 200, Stock = 100, Sale = 0, HasVariant = false, Status = ProductStatus.ACTIVE, CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
-				new Product() { ProductId = 3, VendorId = 1, CategoryId = 8, Name = "Masters of the Universe Origins Skeletor Action Figure", Slug = "skeletor-action-figure-3", Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = 300, Sale = 26, Stock = 100,  HasVariant = false, Status = ProductStatus.ACTIVE, CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
-				new Product() { ProductId = 4, VendorId = 1, CategoryId = 8, Name = "Apple – iPhone 11 64GB", Slug = "iphone-11-64gb", Description = "Lorem ipsum dolor sit amet-4, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.", Price = null, Stock = null, HasVariant = true, Status = ProductStatus.ACTIVE, CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
-			);
-
-			// Seed ProductVariant
-			modelBuilder.Entity<ProductVariant>().HasData(
-				new ProductVariant() { VariantId = 1, ProductId = 4, Name = "Color", Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
-			);
-
-			// Seed ProductVariantOption
-			modelBuilder.Entity<ProductVariantOption>().HasData(
-				new ProductVariantOption() { OptionId = 1, VariantId = 1, Value = "Black", Price = 400, Sale = 20, Stock = 100, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) },
-				new ProductVariantOption() { OptionId = 2, VariantId = 1, Value = "Red", Price = 450, Sale = 10, Stock = 100, Status = "active", CreatedAt = new DateTime(2024, 1, 1), UpdatedAt = new DateTime(2024, 1, 1) }
-			);
-
-			// Seed ProductImage
-			modelBuilder.Entity<ProductImage>().HasData(
-				// product 1 images
-				new ProductImage() { ImageId = 1, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/4-1.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
-				new ProductImage() { ImageId = 2, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/2-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				new ProductImage() { ImageId = 3, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/1-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				new ProductImage() { ImageId = 4, ProductId = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/08/3-2.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				//product 2 images
-				new ProductImage() { ImageId = 5, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-73.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
-				new ProductImage() { ImageId = 6, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-54.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				new ProductImage() { ImageId = 7, ProductId = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/4-37.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				//product 3 images
-				new ProductImage() { ImageId = 8, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/1-71.jpg?fit=1400%2C1400&ssl=1", IsMain = true },
-				new ProductImage() { ImageId = 9, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/2-61.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				new ProductImage() { ImageId = 10, ProductId = 3, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2022/09/3-52.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				//product 4 and its variant images
-				new ProductImage() { ImageId = 11, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/1.jpeg?fit=1400%2C1400&ssl=1", IsMain = true },
-				new ProductImage() { ImageId = 12, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/2.jpeg?fit=1400%2C1400&ssl=1", IsMain = false },
-				new ProductImage() { ImageId = 13, ProductId = 4, VariantOptionID = 1, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2019/01/3.jpeg?fit=1400%2C1400&ssl=1", IsMain = false },
-				new ProductImage() { ImageId = 14, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/1-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				new ProductImage() { ImageId = 15, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/2-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false },
-				new ProductImage() { ImageId = 16, ProductId = 4, VariantOptionID = 2, ImageUrl = "https://i0.wp.com/motta.uix.store/wp-content/uploads/2023/02/3-1.jpg?fit=1400%2C1400&ssl=1", IsMain = false }
-			);
+			
 		}
+
+		public static async Task SeedAdminUser(IServiceProvider serviceProvider)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string adminEmail = "admin@example.com";
+            string adminPassword = "Admin@123";
+
+            if (userManager.Users.All(u => u.Email != adminEmail))
+            {
+                var adminUser = new IdentityUser
+                {
+                    UserName = adminEmail,
+                    Email = adminEmail,
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(adminUser, adminPassword);
+                if (result.Succeeded)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(ApplicationRole.ADMIN));
+                    await userManager.AddToRoleAsync(adminUser, ApplicationRole.ADMIN);
+                }
+            }
+        }
 	}
 }

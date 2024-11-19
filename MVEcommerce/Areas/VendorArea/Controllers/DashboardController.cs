@@ -8,6 +8,7 @@ using MVEcommerce.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MVEcommerce.Areas.VendorArea.Controllers
 {
@@ -17,6 +18,33 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private Vendor currentVendor;
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var userId = claim.Value;
+                currentVendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
+                if (currentVendor != null)
+                {
+                    var vendorStatusClaim = claimsIdentity.FindFirst("VendorStatus");
+                    if (vendorStatusClaim == null || vendorStatusClaim.Value != currentVendor.Status)
+                    {
+                        if (vendorStatusClaim != null)
+                        {
+                            claimsIdentity.RemoveClaim(vendorStatusClaim);
+                        }
+                        claimsIdentity.AddClaim(new Claim("VendorStatus", currentVendor.Status));
+                    }
+                }
+            }
+        }
+
 
         public DashboardController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
         {

@@ -33,13 +33,6 @@
         margin-bottom: 30px;
     }
 
-    .avatar123 {
-        width: 80px;
-        height: 80px;
-        background: #ccc;
-        border-radius: 50%;
-        margin: 0 auto 10px;
-    }
 
     h3 {
         font-size: 16px;
@@ -143,7 +136,6 @@
             <!-- Sidebar -->
             <aside class="sidebar123">
                 <div class="profile123">
-                    <div class="avatar123"></div>
                     <h3>Hello!</h3>
                     <p>@Model.UserName</p>
                 </div>
@@ -206,18 +198,18 @@
                 </form>
 
                 <h2>Password Change</h2>
-                <form class="password-form123">
+                <form asp-controller="Account" asp-action="ChangePassword" method="post" class="password-form123">
                     <div class="form-group123">
                         <label for="current-password">Current Password</label>
-                        <input type="password" id="current-password" name="current-password" required>
+                        <input type="password" id="current-password" name="currentPassword" required>
                     </div>
                     <div class="form-group123">
                         <label for="new-password">New Password</label>
-                        <input type="password" id="new-password" name="new-password" required>
+                        <input type="password" id="new-password" name="newPassword" required>
                     </div>
                     <div class="form-group123">
                         <label for="confirm-password">Confirm New Password</label>
-                        <input type="password" id="confirm-password" name="confirm-password" required>
+                        <input type="password" id="confirm-password" name="confirmPassword" required>
                     </div>
                     <div class="form-actions123">
                         <button type="submit">Save changes</button>
@@ -230,3 +222,6 @@
     </div>
 
   
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

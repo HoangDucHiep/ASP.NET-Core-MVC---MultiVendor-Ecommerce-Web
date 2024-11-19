@@ -13,7 +13,7 @@ using System.Security.Claims;
 namespace MVEcommerce.Areas.VendorArea.Controllers
 {
     [Area("VendorArea")]
-    [Authorize]
+    [Authorize(Roles = ApplicationRole.VENDOR)]
     public class OrderManagementController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -43,6 +43,18 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             {
                 var userId = claim.Value;
                 currentVendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
+                if (currentVendor != null)
+                {
+                    var vendorStatusClaim = claimsIdentity.FindFirst("VendorStatus");
+                    if (vendorStatusClaim == null || vendorStatusClaim.Value != currentVendor.Status)
+                    {
+                        if (vendorStatusClaim != null)
+                        {
+                            claimsIdentity.RemoveClaim(vendorStatusClaim);
+                        }
+                        claimsIdentity.AddClaim(new Claim("VendorStatus", currentVendor.Status));
+                    }
+                }
             }
         }
 

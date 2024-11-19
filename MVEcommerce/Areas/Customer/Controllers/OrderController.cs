@@ -176,7 +176,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
                     // Commit the transaction
                     transaction.Commit();
 
-                    return RedirectToAction("OrderConfirmation");
+                    return Redirect("/Customer/Home/Order");
                 }
                 catch (Exception)
                 {
@@ -187,6 +187,38 @@ namespace MVEcommerce.Areas.Customer.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult UpdateOrderStatus(string orderId, string status)
+        {
+            var order = _unitOfWork.Order.Get(o => o.OrderId.ToString() == orderId, "ParentOrder.SubOrders");
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            order.Status = status;
+
+            _unitOfWork.Order.Update(order);
+            _unitOfWork.Save();
+
+            if (order.ParentOrderId != null)
+            {
+                var parentOrder = order.ParentOrder;
+
+                foreach (var o in parentOrder.SubOrders)
+                {
+                    if (o.Status != OrderStatus.PENDING && o.Status != OrderStatus.APPROVED)
+                    {
+                        parentOrder.Status =  OrderStatus.COMPLETED;
+                        _unitOfWork.Order.Update(parentOrder);
+                    }
+                }
+            }
+            _unitOfWork.Save();
+
+            return RedirectToAction("Index");
+        }
 
         private Order CreateOrder(string userId, Guid? parentOrderId, string shippingAddress)
         {

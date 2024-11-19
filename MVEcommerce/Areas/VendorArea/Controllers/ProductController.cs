@@ -11,10 +11,13 @@ using MVEcommerce.DataAccess.Data;
 using MVEcommerce.Models.ViewModels.Account;
 using MVEcommerce.Utility;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MVEcommerce.Areas.VendorArea.Controllers
 {
     [Area("VendorArea")]
+    [Authorize(Roles = ApplicationRole.VENDOR)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -23,6 +26,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+        private Vendor currentVendor;
         public ProductController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager,
             ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
@@ -31,6 +35,32 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
             _slugHelper = new SlugHelper();
             _dbContext = dbContext;
             _webHostEnvironment = webHostEnvironment;
+        }
+
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var userId = claim.Value;
+                currentVendor = _unitOfWork.Vendor.Get(v => v.UserId == userId);
+                if (currentVendor != null)
+                {
+                    var vendorStatusClaim = claimsIdentity.FindFirst("VendorStatus");
+                    if (vendorStatusClaim == null || vendorStatusClaim.Value != currentVendor.Status)
+                    {
+                        if (vendorStatusClaim != null)
+                        {
+                            claimsIdentity.RemoveClaim(vendorStatusClaim);
+                        }
+                        claimsIdentity.AddClaim(new Claim("VendorStatus", currentVendor.Status));
+                    }
+                }
+            }
         }
 
         public IActionResult Index()

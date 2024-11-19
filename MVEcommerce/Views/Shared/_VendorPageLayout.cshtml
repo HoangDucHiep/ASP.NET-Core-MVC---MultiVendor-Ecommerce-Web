@@ -1,4 +1,8 @@
 
+@using MVEcommerce.Utility
+@{
+    var vendorStatus = User.Claims.FirstOrDefault(c => c.Type == "VendorStatus")?.Value;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -157,10 +161,30 @@
     .btn[aria-expanded="true"] .arrow-icon {
       transform: rotate(90deg);
     }
+
+    .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+        }
   </style>
 </head>
 
 <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl   footer-offset">
+
+  <!-- ========== Overlay ========== -->
+  <div class="overlay" id="pendingOverlay">
+        Your account is pending approval or inactive. Please wait for confirmation.
+    </div>
 
   <script src="~/assets/js/hs.theme-appearance.js"></script>
 
@@ -2209,4 +2233,13 @@
 
 @RenderSection("Scripts", required: false)
 <partial name="_ValidationScriptsPartial" />
-    
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+          var vendorStatus = '@vendorStatus';
+          console.log("Vendor Status: " + vendorStatus); // Debugging line
+          if (vendorStatus !== '@VendorStatus.ACTIVE') {
+              document.getElementById('pendingOverlay').style.display = 'flex';
+              document.body.style.pointerEvents = 'none';
+          }
+      });
+    </script>

@@ -266,7 +266,7 @@
                     {
                         var totalQuantitySub = 0;
                         var totalQuantity=0;
-                        if (item.ParentOrder==null)
+                        if (item.ParentOrderId==null)
                         {
                             @foreach (var detail in item.SubOrders)
                             {
@@ -290,21 +290,13 @@
                             <td class="order-date">@item.OrderDate.ToShortDateString()</td>
                             <td class="order-status">@item.Status</td>
                             <td class="order-total">
-                                @item.TotalAmount
-                                for 
-                                @if (item.OrderDetails == null)
-                                {
-                                     @totalQuantitySub;
-                                }
-                                else
-                                {
-                                    @totalQuantity;
-                                }
-                                item </td>
-                            <td><button class="view-button"><a asp-controller="Home" asp-action="OrderDetail" asp-route-orderId="@item.OrderId">View</a></button></td>
+                                $ @item.TotalAmount </td>
+                            <td><button style="padding: 0;" class="view-button"><a style="width: 100%; height: 100%" asp-controller="Home" asp-action="OrderDetail" asp-route-orderId="@item.OrderId">View</a></button></td>
                         </tr>
                     }
        
+                    @*  Update order status *@
+
                 </tbody>
             </table>
         </div>

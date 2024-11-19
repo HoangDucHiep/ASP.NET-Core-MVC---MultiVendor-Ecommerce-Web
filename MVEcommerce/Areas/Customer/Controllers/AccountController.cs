@@ -46,6 +46,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
             }
             var userId = userIdClaim.Value;
 
+        
             AccountBecomeVendorVM vm = new AccountBecomeVendorVM()
             {
                 Vendor = new Vendor()
@@ -79,11 +80,18 @@ namespace MVEcommerce.Areas.Customer.Controllers
                             ModelState.AddModelError("", "Failed to add role to user.");
                             return View(vm);
                         }
+
+                        // Add vendor status to claims
+                        var claims = new List<Claim>
+                        {
+                            new Claim("VendorStatus", vendor.Status)
+                        };
+                        await _userManager.AddClaimsAsync(user, claims);
         
+                        // add Vendor to database
+                        vm.Vendor.Status = VendorStatus.PENDING;
                         unitOfWork.Vendor.Add(vm.Vendor);
                         unitOfWork.Save();
-        
-                        // Sign in the user again to update ClaimsIdentity
                         await _signInManager.SignInAsync(user, isPersistent: false);
         
                         transaction.Complete();
@@ -99,6 +107,37 @@ namespace MVEcommerce.Areas.Customer.Controllers
             }
         
             return RedirectToAction();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmPassword)
+        {
+            if (newPassword != confirmPassword)
+            {
+                ModelState.AddModelError(string.Empty, "The new password and confirmation password do not match.");
+                return RedirectToAction("AccountDetail");
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "User not found.");
+                return RedirectToAction("AccountDetail");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                return RedirectToAction("AccountDetail");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return RedirectToAction("AccountDetail");
         }
 
         public IActionResult Index()

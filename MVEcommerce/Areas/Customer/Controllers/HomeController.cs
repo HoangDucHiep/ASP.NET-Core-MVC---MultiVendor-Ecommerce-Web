@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MVEcommerce.DataAccess.Data;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -155,6 +156,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
         }
         
 		[HttpGet]
+        [Authorize]
 		public IActionResult ShowProductModal(int productId, int? optionId)
 		{
 			var product = _unitOfWork.Product.GetAll(
@@ -210,6 +212,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
 		[HttpPost]
         [Route("api/addToCart")]
+        [Authorize]
         public IActionResult AddToCart([FromBody] AddToCart cartItem)
         {
             if (User.Identity is not ClaimsIdentity claimsIdentity)
@@ -366,22 +369,25 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(lstSaleProducts.ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize]
         public IActionResult AccounntOverview()
         {
             var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
             return View(user);
         }
 
+        [Authorize]
         public IActionResult Order()
         {
-            var lstOrder= _unitOfWork.Order.GetAll(p=>p.ParentOrderId==null,includeProperties: "OrderDetails.Product.ProductImages,SubOrders.OrderDetails.Product.ProductImages").ToList();
+            var lstOrder= _unitOfWork.Order.GetAll(p=>p.ParentOrderId==null,includeProperties: "OrderDetails.Product.ProductImages,SubOrders,SubOrders.OrderDetails.Product.ProductImages").OrderBy(c => c.OrderDate).ToList();
 
             return View(lstOrder);
         }
-        
+
+        [Authorize]
         public IActionResult OrderDetail(string orderId)
         {
-            var Order = _unitOfWork.Order.GetAll(p => p.OrderId==Guid.Parse(orderId), includeProperties: "OrderDetails.Product.ProductImages,SubOrders.OrderDetails.Product.Vendor,ParentOrder,OrderDetails.Product.Vendor").ToList();
+            var Order = _unitOfWork.Order.GetAll(p => p.OrderId==Guid.Parse(orderId), includeProperties: "OrderDetails.Product.ProductImages,SubOrders.OrderDetails.Product.Vendor,ParentOrder,OrderDetails.Product.Vendor").OrderBy(c=>c.OrderDate).ToList();
             ViewBag.add=_unitOfWork.Address.Get(p=>p.UserId==userId);    
             return View(Order);
         }
@@ -423,7 +429,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
             }
             return View(adr);
         }
-        
+
+        [Authorize]
         public IActionResult AccountDetail()
         {
             var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == userId);
@@ -460,11 +467,6 @@ namespace MVEcommerce.Areas.Customer.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult Test()
-        {
-            return View();
         }
 
         #region API CALLS

@@ -15,7 +15,7 @@ namespace MVEcommerce.Models
 
         public string? Name { get; set; }
 
-        public string? Status { get; set; } = "active";  // Active, InActive
+        public string? Status { get; set; } = "pending";  // Active, InActive
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
