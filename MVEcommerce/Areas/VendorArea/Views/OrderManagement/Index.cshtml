@@ -86,10 +86,24 @@ function loadOrders(status) {
         data: { status: status },
         success: function(response) {
             $('#ordersContainer').html(response);
+            initializePlugins();
         },
         error: function(error) {
             console.log(error);
         }
+    });
+}
+
+$(document).ready(function() {
+    initializePlugins();
+});
+
+function initializePlugins() {
+    $('#datatable').DataTable({
+    });
+
+    $('#datatableSearch').on('input', function() {
+        $('#datatable').DataTable().search($(this).val()).draw();
     });
 }
 </script>

@@ -2,6 +2,14 @@
 @using MVEcommerce.Utility
 @model VendorProductIndexVM
    
+
+<style>
+    .dropdown-menu {
+        position: absolute;
+        z-index: 1050 !; /* Ensure it is above other elements */
+    }
+</style>
+
 <!-- Header -->
         <div class="card-header card-header-content-md-between">
             <div class="mb-2 mb-md-0">
@@ -20,8 +28,8 @@
         </div>
         <!-- End Header -->
         <!-- Table -->
-        <div class="table-responsive datatable-custom">
-            <table id="datatable"
+        <div style="z-index: 0 !important;" class="table-responsive datatable-custom">
+            <table style="z-index: 0 !important;" id="datatable"
                    class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
                    data-hs-datatables-options='{
             "columnDefs": [{
@@ -29,19 +37,21 @@
             "width": "5%",
             "orderable": false
             }],
-            "order": [Slug,Status,Product,Category,Price,Sale,Stocks,CreatedAt,Variants],
+            "order": [],
             "info": {
             "totalQty": "#datatableWithPaginationInfoTotalQty"
             },
             "search": "#datatableSearch",
             "entries": "#datatableEntries",
-            "pageLength": 1,
+            "pageLength": 12,
             "isResponsive": false,
-            "isShowPaging": true,
+            "isShowPaging": false,
             "pagination": "datatablePagination"
             }'>
                 <thead class="thead-light">
                     <tr>
+                        <th scope="col" class="table-column-pe-0">
+                        </th>
                         <th>Slug</th>
                         <th>Status</th>
                         <th class="table-column-ps-0">Product</th>
@@ -130,43 +140,42 @@
 
         <!-- Footer -->
         <div class="card-footer">
-            <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
-                <div class="col-sm mb-2 mb-sm-0">
-                    <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
-                        <span class="me-2">Showing:</span>
+          <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
+            <div class="col-sm mb-2 mb-sm-0">
+              <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
+                <span class="me-2">Showing:</span>
 
-                        <!-- Select -->
-                        <div class="tom-select-custom">
-                            <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto"
-                                    autocomplete="off" data-hs-tom-select-options='{
+                <!-- Select -->
+                <div class="tom-select-custom">
+                  <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto" autocomplete="off" data-hs-tom-select-options='{
                             "searchInDropdown": false,
                             "hideSearch": true
                           }'>
-                                <option value="12">12</option>
-                                <option value="14" selected>14</option>
-                                <option value="16">16</option>
-                                <option value="18">18</option>
-                            </select>
-                        </div>
-                        <!-- End Select -->
-
-                        <span class="text-secondary me-2">of</span>
-
-                        <!-- Pagination Quantity -->
-                        <span id="datatableWithPaginationInfoTotalQty">@Model.Products.Count()</span>
-                    </div>
+                    <option value="12">12</option>
+                    <option value="14" selected>14</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                  </select>
                 </div>
-                <!-- End Col -->
+                <!-- End Select -->
 
-                <div class="col-sm-auto">
-                    <div class="d-flex justify-content-center justify-content-sm-end">
-                        <!-- Pagination -->
-                        <nav id="datatablePagination" aria-label="Activity pagination"></nav>
-                    </div>
-                </div>
-                <!-- End Col -->
+                <span class="text-secondary me-2">of</span>
+
+                <!-- Pagination Quantity -->
+                <span id="datatableWithPaginationInfoTotalQty"></span>
+              </div>
             </div>
-            <!-- End Row -->
+            <!-- End Col -->
+
+            <div class="col-sm-auto">
+              <div class="d-flex justify-content-center justify-content-sm-end">
+                <!-- Pagination -->
+                <nav id="datatablePagination" aria-label="Activity pagination"></nav>
+              </div>
+            </div>
+            <!-- End Col -->
+          </div>
+          <!-- End Row -->
         </div>
         <!-- End Footer -->
-        
+        <!-- End Footer -->

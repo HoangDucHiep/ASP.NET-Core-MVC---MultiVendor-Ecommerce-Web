@@ -270,6 +270,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         Value = o.Value,
                         Price = o.Price,
                         Sale = o.Sale,
+                        Status = o.Status,
                         Stock = o.Stock,
                         CreatedAt = o.CreatedAt,
                         UpdatedAt = o.UpdatedAt,
@@ -306,6 +307,7 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         product.Description = vm.Product.Description;
                         product.CategoryId = vm.Product.CategoryId;
                         product.HasVariant = vm.ProductVariantOptions.Count > 0 ? true : false;
+                        product.Status = vm.Product.Status;
 
                         if (product.HasVariant)
                         {

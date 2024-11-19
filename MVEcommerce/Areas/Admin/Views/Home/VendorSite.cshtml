@@ -66,24 +66,37 @@
 
 
 <script>
-function loadProducts(status) {
-    // Update active tab
-    document.querySelectorAll('#pageHeaderTab .nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    event.target.classList.add('active');
+    function loadProducts(status) {
+        // Update active tab
+        document.querySelectorAll('#pageHeaderTab .nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        event.target.classList.add('active');
 
-    // Make AJAX call
-    $.ajax({
-        url: '@Url.Action("GetFilteredVendor", "Home")',
-        type: 'GET',
-        data: { status: status },
-        success: function(response) {
-            $('#productsContainer').html(response);
-        },
-        error: function(error) {
-            console.log(error);
-        }
+        // Make AJAX call
+        $.ajax({
+            url: '@Url.Action("GetFilteredVendor", "Home")',
+            type: 'GET',
+            data: { status: status },
+            success: function(response) {
+                $('#productsContainer').html(response);
+                initializePlugins();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+    $(document).ready(function() {
+        initializePlugins();
     });
-}
-</script>
+
+    function initializePlugins() {
+        $('#datatable').DataTable({
+        });
+
+        $('#datatableSearch').on('input', function() {
+            $('#datatable').DataTable().search($(this).val()).draw();
+        });
+    }
+    </script>
