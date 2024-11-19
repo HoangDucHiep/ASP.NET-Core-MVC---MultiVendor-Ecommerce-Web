@@ -1,4 +1,6 @@
-﻿@model MVEcommerce.Models.ViewModels.CategoryProduct.CategoryProduct
+﻿@using PagedList.Mvc;
+@model MVEcommerce.Models.ViewModels.CategoryProduct.CategoryProduct
+
 @{
     ViewData["Title"] = "SearchProduct";
 }
@@ -25,7 +27,7 @@
 						Sort by :<span class="name">Default</span>
 					</button>
 				</div>
-				<p class="motta-result-count">1–8 of @Model.Products.Count() Results</p>
+				<p class="motta-result-count">@ViewBag.CurrentPage – @(ViewBag.CurrentPage + 19) of @Model.Products.Count() Results</p>
 				<div class="catalog-toolbar__toolbar">
 					<button class="tablet-catalog-toolbar__filter-button motta-button--subtle motta-button--color-black hidden-xs hidden-lg" data-toggle="off-canvas" data-target="mobile-filter-sidebar-panel">
 						<span class="motta-svg-icon motta-svg-icon--filter">
@@ -341,17 +343,38 @@
 				}
 
 			</ul>
-			<nav class="woocommerce-navigation woocommerce-navigation__catalog next-posts-navigation ajax-navigation ajax-infinite">
-				<a href="page/2/index.html" class="nav-links motta-button motta-button--bg-color-black motta-button--large">Load More Products</a><div class="motta-pagination--loading">
-					<div class="motta-pagination--loading-dots">
-						<span></span>
-						<span></span>
-						<span></span>
-						<span></span>
-					</div>
-					<div class="motta-pagination--loading-text">Loading more...</div>
-				</div>
-			</nav>
+			
+			<nav role="navigation" id="nav-below" class="dokan-pagination-container site-navigation paging-navigation">
+                <ul class="pager dokan-pagination">
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <li class="previous">
+                            <a href="@Url.Action("SearchProduct", new { s = ViewBag.SearchQuery, page = ViewBag.CurrentPage - 1 })">&larr; Previous</a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        if (i == 1 || i == ViewBag.TotalPages || (i >= ViewBag.CurrentPage - 2 && i <= ViewBag.CurrentPage + 2))
+                        {
+                            <li class="@(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a href="@Url.Action("SearchProduct", new { s = ViewBag.SearchQuery, page = i })">@i</a>
+                            </li>
+                        }
+                        else if (i == ViewBag.CurrentPage - 3 || i == ViewBag.CurrentPage + 3)
+                        {
+                            <li><span>...</span></li>
+                        }
+                    }
+
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <li class="next">
+                            <a href="@Url.Action("SearchProduct", new { s = ViewBag.SearchQuery, page = ViewBag.CurrentPage + 1 })">Next &rarr;</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
 		</main>
 	</div>
 	@* <aside id="mobile-filter-sidebar-panel" class="widget-area primary-sidebar catalog-sidebar">

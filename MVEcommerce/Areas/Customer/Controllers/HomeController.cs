@@ -13,6 +13,7 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MVEcommerce.DataAccess.Data;
+using PagedList;
 
 namespace MVEcommerce.Areas.Customer.Controllers
 {
@@ -77,26 +78,42 @@ namespace MVEcommerce.Areas.Customer.Controllers
 			return PartialView("Search", categoryProduct);
 		}
 
-        [HttpGet]
-        public IActionResult SearchProduct(string s)
+        public IActionResult SearchProduct(string s, int page = 1, int pageSize = 20)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
-                return View();
+                return View(new CategoryProduct { Products = new List<Product>() });
             }
-            var products = _unitOfWork.Product.GetAll(
-                p => p.Name.Contains(s) || p.Description.Contains(s),
-                includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions");
-            var categoryProduct = new CategoryProduct
+
+            var products = _unitOfWork.Product.GetAll(p => p.Name.Contains(s) && p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor")
+                .OrderByDescending(p => p.Sale)
+                .ToList();
+
+            foreach (var product in products)
             {
-                Products = products
-            };
-            
-            return View(categoryProduct);
+                if (product.HasVariant)
+                {
+                    var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+                    var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+                    var totalStock = variantOptions.Sum(vo => vo.Stock);
+
+                    product.Price = lowestPriceOption?.Price ?? product.Price;
+                    product.Stock = totalStock;
+                    product.Sale = lowestPriceOption?.Sale ?? 0;
+                }
+            }
+
+            var filteredProducts = products.Where(p => p.Sale > 0).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)filteredProducts.Count() / pageSize);
+            ViewBag.SearchQuery = s;
+
+            return View(new CategoryProduct { Products = filteredProducts.ToPagedList(page, pageSize) });
         }
 
         [Route("category/{slug}/page/{page:int?}")]
-        public IActionResult ProductsByCategory(string slug, int page = 1, int pageSize = 3)
+        public IActionResult ProductsByCategory(string slug, int page = 1, int pageSize = 20)
         {
             var category = _unitOfWork.Category.Get(c => c.Slug == slug);
             if (category == null)
@@ -179,8 +196,8 @@ namespace MVEcommerce.Areas.Customer.Controllers
 
             foreach (var cartItem in existingCartItem)
             {
-                decimal Price = (decimal)(cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Price : cartItem.Product.Price)!;
-                decimal Sale = (decimal)(cartItem.VariantOptionID.HasValue ? cartItem.ProductVariantOption!.Sale : cartItem.Product.Sale!)!;
+                decimal Price = (decimal)(cartItem.VariantOptionID != null ? cartItem.ProductVariantOption!.Price : cartItem.Product.Price);
+                decimal Sale = (decimal)(cartItem.VariantOptionID != null ? cartItem.ProductVariantOption!.Sale : cartItem.Product.Sale!)!;
                 totalAmount += (Price * (1 - Sale / 100)) * cartItem.Quantity;
             }
 
@@ -290,7 +307,7 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(products);
         }
 
-        public IActionResult VendorPage(int vendorId, int page = 1, int pageSize = 3)
+        public IActionResult VendorPage(int vendorId, int page = 1, int pageSize = 20)
         {
             ViewBag.Vendor = _unitOfWork.Vendor.Get(p => p.VendorId == vendorId, "Addresses");
             var lstProduct = _unitOfWork.Product.GetAll(p => p.Vendor.VendorId == vendorId, includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,Vendor,ProductImages")
@@ -318,36 +335,36 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(lstProduct);
         }
 
-        public IActionResult FlashDeals()
+        public IActionResult FlashDeals(int? page)
         {
-			var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor").OrderBy(p => p.Sale).Reverse().ToList(); ;
+            int pageSize = 20;
+            int pageNumber = page ?? 1;
 
-			foreach (var product in products)
-			{
-				if (product.HasVariant)
-				{
-					var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
-					var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
-					var totalStock = variantOptions.Sum(vo => vo.Stock);
+            var products = _unitOfWork.Product.GetAll(p => p.Status == "active", includeProperties: "Category,ProductImages,ProductVariants.ProductVariantOptions,ProductImages,Vendor")
+                .OrderByDescending(p => p.Sale)
+                .ToList();
 
-					product.Price = lowestPriceOption?.Price ?? product.Price;
-					product.Stock = totalStock;
-					product.Sale = lowestPriceOption?.Sale ?? 0;
-				}
-			}
+            foreach (var product in products)
+            {
+                if (product.HasVariant)
+                {
+                    var variantOptions = product.ProductVariants!.SelectMany(v => v.ProductVariantOptions!);
+                    var lowestPriceOption = variantOptions.OrderBy(vo => vo.Price).FirstOrDefault();
+                    var totalStock = variantOptions.Sum(vo => vo.Stock);
 
-			var lstSaleProducts = new List<Product>();
-			foreach (var product in products)
-			{
-				if (product.Sale > 0)
-				{
-					lstSaleProducts.Add(product);
+                    product.Price = lowestPriceOption?.Price ?? product.Price;
+                    product.Stock = totalStock;
+                    product.Sale = lowestPriceOption?.Sale ?? 0;
+                }
+            }
 
-				}
-			}
-			return View(lstSaleProducts);
-		}
+            var lstSaleProducts = products.Where(p => p.Sale > 0).ToList();
 
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)lstSaleProducts.Count() / pageSize);
+
+            return View(lstSaleProducts.ToPagedList(pageNumber, pageSize));
+        }
 
         public IActionResult AccounntOverview()
         {
