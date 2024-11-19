@@ -128,8 +128,8 @@
                 <p>@ViewBag.UserName</p>
             </div>
             <ul class="menu123">
-                <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                <li><a asp-controller="Home" asp-action="AccounntOverview"></i> Dashboard</a></li>
+                <li><a asp-controller="Home" asp-action="Order"><i class="fa fa-shopping-bag"></i> Orders</a></li>
                 <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
                 <li><a asp-controller="Home" asp-action="AccountDetail"><i class="fa fa-user"></i> Account details</a></li>
                 @if (User.Identity != null && User.Identity.IsAuthenticated)

@@ -1,0 +1,391 @@
+﻿
+@{
+    ViewData["Title"] = "OrderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<MVEcommerce.Models.Order>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .container123 {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0px;
+    }
+
+    .account-wrapper123 {
+        display: flex;
+    }
+
+    .sidebar123 {
+        width: 250px;
+        background-color: #fff;
+        border-right: 1px solid #ddd;
+        padding: 20px;
+        height: 100vh;
+    }
+
+        .sidebar123 h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar123 ul {
+            list-style: none;
+            padding: 0;
+        }
+
+            .sidebar123 ul li {
+                margin-bottom: 10px;
+            }
+
+                .sidebar123 ul li a {
+                    text-decoration: none;
+                    color: #333;
+                    display: block;
+                    padding: 10px;
+                    border-radius: 4px;
+                    transition: background 0.3s;
+                }
+
+                    .sidebar123 ul li a:hover {
+                        background-color: #ddd;
+                    }
+
+    .main-content123 {
+        flex: 1;
+        background-color: #fff;
+        padding: 0px;
+        margin-left: 10px;
+        border-radius: 4px;
+    }
+
+    .form-group123 {
+        margin-bottom: 15px;
+    }
+
+        .form-group123 label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group123 input,
+        .form-group123 select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+            .form-group123 input:focus,
+            .form-group123 select:focus {
+                outline: none;
+                border-color: #007bff;
+            }
+
+        .form-group123 .optional123 {
+            font-weight: normal;
+            font-size: 12px;
+            color: #999;
+        }
+
+    .form-actions123 {
+        text-align: right;
+    }
+
+        .form-actions123 button {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+            .form-actions123 button:hover {
+                background-color: #333;
+            }
+
+</style>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: #fff;
+            color: #333;
+            line-height: 1.6;
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .order-header {
+            margin-bottom: 20px;
+        }
+
+        .order-number {
+            color: #666;
+        }
+
+        .order-status {
+            color: #f59e0b;
+            font-weight: 500;
+        }
+
+        .order-details {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .product-table {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .product-table tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .product-table td {
+            padding: 12px 0;
+        }
+
+        .product-table td:last-child {
+            text-align: right;
+        }
+
+        .vendor-info {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 4px;
+        }
+
+        .info-box {
+            background: #e6f6ff;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .info-icon {
+            color: #0284c7;
+            font-weight: bold;
+        }
+
+        .sub-orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .sub-orders-table th {
+            text-align: left;
+            padding: 12px 0;
+            border-bottom: 2px solid #eee;
+        }
+
+        .sub-orders-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .view-btn {
+            background: #1f2937;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .addresses {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .address-box {
+            line-height: 1.8;
+        }
+
+        @@media (max-width: 768px) {
+            .addresses {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+<div class="container123">
+    <div class="account-wrapper123">
+        <!-- Sidebar -->
+        <div class="sidebar123">
+            <div class="profile123">
+                <div class="avatar123"></div>
+                <h3>Hello!</h3>
+                <p>@ViewBag.UserName</p>
+            </div>
+            <ul class="menu123">
+                <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
+                <li><a asp-controller="Home" asp-action="AccountDetail"><i class="fa fa-user"></i> Account details</a></li>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <form id="logoutForm" class="form-inline account-panel__link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <a class="motta-button motta-button--text">
+                                <button type="submit" style="border: none; background: transparent; color: black; margin: 0; padding: 0; min-width: auto !important;">
+                                    <span class="motta-button__icon" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; text-align: left;">
+                                        <span class="motta-svg-icon motta-svg-icon--sign-out" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; min-width: auto !important;">
+                                            <svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32" style="min-width: auto !important;">
+                                                <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                                <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    <span class="motta-button__text" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle;">
+                                        Sign Out
+                                    </span>
+                                </button>
+                            </a>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content123">
+            
+            @foreach (var item in Model)
+            {
+                <div class="order-header">
+                    <p>Order <span class="order-number">@item.OrderId</span> was placed on @item.OrderDate.ToShortDateString()  and is currently <span class="order-status">@item.Status</span></p>
+                </div>
+                <div class="order-details">
+                    <h2>Order details</h2>
+                    <table class="product-table">
+                        @if(item.ParentOrder==null){
+                            @foreach (var pro in item.SubOrders)
+                            {
+                                @foreach (var p in pro.OrderDetails)
+                                {
+                                    <tr>
+                                        <td>
+
+                                            @p.Product.Name
+
+                                            <div class="vendor-info">Vendor:   @p.Product.Vendor.Name </div>
+                                        </td>
+                                        <td>$@p.Order.TotalAmount</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            @foreach (var p in item.OrderDetails)
+                            {
+                                <tr>
+                                    <td>
+
+                                        @p.Product.Name
+
+                                        <div class="vendor-info">Vendor:   @p.Product.Vendor.Name </div>
+                                    </td>
+                                    <td>$@p.Order.TotalAmount</td>
+                                </tr>
+                            }
+                           
+                        }
+
+                        
+                        <tr>
+                            <td>Subtotal:</td>
+                            <td>$@item.TotalAmount</td>
+                        </tr>
+                        
+                        
+                        <tr>
+                            <td><strong>Total:</strong></td>
+                            <td><strong>$@item.TotalAmount</strong></td>
+                        </tr>
+                    </table>
+                    @if(item.ParentOrder==null){
+                        <h2>Sub Orders</h2>
+                        <div class="info-box">
+                            <span class="info-icon">i</span>
+                            <span>This order has products from multiple vendors. So we divided this order into multiple vendor orders. Each order will be handled by their respective vendor independently.</span>
+                        </div>
+
+                        <table class="sub-orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Order</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var order in item.SubOrders){
+                                    <tr>
+                                        <td>@order.OrderId</td>
+                                        <td>@order.OrderDate.ToShortDateString()</td>
+                                        <td>@order.Status</td>
+                                        <td>@order.TotalAmount</td>
+                                        <td><button class="view-btn" >View</button></td>
+                                    </tr>
+                                }
+                                
+                            </tbody>
+                        </table>
+                    }
+                  
+
+                    <div class="addresses">
+                        
+                        <div class="address-box">
+                            <h2>Shipping address</h2>
+                            <p>ZipCode: @ViewBag.add.ZipCode</p>
+                            <p>Apartment @ViewBag.add.Apartment - @ViewBag.add.Street - @ViewBag.add.City - @ViewBag.add.Country</p>
+                           
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</div>
