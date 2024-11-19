@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVEcommerce.Models", "MVEco
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVEcommerce.Utility", "MVEcommerce.Utility\MVEcommerce.Utility.csproj", "{5083C98C-CA03-4560-905C-95E5A113780D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvTest", "MvTest\MvTest.csproj", "{36689BAB-57C7-4D3B-A9F1-1616995A3CDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5083C98C-CA03-4560-905C-95E5A113780D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5083C98C-CA03-4560-905C-95E5A113780D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5083C98C-CA03-4560-905C-95E5A113780D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36689BAB-57C7-4D3B-A9F1-1616995A3CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36689BAB-57C7-4D3B-A9F1-1616995A3CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36689BAB-57C7-4D3B-A9F1-1616995A3CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36689BAB-57C7-4D3B-A9F1-1616995A3CDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

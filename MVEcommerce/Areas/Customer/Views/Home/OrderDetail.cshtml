@@ -409,7 +409,7 @@
                 </div>
             }
             @{
-                var orderOD = Model.Where(x=>x.ParentOrderId!=null).FirstOrDefault();
+                var orderOD = Model.Where(x=>x.SubOrders != null).FirstOrDefault();
             }
 
             @if (orderOD != null)

@@ -281,4 +281,52 @@
 
 
 
+<script>
+	function addToCart(productId) {
+		const url = '/api/addToCart';
+
+		const data = {
+			productId: productId,
+			quantity: 1
+		};
+
+		fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(result => {
+				if (result.success) {
+
+				} else {
+					alert(result.message);
+				}
+			})
+			.catch(error => console.error("Error:", error));
+	}
+
+	function showProduct(id, optionId = null) {
+		$.ajax({
+			type: 'GET',
+			url: '@Url.Action("ShowProductModal", "Home")',
+			data: { productId: id, optionId: optionId},
+			success: function (partialView) {
+				$('#motta-popup-add-to-cart').css('display', 'block');
+				$('#opp').css('opacity', '1');
+				$('#show').html(partialView)
+			},
+			Error: function (x) {
+				alert(x.responseText);
+			}
+		})
+		$(document).on('click', '.modal__button-close, .modal__backdrop', function () {
+			$('#motta-popup-add-to-cart').css('display', 'none');
+			$('#opp').css('opacity', '0');
+		});
+
+	}
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

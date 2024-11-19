@@ -1,7 +1,6 @@
 @using MVEcommerce.Models.ViewModels.Account
 @using MVEcommerce.Utility
 @model VendorProductIndexVM
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
    
 <!-- Header -->
         <div class="card-header card-header-content-md-between">
@@ -30,26 +29,19 @@
             "width": "5%",
             "orderable": false
             }],
-            "order": [],
+            "order": [Slug,Status,Product,Category,Price,Sale,Stocks,CreatedAt,Variants],
             "info": {
             "totalQty": "#datatableWithPaginationInfoTotalQty"
             },
             "search": "#datatableSearch",
             "entries": "#datatableEntries",
-            "pageLength": 12,
+            "pageLength": 1,
             "isResponsive": false,
-            "isShowPaging": false,
+            "isShowPaging": true,
             "pagination": "datatablePagination"
             }'>
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col" class="table-column-pe-0">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="datatableCheckAll">
-                                <label class="form-check-label">
-                                </label>
-                            </div>
-                        </th>
                         <th>Slug</th>
                         <th>Status</th>
                         <th class="table-column-ps-0">Product</th>
@@ -68,12 +60,6 @@
                     @foreach (var product in Model.Products)
                     {
                         <tr>
-                            <td class="table-column-pe-0">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="datatableCheckAll1">
-                                    <label class="form-check-label" for="datatableCheckAll1"></label>
-                                </div>
-                            </td>
                             <td>@product.Slug</td>
                             <td class="table-column-ps-0">
                                 <a class="d-flex align-items-center" asp-action="EditProduct" asp-route-id="@product.ProductId">

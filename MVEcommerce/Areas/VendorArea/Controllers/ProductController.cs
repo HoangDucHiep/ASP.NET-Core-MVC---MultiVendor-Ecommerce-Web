@@ -271,7 +271,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         Price = o.Price,
                         Sale = o.Sale,
                         Stock = o.Stock,
-                        Status = o.Status,
                         CreatedAt = o.CreatedAt,
                         UpdatedAt = o.UpdatedAt,
                         ProductImages = o.ProductImages?.ToList() ?? new List<ProductImage>()
@@ -303,7 +302,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                         product.Name = vm.Product.Name;
                         product.Price = vm.Product.Price;
                         product.Sale = vm.Product.Sale;
-                        product.Stock = vm.Product.Stock;
                         product.Status = vm.Product.Status;
                         product.Description = vm.Product.Description;
                         product.CategoryId = vm.Product.CategoryId;
@@ -314,17 +312,6 @@ namespace MVEcommerce.Areas.VendorArea.Controllers
                             product.Price = null;
                             product.Sale = null;
                             product.Stock = null;
-                        }
-                        else
-                        {
-                            if (product.Stock > 0)
-                            {
-                                product.Status = ProductStatus.ACTIVE;
-                            }
-                            else
-                            {
-                                product.Status = ProductStatus.INACTIVE;
-                            }
                         }
 
                         // Update main image
