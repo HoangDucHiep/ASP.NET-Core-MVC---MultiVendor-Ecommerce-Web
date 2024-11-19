@@ -1,0 +1,317 @@
+﻿
+@{
+    ViewData["Title"] = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<MVEcommerce.Models.Order>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .container123 {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .account-wrapper123 {
+        display: flex;
+    }
+
+    .sidebar123 {
+        width: 250px;
+        background-color: #fff;
+        border-right: 1px solid #ddd;
+        padding: 20px;
+        height: 100vh;
+    }
+
+        .sidebar123 h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar123 ul {
+            list-style: none;
+            padding: 0;
+        }
+
+            .sidebar123 ul li {
+                margin-bottom: 10px;
+            }
+
+                .sidebar123 ul li a {
+                    text-decoration: none;
+                    color: #333;
+                    display: block;
+                    padding: 10px;
+                    border-radius: 4px;
+                    transition: background 0.3s;
+                }
+
+                    .sidebar123 ul li a:hover {
+                        background-color: #ddd;
+                    }
+
+    .main-content123 {
+        flex: 1;
+        background-color: #fff;
+        padding: 20px;
+        margin-left: 20px;
+        border-radius: 4px;
+    }
+
+    .form-group123 {
+        margin-bottom: 15px;
+    }
+
+        .form-group123 label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group123 input,
+        .form-group123 select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+            .form-group123 input:focus,
+            .form-group123 select:focus {
+                outline: none;
+                border-color: #007bff;
+            }
+
+        .form-group123 .optional123 {
+            font-weight: normal;
+            font-size: 12px;
+            color: #999;
+        }
+
+    .form-actions123 {
+        text-align: right;
+    }
+
+        .form-actions123 button {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+            .form-actions123 button:hover {
+                background-color: #333;
+            }
+
+
+</style>
+<style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Body and Container */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        padding: 20px;
+    }
+
+    .order-container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Product Section */
+    .order-details {
+        margin-bottom: 30px;
+    }
+
+    .product {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+    }
+
+        .product:last-child {
+            border-bottom: none;
+        }
+
+    .product-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 20px;
+        border-radius: 8px;
+    }
+
+    .product-info {
+        flex-grow: 1;
+    }
+
+    .product-name {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .product-quantity,
+    .product-price,
+    .product-total {
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* Order Summary */
+    .order-summary {
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .order-total {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .shipping-address {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+</style>
+
+<div class="container123">
+    <div class="account-wrapper123">
+        <!-- Sidebar -->
+        <div class="sidebar123">
+            <div class="profile123">
+                <div class="avatar123"></div>
+                <h3>Hello!</h3>
+                <p>@ViewBag.UserName</p>
+            </div>
+            <ul class="menu123">
+                <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                <li><a asp-controller="Home" asp-action="Addresses"><i class="fa fa-address-book"></i> Addresses</a></li>
+                <li><a asp-controller="Home" asp-action="AccountDetail"><i class="fa fa-user"></i> Account details</a></li>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <form id="logoutForm" class="form-inline account-panel__link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <a class="motta-button motta-button--text">
+                                <button type="submit" style="border: none; background: transparent; color: black; margin: 0; padding: 0; min-width: auto !important;">
+                                    <span class="motta-button__icon" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; text-align: left;">
+                                        <span class="motta-svg-icon motta-svg-icon--sign-out" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle; min-width: auto !important;">
+                                            <svg width="24" height="24" aria-hidden="true" role="img" focusable="false" viewBox="0 0 32 32" style="min-width: auto !important;">
+                                                <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                                <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    <span class="motta-button__text" style="display: inline-block; padding: 0; margin: 0; line-height: normal; vertical-align: middle;">
+                                        Sign Out
+                                    </span>
+                                </button>
+                            </a>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content123">
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>     
+                    @foreach (var item in Model)
+                    {
+                        var totalQuantitySub = 0;
+                        var totalQuantity=0;
+                        if (item.ParentOrder==null)
+                        {
+                            @foreach (var detail in item.SubOrders)
+                            {
+                                @foreach(var d in detail.OrderDetails)
+                                {
+                                    totalQuantitySub += d.Quantity;
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            @foreach (var detail in item.OrderDetails)
+                            {
+                                totalQuantity += detail.Quantity;
+                            }
+                        }
+
+                        <tr>
+                            <td class="order-id">@item.OrderId</td>
+                            <td class="order-date">@item.OrderDate.ToShortDateString()</td>
+                            <td class="order-status">@item.Status</td>
+                            <td class="order-total">
+                                @item.TotalAmount
+                                for 
+                                @if (item.OrderDetails == null)
+                                {
+                                     @totalQuantitySub;
+                                }
+                                else
+                                {
+                                    @totalQuantity;
+                                }
+                                item </td>
+                            <td><button class="view-button"><a asp-controller="Home" asp-action="OrderDetail" asp-route-orderId="@item.OrderId">View</a></button></td>
+                        </tr>
+                    }
+       
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</div>
+
+

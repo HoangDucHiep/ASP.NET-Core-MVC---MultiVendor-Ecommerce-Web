@@ -372,7 +372,19 @@ namespace MVEcommerce.Areas.Customer.Controllers
             return View(user);
         }
 
+        public IActionResult Order()
+        {
+            var lstOrder= _unitOfWork.Order.GetAll(p=>p.ParentOrderId==null,includeProperties: "OrderDetails.Product.ProductImages,SubOrders.OrderDetails.Product.ProductImages").ToList();
+
+            return View(lstOrder);
+        }
         
+        public IActionResult OrderDetail(string orderId)
+        {
+            var Order = _unitOfWork.Order.GetAll(p => p.OrderId==Guid.Parse(orderId), includeProperties: "OrderDetails.Product.ProductImages,SubOrders.OrderDetails.Product.Vendor,ParentOrder,OrderDetails.Product.Vendor").ToList();
+            ViewBag.add=_unitOfWork.Address.Get(p=>p.UserId==userId);    
+            return View(Order);
+        }
         [HttpGet]
         public IActionResult Addresses()
         {
